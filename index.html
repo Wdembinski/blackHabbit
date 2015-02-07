@@ -3,13 +3,17 @@
 <head>
   <meta charset="utf-8">
   <title>BlackHabbit | Welcome</title>
-  <link rel="stylesheet" href="css/blackHabbit_BootStrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/animations.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-animate.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-route.min.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <!-- <script src="js/jquery.js"></script>
   <script src="js/angular.js"></script>
   <script src="js/angular-animate.js"></script>
@@ -21,15 +25,292 @@
   <script src="js/services.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
 
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="nunLogo" href="#"><img id="nunLogo"  src="images/nun.png"></a>
+    </div>
 
-  <div class="view-container">
-    <div ng-view class="view-frame"></div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" id="blackHabbitSearch" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" id="Username">William Dembinski</a></li>
+        <li class="dropdown">
+          <a href="#" id="blackHabbitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-cog fa-2x"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- collapse -->
+  </div><!-- fluid -->
+</nav>
+<div class="jumboResults">
+  <div class="blackHabbitTools jumbotron">
+    <ul class="nav navbar-nav navbar-right ">
+     <li class="dropdown">
+        <a href="#" id="blackHabbitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+        </li>
+      </ul>
+    <p id="historyTitle">History</p>
+    <img class="mostRelThumbnail"src="images/thumbNail.jpg">
+    <img class="mostRelThumbnail"src="images/thumbNail1.jpg">
+    <img class="mostRelThumbnail"src="images/thumbNail2.jpg">
+      <div class="superResultDescription">
+        <ul class="descriptionContent">
+          <li>
+             <a href=""><p class="resultName">d/dubstep</p></a>
+          </li>
+          <li>
+             <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+          </li>
+          <li>
+            <p class="json">Record:</p>
+             <p class="json">
+             {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+              "expires_in" : 14292}
+            </p>
+          </li>
+          <li>
+            <a href=""><p class="visitsToday">Visits Today:</p></a>225
+          </li>
+          <li>
+            <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+          </li>
+          <hr>
+          <li>
+            <p id="snapShotTitle">Snapshot:</p>
+
+            <p id="snapShot"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor<br> <br>in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur.  in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur...</p>
+          </li>
+        </ul>
+      </div>
   </div>
-<div class="btn-group" role="group" aria-label="...">
-  <button type="button" class="btn btn-default">Left</button>
-  <button type="button" class="btn btn-default">Middle</button>
-  <button type="button" class="btn btn-default">Right</button>
+  <div class="jumbotron">
+    <ul class="nav navbar-nav navbar-right ">
+     <li class="dropdown">
+        <a href="#" id="blackHabbitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+        </li>
+      </ul>
+    <h1>Most relevant:</h1>
+    <img class="mostRelThumbnail"src="images/thumbNail.jpg">
+    <div class="resultDescription">
+      <ul class="descriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+        </li>
+        <li>
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+        </li>
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+<!-- ================================================================================================== -->
+  <div class="jumbotron subResult">
+
+    <div class="nextResultDescription">
+      <ul class="nextdescriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+           
+           <i class="fa fa-caret-down"></i>
+        </li>
+        <li class="metaRow">
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+          <a href="">  <i class="fa fa-question"></i></a>
+        </li>
+      </ul>
+      <ul class="nextResultMetaData">
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!-- ================================================================================================== -->
+  <div class="jumbotron subResult">
+
+    <div class="nextResultDescription">
+      <ul class="nextdescriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+           
+           <i class="fa fa-caret-down"></i>
+        </li>
+        <li class="metaRow">
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+          <a href="">  <i class="fa fa-question"></i></a>
+        </li>
+      </ul>
+      <ul class="nextResultMetaData">
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!-- ================================================================================================== -->
+  <div class="jumbotron subResult">
+
+    <div class="nextResultDescription">
+      <ul class="nextdescriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+           
+           <i class="fa fa-caret-down"></i>
+        </li>
+        <li class="metaRow">
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+          <a href="">  <i class="fa fa-question"></i></a>
+        </li>
+      </ul>
+      <ul class="nextResultMetaData">
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!-- ================================================================================================== -->
+  <div class="jumbotron subResult">
+
+    <div class="nextResultDescription">
+      <ul class="nextdescriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+           
+           <i class="fa fa-caret-down"></i>
+        </li>
+        <li class="metaRow">
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+          <a href="">  <i class="fa fa-question"></i></a>
+        </li>
+      </ul>
+      <ul class="nextResultMetaData">
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!-- ================================================================================================== -->
+  <div class="jumbotron subResult">
+
+    <div class="nextResultDescription">
+      <ul class="nextdescriptionContent">
+        <li>
+           <a href=""><p class="resultName">d/dubstep</p></a>
+           
+           <i class="fa fa-caret-down"></i>
+        </li>
+        <li class="metaRow">
+           <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Record:</p>
+           <p class="json">
+           {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
+            "expires_in" : 14292}
+          </p>
+          <p title="What is this?" ><i class="fa fa-question"></i></p>
+        </li>
+      </ul>
+      <ul class="nextResultMetaData">
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
 </div>
 </body>
 </html>
