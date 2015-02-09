@@ -1,0 +1,36 @@
+[
+{
+"name" : "d/dot-bit",
+"value" : "{\"info\":{\"description\":\"Dot-BIT Project - Official Website\",\"registrar\":\"http://register.dot-bit.org\"},\"fingerprint\":[\"30:B0:60:94:32:08:EC:F5:BE:DF:F4:BB:EE:52:90:2C:5D:47:62:46\"],\"ns\":[\"ns0.web-sweet-web.net\",\"ns1.web-sweet-web.net\"],\"map\":{\"\":{\"ns\":[\"ns0.web-sweet-web.net\",\"ns1.web-sweet-web.net\"]}},\"email\":\"register@dot-bit.org\"}",
+"expires_in" : 7008
+},
+{
+"name" : "d/dot-com",
+"value" : "BM-5oDW5JuVckVnSDSdcMxySi5cNTadThf",
+"expires_in" : 34783
+},
+{
+"name" : "d/dot2dot",
+"value" : "BM-2cVtRVEymDzmCSWvNe4iPUDzne86JuVnmp",
+"expires_in" : 26793
+},
+{
+"name" : "d/dota2vo",
+"value" : "BM-2cVtRVEymDzmCSWvNe4iPUDzne86JuVnmp",
+"expires_in" : 26801
+},
+{
+"name" : "d/dotacja",
+"expired" : 1
+},
+{
+"name" : "d/dotasia",
+"value" : "{\"ns\":[],\"translate\":\"BM-2cVHHw244Gb8c7jWzw1ogVYhuZwYCXbExv.\"}",
+"expires_in" : 3366
+},
+{
+"name" : "d/dotbits",
+"value" : "BM-5oDW5JuVckVnSDSdcMxySi5cNTadThf",
+"expires_in" : 18729
+}
+]
