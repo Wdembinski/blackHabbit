@@ -1,14 +1,19 @@
-/* Controllers */
 
-var blackHabbit = angular.module('blackHabbit', []);
+var black_HabitControllers = angular.module('black_HabitControllers', []);
 
-blackHabbit.controller('homeCtrl', ['$scope', 'result',
-  function($scope, result) {
-    $scope.results = result.query();
-    $scope.orderProp = 'relevance';
+black_HabitControllers.controller('resultsCtrl', ['$scope', '$http',
+  function($scope, $http) {
+    $http.get('testSearch.json').success(function(data) {
+      $scope.phones = data;
+    });
+    $scope.orderProp = 'age';
   }]);
 
-blackHabbit.controller('ResultDetailCtrl', ['$scope', '$routeParams', 'result',
+
+
+
+
+blackHabbit.controller('ResultDatailCtrl', ['$scope', '$routeParams', 'result',
   function($scope, $routeParams, result) {
     $scope.result = result.get({resultId: $routeParams.resultId}, function(result) {
       $scope.mainImageUrl = result.images[0];
