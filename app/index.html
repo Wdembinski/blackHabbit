@@ -109,7 +109,8 @@
   </div>
 
   <div ng-controller="resultCtrl" class="jumboResults">
-    <div ng-repeat="result in results" class="jumbotron subResult">
+    Search: <input ng-model="query">
+    <div ng-repeat="result in results | filter:query" class="jumbotron subResult">
 
       <div class="nextResultDescription">
         <ul class="nextdescriptionContent">
@@ -124,8 +125,7 @@
           <li>
             <p class="json">Record:</p>
              <p class="json">
-             {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
-              "expires_in" : 14292}
+             {{result}}
             </p>
             <a href="">  <i class="fa fa-question"></i></a>
           </li>
