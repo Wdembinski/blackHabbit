@@ -30,14 +30,14 @@ class NamecoinRPC
 end
 
   counter=0
-  lastEntry="®"
+  lastEntry=" "
   doneIndicator=100
   conn = PGconn.open(:dbname => 'domain_cache')
 
 
 
 begin
-  while doneIndicator == 1000
+  while doneIndicator == 100
     h = NamecoinRPC.new('http://user:test@127.0.0.1:8336')
     response = h.name_scan lastEntry,100
     doneIndicator = response.count
@@ -67,8 +67,8 @@ begin
         end
 
         # res  = conn.exec("INSERT INTO cache1 values('#{name}','#{value}','#{expires_in}')")
-        res  = conn.exec("INSERT INTO cache1 values($$'#{name}','#{value}','#{expires_in}'$$)")
-    end
+        res  = conn.exec("INSERT INTO cache1 (name, value, expires_in) values ($$'#{name}'$$,$$'#{value}'$$,'#{expires_in}')")
+    end               #select * from cache1 where name = $$'!'$$; example query
     counter+=1
   end
   rescue Interrupt => e
