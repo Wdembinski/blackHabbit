@@ -69,35 +69,10 @@ begin
         # res  = conn.exec("INSERT INTO cache1 values('#{name}','#{value}','#{expires_in}')")
         res  = conn.exec("INSERT INTO cache1 (name, value, expires_in) values ($$'#{name}'$$,$$'#{value}'$$,'#{expires_in}')")
     end               #select * from cache1 where name = $$'!'$$; example query
+                      # select * from cache1 where name like '%dot%'; just cute basic search.
     counter+=1
   end
   rescue Interrupt => e
     puts "Last Entry :::::::" + lastEntry
 end
 
-# class cacheUpdate
-#   include HTTParty
-#   base_uri 'http://127.0.0.1:8336/'
-#   basic_auth 'user','test'
-#   default_params 
-#   def initialize(u, p)
-#     @auth = {username: u, password: p}
-#   end
-#   # which can be :friends, :user or :public
-#   # options[:query] can be things like since, since_id, count, etc.
-
-# end
-
-# update = cacheUpdate.new(config['user'], config['test'])
-# pp update
-
-
-
-# class Partay
-#   include HTTParty
-#   base_uri 'http://localhost:3000'
-# end
-
-# options = "{"jsonrpc": "1.0", "id":"curltest", "method": "name_scan", "params": ["blah",2] }"
-
-# pp Partay.post('/pears.xml', options)
