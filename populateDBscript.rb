@@ -41,7 +41,7 @@ end
 begin
   while doneIndicator >= 100
 
-    h = NamecoinRPC.new('http://user:test@localhost:8335')
+    h = NamecoinRPC.new('http://user:test@localhost:8334')
     # pry 
     response = h.name_scan lastEntry,100
     doneIndicator = response.count
