@@ -3,7 +3,7 @@ class SearchesController < ApplicationController
   before_action :set_search, only: [:search]
 
   def set_search_results
-     @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
+     # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
      # render json: CacheQuery.find_by_sql("select * from domain_caches where name like '%#{search_params}%';")
     # @searchResults = CacheQuery.find_by_sql(" select * from domain_caches where name like '%#{params[:userQuery]}%';")
   end
@@ -69,10 +69,11 @@ class SearchesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_search
-      if params[:blackHabbitPrimarySearch] == '' then
-        @searchResults = ''
+      if params[:blackHabbitPrimarySearch] == nil then
+        @searchResults = 'No Search Requested'
         return
       else
+        # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
         @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 100;")
       # @search = Search.find(params[:blackHabbitPrimarySearch])
       end

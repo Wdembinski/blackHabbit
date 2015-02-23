@@ -1,8 +1,10 @@
 #! /bin/ruby
+puts "==============================="
 require 'pg'
 require 'net/http'
 require 'uri'
 require 'json'
+require 'pry'
 
 class NamecoinRPC
   def initialize(service_url)
@@ -32,18 +34,21 @@ end
   counter=0
   lastEntry=" "
   doneIndicator=100
-  conn = PGconn.open(:dbname => 'domain_cache')
+  conn = PGconn.open(:dbname => 'black_habbit_development')
 
 
 
 begin
-  while doneIndicator == 100
-    h = NamecoinRPC.new('http://user:test@127.0.0.1:8336')
+  while doneIndicator >= 100
+
+    h = NamecoinRPC.new('http://user:test@localhost:8335')
+    # pry 
     response = h.name_scan lastEntry,100
     doneIndicator = response.count
     lastEntry = response.last["name"].force_encoding("ISO-8859-1").encode("UTF-8")
 
     response.each do |singleResponse|
+      next if singleResponse["name"] == lastEntry
       name=singleResponse["name"].to_s.force_encoding("ISO-8859-1").encode("UTF-8")
       value=singleResponse["value"].to_s.force_encoding("ISO-8859-1").encode("UTF-8")
       expires_in=singleResponse["expires_in"]
@@ -67,7 +72,7 @@ begin
         end
 
         # res  = conn.exec("INSERT INTO cache1 values('#{name}','#{value}','#{expires_in}')")
-        res  = conn.exec("INSERT INTO cache1 (name, value, expires_in) values ($$'#{name}'$$,$$'#{value}'$$,'#{expires_in}')")
+        res  = conn.exec("INSERT INTO domain_caches (name, value, expires_in) values ($$'#{name}'$$,$$'#{value}'$$,'#{expires_in}')")
     end               #select * from cache1 where name = $$'!'$$; example query
                       # select * from cache1 where name like '%dot%'; just cute basic search.
     counter+=1
