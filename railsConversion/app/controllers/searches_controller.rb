@@ -1,25 +1,23 @@
 class SearchesController < ApplicationController
   # before_action :set_search, only: [:show, :edit, :update, :destroy]
-  # before_action :set_search_results, only: [:search]
+  before_action :set_search, only: [:search]
 
-  # GET /searches
-  # GET /searches.json
   def set_search_results
-     @searchResults = CacheQuery.find_by_sql("select * from domain_caches where name like '%dot%';")
+     @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
      # render json: CacheQuery.find_by_sql("select * from domain_caches where name like '%#{search_params}%';")
     # @searchResults = CacheQuery.find_by_sql(" select * from domain_caches where name like '%#{params[:userQuery]}%';")
   end
 
   def search
-    @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%weed%';")
+    # @searchResults = Cachequery.standardSearch
+    # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%weed%';")
     render json: @searchResults
   end
-  # GET /searches/1
-  # GET /searches/1.json
-  # def show
-  # end
+
 
   # GET /searches/new
+  def index
+  end
   def new
     # @search = Search.new
   end
@@ -70,13 +68,19 @@ class SearchesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    # def set_search
-    #   @search = Search.find(params[:id])
-    # end
+    def set_search
+      if params[:blackHabbitPrimarySearch] == '' then
+        @searchResults = ''
+        return
+      else
+        @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 100;")
+      # @search = Search.find(params[:blackHabbitPrimarySearch])
+      end
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def search_params
-      params.require(:userQuery)
-      # params.require(:search).permit(:userQuery)
-    end
+    # def search_params
+    #   params.require(:userQuery)
+    #   # params.require(:search).permit(:userQuery)
+    # end
 end

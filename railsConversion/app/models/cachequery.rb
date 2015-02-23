@@ -12,5 +12,4 @@ class Cachequery < ActiveRecord::Base
 
 
 
-
 end
