@@ -1,20 +1,27 @@
 class SearchesController < ApplicationController
-  before_action :set_search, only: [:show, :edit, :update, :destroy]
+  # before_action :set_search, only: [:show, :edit, :update, :destroy]
+  # before_action :set_search_results, only: [:search]
 
   # GET /searches
   # GET /searches.json
-  def index
-    @searches = Search.all
+  def set_search_results
+     @searchResults = CacheQuery.find_by_sql("select * from domain_caches where name like '%dot%';")
+     # render json: CacheQuery.find_by_sql("select * from domain_caches where name like '%#{search_params}%';")
+    # @searchResults = CacheQuery.find_by_sql(" select * from domain_caches where name like '%#{params[:userQuery]}%';")
   end
 
+  def search
+    @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%weed%';")
+    render json: @searchResults
+  end
   # GET /searches/1
   # GET /searches/1.json
-  def show
-  end
+  # def show
+  # end
 
   # GET /searches/new
   def new
-    @search = Search.new
+    # @search = Search.new
   end
 
   # GET /searches/1/edit
@@ -63,12 +70,13 @@ class SearchesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_search
-      @search = Search.find(params[:id])
-    end
+    # def set_search
+    #   @search = Search.find(params[:id])
+    # end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def search_params
-      params.require(:search).permit(:userQuery)
+      params.require(:userQuery)
+      # params.require(:search).permit(:userQuery)
     end
 end

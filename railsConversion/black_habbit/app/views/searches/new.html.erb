@@ -33,13 +33,14 @@
       
     </div>
     <a class="nunLogo" href="#"><%= image_tag "nun.png",  id: "nunLogo"%></a>
-
-    <form class="navbar-form" id="primaryInput" role="search">
+    <%= form_tag("/search", method: "get", class: "navbar-form", id:"primaryInput",role: "Search") do %>
       <div class="form-group">
-        <input type="text" id="blackHabbitPrimarySearch" class="form-control" placeholder="Search">
+        <%= text_field_tag("blackHabbitPrimarySearch","Search", {:class => "form-control",placeholder:"Search"}) %>
       </div>
-      <button id="blackHabitSearchButton"type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-    </form>
+      <%= button_tag(type: 'submit',id: "blackHabitSearchButton", class: "btn btn-default") do %>
+        <% content_tag(:i, '', class: "fa fa-search") %>
+      <% end %>
+    <% end %>
   </div>
 </div>
 
