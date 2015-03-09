@@ -93,8 +93,8 @@
              
              <i class="fa fa-caret-down"></i>
           </li>
-          <li class="metaRow">
-             <p class="resultExpiration">Expires In:</p><a href="">{{ result.expires_in }}</a><p class="createdDate"> Created 1/22/14</p>
+          <li class="metaRow">                                                                                      <!-- need to make this an actual var. -->
+             <p class="resultExpiration">Expires In:</p><a href="">{{ result.expires_in }} Blocks</a><p class="resultDayttl">Roughly {{ (result.expires_in/currentBlockRate)/24 | number: 2 }} days</p><p class="createdDate"> <!-- {{result.created}} -->Created 1/22/14</p>
           </li>
           <li>
             <p class="json">Record:</p>
@@ -109,7 +109,8 @@
             <a href=""><p class="visitsToday">Visits Today:</p></a>225
           </li>
           <li>
-            <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+            <a href=""><p class="status">Status:<i class="fa fa-star" ng-repeat="i in starList(4) track by $index"></i><i class="fa fa-star-half"></i></p></a>
+            <!-- <a href=""><p class="status">Status:<i class="fa fa-star" ng-repeat="i in starList(result.starRating)"></i><i class="fa fa-star-half"></i></p></a> -->
           </li>
         </ul>
       </div>

@@ -1,6 +1,6 @@
 class SearchesController < ApplicationController
   # before_action :set_search, only: [:show, :edit, :update, :destroy]
-  before_action :set_search, only: [:search]
+  # before_action :set_search_results, only: [:search]
 
   def set_search_results
      # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
@@ -9,11 +9,36 @@ class SearchesController < ApplicationController
   end
 
   def search
+    @searchResults=[]
     # @searchResults = Cachequery.standardSearch
     # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%weed%';")
-    render json: @searchResults
+      limit= params[:limit] || 100 
+      histnum= params[:histnum] || 10
+      resultsWithHistories= {}
+      if params[:blackHabbitPrimarySearch] == nil then
+        @searchResults = 'No Search Requested'
+        return
+      else
+        # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
+        # d = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 1000;")
+        initial_Ten_Results = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
+        # @searchResults = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
+        initial_Ten_Results.each do |h|
+        # @searchResults[0..histnum].each do |h|
+          # puts h.histories
+          puts h.to_json(:include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}})
+          # all_histories={}
+          #   h.histories.each do |o|
+          #   all_histories[:address]=o[:address]
+          #   all_histories[:domain_cache_id]=o[:domain_cache_id]
+          #   all_histories[:transactionId]=o[:transactionId]
+          #   puts @searchResults.push(all_histories)
+          # end
+          # puts @searchResults.push(all_histories)
+      end 
+    end
+      render json: @searchResults
   end
-
 
   # GET /searches/new
   def index
@@ -68,20 +93,35 @@ class SearchesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_search
+
+
+    def set_search_results #returns 100 results with the first 10 restults histories appended to the end of the JSON package.
+      limit= params[:limit] || 100 
+      histnum= params[:histnum] || 10
+
       if params[:blackHabbitPrimarySearch] == nil then
         @searchResults = 'No Search Requested'
         return
       else
         # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
-        @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 100;")
-      # @search = Search.find(params[:blackHabbitPrimarySearch])
+        # d = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 1000;")
+        @searchResults = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{limit};")
+       
+        @searchResults[0..histnum].each do |h|
+          all_histories={}
+          h.histories.each do |o|
+            all_histories[:address]=o[:address]
+            all_histories[:domain_cache_id]=o[:domain_cache_id]
+            all_histories[:transactionId]=o[:transactionId]
+            puts @searchResults.push(all_histories)
+          end
+          # puts @searchResults.push(all_histories)
+        end 
+
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    # def search_params
-    #   params.require(:userQuery)
-    #   # params.require(:search).permit(:userQuery)
-    # end
+    def search_params
+      params.require(:blackHabbitPrimarySearch).permit(:histnum,:limit)
+    end
 end

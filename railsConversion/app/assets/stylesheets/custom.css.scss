@@ -1,13 +1,20 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+
+.jumbotron p.resultDayttl{
+  display: inline;
+  color: #8a8a8a;
+  font-size: 10px;
+  font-style: italic;
+  margin-left:2px;
+}
+
 li{
   list-style-type: none;
 
 }
 .navbar-brand{
-
-
-
 
 
 }
@@ -102,7 +109,7 @@ a:hover{
 }
 p.createdDate{
   color:rgb(128, 128, 128);
-  display: inline;
+  display: block;
   font-size: 11px;
 }
 .descriptionContent li{
