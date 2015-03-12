@@ -17,9 +17,13 @@ li{
   list-style-type: none;
 }
 
-
-
-
+.navbar-nav>li>.dropdown-menu{
+  top: 30px;
+  right: 30px;
+}
+.navbar-nav>li>a:hover{
+  text-decoration: underline;
+}
 
 .subResult{
   background-color: $blackHabbitBackground;
@@ -33,7 +37,9 @@ li{
 
   }
 }
-
+.active{
+    background-color: #D7D7D7;
+}
 
 .blackHabbitTools{
   padding: 10px 10px 10px  10px;
@@ -42,7 +48,8 @@ li{
   float: right;
   margin-right: 1%;
   
-
+  .selContent{
+  }
 
   .json{
     font-size: 10px;
@@ -53,14 +60,87 @@ li{
     margin-bottom: 0px;
     color: rgb(128, 128, 128);
   }
-  .selContent{
-    
-    
+  .selContent{   
+  }
+  .mostRelThumbnail{
+    height:150px;
+    width:25%;
+    margin-bottom: 10px;
+  }
+
+  hr{
+
+    border-top: 1px solid #000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #historyTitle{
+    margin-bottom: 0px;
+    color: rgb(128, 128, 128);
+  }
+  .superResultDescription{
+    float: left;
+    width:100%;
+    p.resultName{
+      font-size:23px;
+    }
+  }
+  #snapShot{
+    color: rgb(138, 138, 138);
+    font-size: 10px;
+  }
+
+  .createdDate{
+    color:rgb(128, 128, 128);
+    display: block;
+    font-size: 11px;
+  }
+  .resultExpiration{
+    display:inline;
   }
 
 
 
 }
+
+
+.navbar-default{
+  border-color:white;
+  height: 100px;
+  background: url(../images/overlay-dots.png) repeat;
+  
+  #blackHabbitSettings{
+
+    .dropdown-toggle {
+      background-color:rgba(85, 85, 85, 0);
+      color: black;
+
+    }
+    .suggestionSettings{
+      padding-top: 0px;
+      color:rgb(128, 128, 128);
+    }
+    #settingsCog{
+      color:black;
+      height: 50px;
+    }
+  }
+  .submitSearch{
+    background-color:black;
+    border-radius: 0px;
+    margin-top: 23px;
+
+  }
+
+  a#Username{
+    color:black;
+    font-size: 16px;
+    padding-top: 19px;
+  }
+}
+
+
 
 
 .subResult{
@@ -99,42 +179,26 @@ li{
     display: inline;
     margin: 0 0 0 0;
   }
+  .resultDescription{
+    float: right;
+    width: 68%;
+  }
+  .descriptionContent{
+    float: left;
+    width:100%;
+  }
+  a:hover{
+    color: black;
+  }
+
+  .descriptionContent li{
+    margin-top: 2px;
+  }
+
 }
-
-
-
-
-
 #nunLogo{
 
   height: 100px;
-
-}
-
-
-
-.navbar-default{
-  border-color:white;
-  height: 100px;
-  background: url(../images/overlay-dots.png) repeat;
-}
-
-
-
-.fa-search{
-  color:white;
-}
-
-
-
-.fa-search:hover{
-  color:black;
-}
-
-.btn-default{
-  background-color:black;
-  border-radius: 0px;
-  margin-top: 23px;
 
 }
 .form-control#blackHabbitSearch{
@@ -142,119 +206,14 @@ li{
   width: 600px;
   margin-top: 23px;
 }
-#settingsCog{
-  color:black;
-  height: 50px;
-}
-#blackHabbitSettings{
 
-  .dropdown-toggle {
-    background-color:rgba(85, 85, 85, 0);
-    color: black;
 
-  }
-  .suggestionSettings{
-    padding-top: 0px;
-    color:rgb(128, 128, 128);
-  }
+.blackHabitSort{
+  
+  margin-bottom:20px;
+
 }
-a#Username{
-  color:black;
-  font-size: 16px;
-  padding-top: 19px;
-}
-.navbar-nav>li>a:hover{
-  text-decoration: underline;
-}
+
 .jumboResults{
   margin-left: 120px;
-}
-.mostRelThumbnail{
-  height:150px;
-  width:25%;
-  margin-bottom: 10px;
-}
-p{
-
-
-  .createdDate{
-    color:rgb(128, 128, 128);
-    display: block;
-    font-size: 11px;
-  }
-
-
-
-}
-.resultDescription{
-  float: right;
-  width: 68%;
-}
-.descriptionContent{
-  float: left;
-}
-a:hover{
-  color: black;
-}
-
-.descriptionContent li{
-  margin-top: 2px;
-}
-
-.navbar-nav>li>.dropdown-menu{
-  top: 30px;
-  right: 30px;
-}
-
-.nextResultDescription li{
-
-  margin-top: 0px;
-}
-.nextResultDescription li.metRow{
-  margin-top: 0px;
-}
-
-hr{
-
-  border-top: 1px solid #000;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-#historyTitle{
-  margin-bottom: 0px;
-  color: rgb(128, 128, 128);
-}
-.superResultDescription{
-  float: left;
-}
-#snapShot{
-  color: rgb(138, 138, 138);
-  font-size: 10px;
-}
-
-
-
-
-#primaryInput{
-  display: inline;
-  width: 700px;
-  margin-top: 20%;
-
-}
-#blackHabbitPrimarySearch{
-  border-radius: 0px;
-  width: 600px;
-  margin-top: 5px;
-}
-
-
-
-
-
-
-
-
-.active{
-    background-color: #D7D7D7;
 }
