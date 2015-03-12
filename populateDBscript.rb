@@ -41,7 +41,7 @@ end
 begin
   while doneIndicator >= 100
 
-    h = NamecoinRPC.new('http://user:test@localhost:8334')
+    h = NamecoinRPC.new('http://user:test@127.0.0.1:8337')
     # pry 
     response = h.name_scan lastEntry,100
     doneIndicator = response.count
@@ -77,7 +77,5 @@ begin
                       # select * from cache1 where name like '%dot%'; just cute basic search.
     counter+=1
   end
-  rescue Interrupt => e
-    puts "Last Entry :::::::" + lastEntry
 end
 

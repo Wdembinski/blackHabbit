@@ -31,7 +31,16 @@
     </div><!-- collapse -->
   </div><!-- fluid -->
 </nav>
- <div class="blackHabbitTools jumbotron">
+     <!-- ==================================================================================================================================================== -->
+     <!-- ==================================================================================================================================================== -->
+     <!-- =====================================|+-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_       _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-+|==================================== -->
+     <!-- =====================================|+______________________________.......__________________________________+|==================================== -->
+     <!-- =====================================|+______________________________TESTING__________________________________+|==================================== -->
+     <!-- =====================================|+-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_       _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-+|==================================== -->
+     <!-- ==================================================================================================================================================== -->
+     <!-- ==================================================================================================================================================== -->
+     <!-- ==================================================================================================================================================== -->
+   <div class="blackHabbitTools">
     <ul class="nav navbar-nav navbar-right ">
      <li class="dropdown">
         <a href="#" id="blackHabbitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
@@ -49,16 +58,19 @@
       <div class="superResultDescription">
         <ul class="descriptionContent">
           <li>
-             <a href=""><p class="resultName">d/dubstep</p></a>
+             <a href=""><p class="resultName">{{resultInFocus.name}}</p></a>
           </li>
           <li>
-             <p class="resultExpiration">Expires In:</p><a href="">14292</a><p class="createdDate"> Created 1/22/14</p>
+             <p class="resultExpiration">Expires In:</p><a href="">{{resultInFocus.expires_in}}</a><p class="createdDate"> Created 1/22/14</p>
           </li>
           <li>
-            <p class="json">Record:</p>
+            <p class="json">Value:</p>
              <p class="json">
-             {"name" : "d/dubstep","value" : "{\"bitmessage\":\"BM-2cUyrUNq91XqdPSKvcHSytuED9nnTazf5r\"}",
-              "expires_in" : 14292}
+             {{resultInFocus.value}}
+            </p>
+            <p class="json">Expires In:</p>
+             <p class="json">
+             {{resultInFocus.expires_in}}
             </p>
           </li>
           <li>
@@ -69,14 +81,14 @@
           </li>
           <hr>
           <li>
-            <p id="snapShotTitle">Snapshot:</p>
+            <p class="selDescription">Description:</p>
+            <p class="selContent">{{resultInFocus.desc}}</p>
+          <hr>
 
-            <p id="snapShot"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor<br> <br>in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur.  in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur...</p>
+            <p class="snapShot" ng-repeat="history in historiesInFocus">
+            {{history}}
+
+            </p>
           </li>
         </ul>
       </div>
@@ -84,8 +96,8 @@
 
   <div class="jumboResults">
     Search: <input ng-model="query">
-    <div ng-repeat="result in results | filter:query" class="jumbotron subResult">
-
+    <div ng-repeat="result in results | filter:query" selectable="setActiveItem(result.id)"  regID="{{result.id}}" class="subResult">
+    <!-- <div selectable="setActiveItem(result.id)" ng-show="activeItem == result.id" ng-repeat="result in results | filter:query" class="jumbotron subResult-{{result.id}}"> -->
       <div class="nextResultDescription">
         <ul class="nextdescriptionContent">
           <li>
@@ -94,14 +106,18 @@
              <i class="fa fa-caret-down"></i>
           </li>
           <li class="metaRow">                                                                                      <!-- need to make this an actual var. -->
-             <p class="resultExpiration">Expires In:</p><a href="">{{ result.expires_in }} Blocks</a><p class="resultDayttl">Roughly {{ (result.expires_in/currentBlockRate)/24 | number: 2 }} days</p><p class="createdDate"> <!-- {{result.created}} -->Created 1/22/14</p>
+             <p class="resultExpiration">Expires In: </p>
+             <a href="">{{ result.expires_in }} Blocks</a>
+             <p class="resultDayttl">{{expiresIn(result.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
+             <p class="createdDate"><!-- {{result.created}} -->Created 1/22/14</p>
           </li>
           <li>
             <p class="json">Record:</p>
              <p class="json">
-             {{result}}
+              {{result.name}}
+              {{result.value}}
+              {{result.expires_in}}
             </p>
-            <a href="">  <i class="fa fa-question"></i></a>
           </li>
         </ul>
         <ul class="nextResultMetaData">

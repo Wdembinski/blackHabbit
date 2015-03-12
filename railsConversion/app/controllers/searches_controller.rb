@@ -10,39 +10,27 @@ class SearchesController < ApplicationController
 
   def search
     @searchResults=[]
-    # @searchResults = Cachequery.standardSearch
-    # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%weed%';")
-      limit= params[:limit] || 100 
-      histnum= params[:histnum] || 10
-      resultsWithHistories= {}
-      if params[:blackHabbitPrimarySearch] == nil then
-        @searchResults = 'No Search Requested'
-        return
-      else
-        # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
-        # d = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 1000;")
-        initial_Ten_Results = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
-        # @searchResults = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
-        initial_Ten_Results.each do |h|
-        # @searchResults[0..histnum].each do |h|
-          # puts h.histories
-          puts h.to_json(:include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}})
-          # all_histories={}
-          #   h.histories.each do |o|
-          #   all_histories[:address]=o[:address]
-          #   all_histories[:domain_cache_id]=o[:domain_cache_id]
-          #   all_histories[:transactionId]=o[:transactionId]
-          #   puts @searchResults.push(all_histories)
-          # end
-          # puts @searchResults.push(all_histories)
-      end 
+    # limit= params[:limit] || 100 
+    histnum= params[:histnum] || 100
+    resultsWithHistories= {}
+    if params[:blackHabbitPrimarySearch] == nil then
+      @searchResults = 'No Search Requested'
+      return
+    else
+      # initial_Ten_Results = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
+      @searchResults = DomainCache.includes(:histories).where('name like?',"%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)  #SUPER DANGEROUS!!!!!
     end
-      render json: @searchResults
+    render json: @searchResults, :include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}}
+
+
   end
 
-  # GET /searches/new
   def index
   end
+
+
+
+
   def new
     # @search = Search.new
   end
@@ -95,7 +83,8 @@ class SearchesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
 
 
-    def set_search_results #returns 100 results with the first 10 restults histories appended to the end of the JSON package.
+    def set_search_results #returns 100 results with the first 10 results including their histories.
+
       limit= params[:limit] || 100 
       histnum= params[:histnum] || 10
 
@@ -113,9 +102,9 @@ class SearchesController < ApplicationController
             all_histories[:address]=o[:address]
             all_histories[:domain_cache_id]=o[:domain_cache_id]
             all_histories[:transactionId]=o[:transactionId]
-            puts @searchResults.push(all_histories)
+            @searchResults.push(all_histories)
           end
-          # puts @searchResults.push(all_histories)
+          puts @searchResults
         end 
 
       end
