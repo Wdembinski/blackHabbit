@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  domain_cache_id: 1
+  ipAddress: MyString
+
+two:
+  domain_cache_id: 1
+  ipAddress: MyString

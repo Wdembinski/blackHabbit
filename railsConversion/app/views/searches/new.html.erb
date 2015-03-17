@@ -1,11 +1,10 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default bhnav">
   <div class="container-fluid">
-
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
         <span class="sr-only">Toggle navigation</span>
       </button>
-      <a class="nunLogo" href="#"><%= image_tag "nun.png", id: "nunLogo" %></a>
+      <a id="logo" href="#">Black Ha.bit</a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -17,7 +16,7 @@
         <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" id="Username">William Dembinski</a></li>
+        <li><a href="#" id="Username">{{user.name}}</a></li>
         <li class="dropdown">
           <a href="#" id="blackHabbitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-cog fa-2x"></i></a>
           <ul class="dropdown-menu" role="menu">
@@ -30,6 +29,21 @@
     </div><!-- collapse -->
   </div><!-- fluid -->
 </nav>
+
+
+  <div class="test" ng-class="{foo:boolChangeClass}">
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#" id="Username">{{user.name}}</a></li> <!-- USER.NAME -->
+      <li class="dropdown">
+        <a href="#" id="blackHabbitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog fa-2x"></i></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
     
    <div class="blackHabbitTools">
     <ul class="nav navbar-nav navbar-right ">
@@ -108,7 +122,7 @@
     Search: <input class="blackHabitSort" ng-model="query">
     <div ng-repeat="result in results | filter:query" selectable="setActiveItem(result.id)"  regID="{{result.id}}" class="subResult">
     <!-- <div selectable="setActiveItem(result.id)" ng-show="activeItem == result.id" ng-repeat="result in results | filter:query" class="jumbotron subResult-{{result.id}}"> -->
-      <div class="nextResultDescription">
+      <div class="resultDescription">
         <ul class="nextdescriptionContent">
           <li>
              <a href=""><p class="resultName">{{ result.name }}</p></a>

@@ -6,7 +6,7 @@ $blackHabbit-font:white;
 $blackHabbitBackground:#eeeeee;
 $blackHabbit-stuff:white;
 
-ul{
+ul, a{
   
   padding:0 0 0 0;
 
@@ -20,6 +20,7 @@ li{
 .navbar-nav>li>.dropdown-menu{
   top: 30px;
   right: 30px;
+  border: 4px solid #111C24;
 }
 .navbar-nav>li>a:hover{
   text-decoration: underline;
@@ -27,7 +28,7 @@ li{
 
 .subResult{
   background-color: $blackHabbitBackground;
-  padding: 10px 10px 10px 10px ;
+  padding: 4px 4px 4px 4px ;
 
 
   p.resultExpiration {
@@ -37,22 +38,99 @@ li{
 
   }
 }
-.active{
-    background-color: #D7D7D7;
+
+
+.bhnav{
+  background-color:rgb(47, 65, 84);
+  color:white;
+  z-index:1;  
+  height: 58px;
+  border-radius:0px;
+  border-width:0 0 0 0;
+  a#logo{
+    font-weight: bold;
+    color: white !important;
+    font-size: 33px;
+  }
+  #blackHabbitSettings{
+
+    .dropdown-toggle {
+      background-color:rgba(85, 85, 85, 0);
+      color: black;
+
+    }
+    .suggestionSettings{
+      padding-top: 0px;
+      color:rgb(128, 128, 128);
+    }
+    #settingsCog{
+      color:white;
+      height: 50px;
+    }
+  }
+  .submitSearch{
+    background-color:white;
+    border-radius: 0px;
+    color:black;
+    border:1px solid #111C24;
+    transition-delay: 0s;
+    transition-duration: 0.25s;
+    transition-property: all;
+    transition-timing-function: ease;
+    &:hover {
+      color:white;
+      background-color:black;
+      border:1px solid black;
+
+    }
+
+  }
+
+  a#Username{
+    color:white;
+    font-size: 16px;
+    font-weight:bold;
+  }
 }
 
+
+
+
+
+
+
+.active{
+    background-color: white;
+    border: 4px solid #111C24 !important;
+    border-radius: 3px;
+}
+
+
+
+
+.habbitTools-scroll{
+    position:fixed;
+}
+
+
+
 .blackHabbitTools{
-  padding: 10px 10px 10px  10px;
+  z-index:0;
+  position:fixed;
+  right:20px;
+  border-radius: 2px;
+  border:4px solid #111C24;
+  padding: 4px 4px 4px  4px;
   width: 33%;
   background-color:$blackHabbitBackground;
   float: right;
   margin-right: 1%;
-  
+
   .selContent{
   }
 
   .json{
-    font-size: 10px;
+    font-size: 4px;
     color: rgb(138, 138, 138);
     display: inline;
   }
@@ -65,14 +143,16 @@ li{
   .mostRelThumbnail{
     height:150px;
     width:25%;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
   }
+
+
 
   hr{
 
     border-top: 1px solid #000;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
   #historyTitle{
@@ -88,7 +168,7 @@ li{
   }
   #snapShot{
     color: rgb(138, 138, 138);
-    font-size: 10px;
+    font-size: 4px;
   }
 
   .createdDate{
@@ -105,48 +185,16 @@ li{
 }
 
 
-.navbar-default{
-  border-color:white;
-  height: 100px;
-  background: url(../images/overlay-dots.png) repeat;
-  
-  #blackHabbitSettings{
-
-    .dropdown-toggle {
-      background-color:rgba(85, 85, 85, 0);
-      color: black;
-
-    }
-    .suggestionSettings{
-      padding-top: 0px;
-      color:rgb(128, 128, 128);
-    }
-    #settingsCog{
-      color:black;
-      height: 50px;
-    }
-  }
-  .submitSearch{
-    background-color:black;
-    border-radius: 0px;
-    margin-top: 23px;
-
-  }
-
-  a#Username{
-    color:black;
-    font-size: 16px;
-    padding-top: 19px;
-  }
-}
-
-
-
 
 .subResult{
-  padding:10px 10px 10px 10px;
+  border: 2px solid white;
+  padding:4px 4px 4px 4px;
   max-width: 55%;
-  margin-bottom:10px;
+  margin-bottom:4px;
+  transition-delay: 0s;
+  transition-duration: 0.08s;
+  transition-property: all;
+  transition-timing-function: ease;
   h1{
 
     font-size: 18px;
@@ -157,7 +205,7 @@ li{
   p.resultDayttl{
     display: inline;
     color: #8a8a8a;
-    font-size: 10px;
+    font-size: 4px;
     font-style: italic;
     margin-left:2px;
   }
@@ -169,24 +217,17 @@ li{
 
 
   p.visitsToday{
-    font-size: 10px;
+    font-size: 4px;
     color: rgb(138, 138, 138);
     display: inline;
   }
   p.status{
-    font-size: 10px;
+    font-size: 4px;
     color: rgb(138, 138, 138);
     display: inline;
     margin: 0 0 0 0;
   }
-  .resultDescription{
-    float: right;
-    width: 68%;
-  }
-  .descriptionContent{
-    float: left;
-    width:100%;
-  }
+
   a:hover{
     color: black;
   }
@@ -196,17 +237,22 @@ li{
   }
 
 }
-#nunLogo{
 
-  height: 100px;
 
-}
+
+
+
 .form-control#blackHabbitSearch{
   border-radius: 0px;
   width: 600px;
-  margin-top: 23px;
+  font-weight:bold;
 }
+.form-control:focus{
+  border: 0px solid #DDD;
 
+
+
+}
 
 .blackHabitSort{
   
@@ -216,4 +262,90 @@ li{
 
 .jumboResults{
   margin-left: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.test{
+  visibility:hidden;
+  border-radius: 2px;
+  position: fixed;
+  right: 20px;
+  padding: 4px 4px 4px 4px;
+  width: 33%;
+  background-color: #eeeeee;
+  margin-right: 1%;
+  top:65px;
+  height:0px;
+  transition-delay: 0s;
+  transition-duration: 0.10s;
+  transition-property: all;
+  transition-timing-function: ease;
+  padding:0 0 0 0;
+  .navbar-nav > li > .dropdown-menu {
+    top: 26px;
+    right: -16px;
+  }
+  #blackHabbitSettings{
+    padding:0 0 0 0;
+  }
+  #Username{
+    padding:0 0 0 0;
+    color:white;
+  }
+  .navbar-nav.navbar-right:last-child{
+
+    margin: 0 0 0 0;
+  }
+  li{
+
+    margin-right:4px;
+
+  }
+
+  .nav > li > a:hover{
+    background-color:transparent;
+  }
+
+
+}
+
+
+.fa-2x {
+  margin-top:-3px;
+  transition-duration: 0.0s;
+  color:black;  
+
+}
+
+.foo{
+  visibility:visible;
+  border: 4px solid #111C24;
+  padding: 5px 2px 25px 2px;
 }

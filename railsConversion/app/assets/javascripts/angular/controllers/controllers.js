@@ -29,6 +29,14 @@ black_Habit.controller('resultCtrl', ['$scope', '$http',function($scope, $http) 
     $scope.orderProp = 'name';  // Need to make the ordering/sorting tools ALSO need to work on gettin some security for sql stuff worked out
     $scope.currentBlockRate =4; // Debating whether or not to just have this make an api call to that exchange site or just use erb orrrr include it in every search?
     $scope.resultStarStatus =4; // Need to tie this to something in the db soon
+
+
+    $scope.user={name:"William Dembinski"}
+
+
+
+
+    
     
     $scope.expiresIn = function(num){  // This could be in a better spot I think.
     	timeRemaining = num/$scope.currentBlockRate/24;
@@ -64,4 +72,21 @@ black_Habit.directive('selectable', function () {
             });
         }
     }
+});
+
+
+
+
+
+black_Habit.directive("scroll", function ($window) {
+    return function(scope, element, attrs) {
+        angular.element($window).bind("scroll", function() {
+             if (this.pageYOffset >= 100) {
+                 scope.boolChangeClass = true;
+             } else {
+                 scope.boolChangeClass = false;
+             }
+            scope.$apply();
+        });
+    };
 });

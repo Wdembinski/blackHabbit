@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306043545) do
+ActiveRecord::Schema.define(version: 20150314061915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,9 +34,16 @@ ActiveRecord::Schema.define(version: 20150306043545) do
   create_table "histories", force: :cascade do |t|
     t.text     "transactionId"
     t.text     "address"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.integer  "domain_cach_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "domain_cache_id"
+  end
+
+  create_table "possible_addresses", force: :cascade do |t|
+    t.integer  "domain_cache_id"
+    t.string   "ipAddress"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "searches", force: :cascade do |t|
@@ -46,5 +53,5 @@ ActiveRecord::Schema.define(version: 20150306043545) do
   end
 
   add_foreign_key "abnormal_names", "domain_caches", column: "domain_cache_id"
-  add_foreign_key "histories", "domain_caches"
+  add_foreign_key "histories", "domain_caches", column: "domain_cache_id"
 end

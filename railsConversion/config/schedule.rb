@@ -25,8 +25,8 @@ every 24.hours do
   runner "AbnormalName.delete_all"
   runner "AbnormalName.resetIdSeq"
 
-  runner "Cachequery.delete_all"
-  runner "Cachequery.resetIdSeq"
+  runner "DomainCache.delete_all"
+  runner "DomainCache.resetIdSeq"
 
 
 

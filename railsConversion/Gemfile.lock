@@ -56,6 +56,7 @@ GEM
       execjs
     coffee-script-source (1.9.0)
     columnize (0.9.0)
+    curb (0.8.6)
     debug_inspector (0.0.2)
     debugger-linecache (1.2.0)
     erubis (2.7.0)
@@ -174,6 +175,7 @@ DEPENDENCIES
   bootstrap-sass (= 3.2.0.0)
   byebug
   coffee-rails (~> 4.1.0)
+  curb
   font-awesome-rails
   httparty
   jbuilder (~> 2.0)
