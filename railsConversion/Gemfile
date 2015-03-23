@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
-
+gem 'public_suffix'
+gem 'ipaddress'
+gem 'json-schema'
+gem 'nokogiri'
 gem 'curb'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -50,4 +53,3 @@ group :development, :test do
 
   gem "font-awesome-rails"
 end
-

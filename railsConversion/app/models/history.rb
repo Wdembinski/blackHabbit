@@ -11,13 +11,15 @@ class History < ActiveRecord::Base
 	end
 
 	def self.updateHistories	
-		DomainCache.find_in_batches do |cache|
+		NmcChainLink.find_in_batches do |batch|
+		# DomainCache.find_in_batches do |cache|
 			h = NamecoinRPC.new('http://user:test@127.0.0.1:8337')
-			cache.each do |e|
+			batch.each do |e|
 				begin
-					name=e.name.gsub("'","")
+
+					name=e["link"]["name"].gsub("'","") #This is weird now! make sure you look at what the hash structure is like.  Its way different
 					cacheHistory=h.name_history(name)
-					id=e.id
+					id=e["id"]
 					cacheHistory.each do |h|
 						History.new do |o|
 							o.transactionId=h["txid"]

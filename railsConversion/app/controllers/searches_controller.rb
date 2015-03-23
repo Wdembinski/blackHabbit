@@ -17,12 +17,12 @@ class SearchesController < ApplicationController
       @searchResults = 'No Search Requested'
       return
     else
-      # initial_Ten_Results = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{histnum};")
-      @searchResults = DomainCache.includes(:histories).where('name like?',"%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)  #SUPER DANGEROUS!!!!!
+      @searchResults = NmcChainLink.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(100)
+      # @searchResults = DomainCache.includes(:histories).where('name like?',"%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)  #SUPER DANGEROUS!!!!!
     end
-    render json: @searchResults, :include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}}
-
-
+    render json: @searchResults
+    # render json: @searchResults
+    # render json: @searchResults, :include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}}
   end
 
   def index

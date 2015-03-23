@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150314061915) do
+ActiveRecord::Schema.define(version: 20150322194334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "abnormal_json", force: :cascade do |t|
+    t.integer  "nmc_chain_link_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "abnormal_names", force: :cascade do |t|
     t.integer  "domain_cache_id"
@@ -39,9 +45,27 @@ ActiveRecord::Schema.define(version: 20150314061915) do
     t.integer  "domain_cache_id"
   end
 
+  create_table "json_histories", force: :cascade do |t|
+    t.jsonb    "history",           default: {}, null: false
+    t.integer  "nmc_chain_link_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "json_histories", ["history"], name: "index_json_histories_on_history", using: :gin
+
+  create_table "nmc_chain_links", force: :cascade do |t|
+    t.jsonb    "link",       default: {}, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "nmc_chain_links", ["link"], name: "index_nmc_chain_links_on_link", using: :gin
+
   create_table "possible_addresses", force: :cascade do |t|
     t.integer  "domain_cache_id"
-    t.string   "ipAddress"
+    t.string   "address"
+    t.text     "links"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
@@ -52,6 +76,8 @@ ActiveRecord::Schema.define(version: 20150314061915) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "abnormal_json", "nmc_chain_links"
   add_foreign_key "abnormal_names", "domain_caches", column: "domain_cache_id"
   add_foreign_key "histories", "domain_caches", column: "domain_cache_id"
+  add_foreign_key "json_histories", "nmc_chain_links"
 end

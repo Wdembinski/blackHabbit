@@ -120,27 +120,27 @@
 
   <div class="jumboResults">
     Search: <input class="blackHabitSort" ng-model="query">
-    <div ng-repeat="result in results | filter:query" selectable="setActiveItem(result.id)"  regID="{{result.id}}" class="subResult">
-    <!-- <div selectable="setActiveItem(result.id)" ng-show="activeItem == result.id" ng-repeat="result in results | filter:query" class="jumbotron subResult-{{result.id}}"> -->
+    <div ng-repeat="result in results | filter:query" selectable="setActiveItem(result.link.id)"  regID="{{result.link.id}}" class="subResult">
+    <!-- <div selectable="setActiveItem(result.link.id)" ng-show="activeItem == result.link.id" ng-repeat="result in results | filter:query" class="jumbotron subResult-{{result.link.id}}"> -->
       <div class="resultDescription">
         <ul class="nextdescriptionContent">
           <li>
-             <a href=""><p class="resultName">{{ result.name }}</p></a>
+             <a href=""><p class="resultName">{{ result.link.name }}</p></a>
              
              <i class="fa fa-caret-down"></i>
           </li>
           <li class="metaRow">                                                                                      <!-- need to make this an actual var. -->
              <p class="resultExpiration">Expires In: </p>
-             <a href="">{{ result.expires_in }} Blocks</a>
-             <p class="resultDayttl">{{expiresIn(result.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
-             <p class="createdDate"><!-- {{result.created}} -->Created 1/22/14</p>
+             <a href="">{{ result.link.expires_in }} Blocks</a>
+             <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
+             <p class="createdDate"><!-- {{result.link.created}} -->Created 1/22/14</p>
           </li>
           <li>
             <p class="json">Record:</p>
              <p class="json">
-              {{result.name}}
-              {{result.value}}
-              {{result.expires_in}}
+              {{result.link.name}}<br>
+              {{result.link.value}}<br>
+              {{result.link.expires_in}}<br>
             </p>
           </li>
         </ul>
@@ -150,7 +150,7 @@
           </li>
           <li>
             <a href=""><p class="status">Status:<i class="fa fa-star" ng-repeat="i in starList(4) track by $index"></i><i class="fa fa-star-half"></i></p></a>
-            <!-- <a href=""><p class="status">Status:<i class="fa fa-star" ng-repeat="i in starList(result.starRating)"></i><i class="fa fa-star-half"></i></p></a> -->
+            <!-- <a href=""><p class="status">Status:<i class="fa fa-star" ng-repeat="i in starList(result.link.starRating)"></i><i class="fa fa-star-half"></i></p></a> -->
           </li>
         </ul>
       </div>

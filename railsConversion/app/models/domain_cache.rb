@@ -1,4 +1,7 @@
 class DomainCache < ActiveRecord::Base
+	require 'uri'
+	require 'ipaddr'
+	require 'set'
 	include Namecoin
 	include Crawl
 	has_many :histories
@@ -13,33 +16,129 @@ class DomainCache < ActiveRecord::Base
 		end
 	end
 
+
+	$addresses=Set.new
+
+	def self.findAll_addresses(iterableObject)
+		# puts iterableObject
+		iterableObject.each do |entry|
+			if entry.respond_to? :each
+				findAll_addresses(entry)
+			else validate_address(entry)
+				$addresses.add?(entry) unless entry.length <=5
+			end
+		end
+	end
+
+	def self.validate_address(string)
+		begin
+			# Jon-won fu
+			# ParseMe p[2] if p = /^(https?)?(.*)$/.match string
+
+			
+			if string.match(/(https?)/)
+				return true
+			elsif IPAddress.valid? string
+				return true
+			elsif PublicSuffix.parse(string)
+				return true
+			else
+				return false
+			end
+		rescue PublicSuffix::DomainInvalid
+			# puts "There was an error! #{e.class}:#{e.message}"
+			return false
+		end
+	end
+
+	def self.ping_address(string,bool=false) #return body of response if true
+		response=[]
+		begin
+			ping_Machine=Curl::Easy.new(string)
+			ping_Machine.connect_timeout=3
+			ping_Machine.on_success {response.push [true,  ping_Machine.response_code.to_s]}# 2xx
+			ping_Machine.on_redirect {response.push [true, ping_Machine.response_code.to_s]}#3xx
+			ping_Machine.on_missing {response.push [true,  ping_Machine.response_code.to_s]}#4xx
+			ping_Machine.on_failure {response.push [false, ping_Machine.response_code.to_s]}#5xx
+			ping_Machine.perform
+			if bool==true
+				response.push ping_Machine.body_str
+			end
+			return response.flatten
+	
+			# return response
+		end
+	end
+
+
+
+
+
 	def self.categorize
 			count=0
-		PossibleAddress.find_in_batches do |batch|
+		DomainCache.find_in_batches do |batch|
 			batch.each do |address|
-				target = address.ipAddress.gsub(/()|(,)|(\s){2}|(\")|\}/,"")
-				count+=1
-				if target.include?("ip\"")
-					o=target.gsub(/(:)|(ip[0-9A-Za-z":]?)|(\")|(\})|(\{)/,"")   #START CATEGORIZING!! probably going to factor this logic into a diff method.
-
-					begin
-						# puts "=====================================================#{o}"
-						pingMachine=Curl::Easy.new(o.gsub(/\s/,""))
-						pingMachine.connect_timeout=5
-						pingMachine.on_success {puts "=============================================THERE WAS CONTENT HERE!!!"}# 2xx
-						pingMachine.on_redirect {puts "REDIRCTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!"}#3xx
-						pingMachine.on_missing {puts "MISSING%%%%%%%%%%%%%%%%%%%%%%%%"}#4xx
-						pingMachine.on_failure {puts "FAILURE!!!!!!!!!!!!!!!!!"}#5xx
-						pingMachine.on_complete {puts "YERS"} #
-						pingMachine.perform
-						puts pingMachine.body_str
-					rescue => e
-						puts "There was an error! #{e.class}:#{e.message}"
+				garbage_characters=/(\s){2}/
+				begin
+					jsonContent = ActiveSupport::JSON.decode(address.value) #Checks if json - namecoin-y format is supposed to be json by convention.
+					jsonContent.each do |c| #Checks for possible addresses/url for the crawler.
+					  c.each do |x|
+					    if x.respond_to? :each
+					  		findAll_addresses(x) #global Set object. "$addresses"
+							unless $addresses.empty?
+								$addresses.each {|a|PossibleAddress.create(domain_cache_id: address.id,address:a)}
+								$addresses.clear
+							end
+					  	elsif validate_address(x)
+					  		 PossibleAddress.create(domain_cache_id: address.id,address:x)
+					  	else
+					  		puts x,"<=============================not valid"
+					  	end
+					  end
 					end
+				rescue => e
+					puts "THIS DOESNT LOOK LIKE JSON! #{e.class}:#{e.message}"
+					if validate_address 
+					end
+					count+=1
 				end
 			end
 		end
 	end
+
+
+
+
+	def self.investigate_addresses
+		PossibleAddress.find_in_batches do |batch|
+			batch.each do |address|
+				the_Ping_Machine=Curl::Easy.new(address.gsub(/\s/,""))
+				the_Ping_Machine.connect_timeout=5
+				# the_Ping_Machine.on_success {process_page_content(the_Ping_Machine.body_str)}# 2xx
+				# the_Ping_Machine.on_redirect {puts "REDIRCTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!"}#3xx
+				# the_Ping_Machine.on_missing {puts "MISSING%%%%%%%%%%%%%%%%%%%%%%%%"}#4xx
+				# the_Ping_Machine.on_failure {puts "FAILURE!!!!!!!!!!!!!!!!!"}#5xx
+				# the_Ping_Machine.on_complete {puts "YERS"} #
+				the_Ping_Machine.perform
+				puts the_Ping_Machine.body_str
+			end
+		end
+	end
+
+
+
+
+	def self.process_page_content(xml_page) #xml is like violence.
+		page = Nokogiri::HTML(xml_page)
+		links= page.css('a')
+		title = page.css('title')
+		body=page.css('body')
+		puts body.lines.count
+	end
+
+
+
+
 
 	def self.identifyURLorIPstuff
 		DomainCache.find_in_batches do |domain_list|
@@ -52,7 +151,7 @@ class DomainCache < ActiveRecord::Base
 						x=x.gsub("}","")
 						characterBlackList=/(\}|\{)|(\}\})|(\')/ #There is something crazy happening where it wont remove the "}" characters.  Thinking the 'end' of the gsub range is being confused quotes in the string?  "}}}" (x3) is the pattern
 						x=x.gsub(characterBlackList,"")
-						PossibleAddress.create(domain_cache_id: @domain_cache_id,ipAddress:x) #This isnt really a good name for this, its finding anything that could be used to pull content from the internet. URLs, IP, or anything.
+						PossibleAddress.create(domain_cache_id: @domain_cache_id,address:x) #This isnt really a good name for this, its finding anything that could be used to pull content from the internet. URLs, IP, or anything.
 						puts x
 					end
 				end
@@ -92,8 +191,7 @@ class DomainCache < ActiveRecord::Base
 			        	d.save
 			        	puts d.save ? "Domain Cache saved!" : "Domain Cache Failed to save!"
 			        end
-			    end
-		    counter+=1 		  # select * from cache1 where name like '%dot%'; just cute basic search.
+			    end		  # select * from cache1 where name like '%dot%'; just cute basic search.
 			end               #select * from cache1 where name = $$'!'$$; example query
 		end
 	end

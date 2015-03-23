@@ -1,9 +1,9 @@
-class CreatePossibleAddresses < ActiveRecord::Migration
+class FixPossibleAddresses < ActiveRecord::Migration
   def change
     create_table :possible_addresses do |t|
       t.integer :domain_cache_id
-      t.string :ipAddress
-
+      t.string :address
+      t.text :links
       t.timestamps null: false
     end
   end
