@@ -17,8 +17,8 @@ class DomainCache < ActiveRecord::Base
 	end
 
 
-	$addresses=Set.new
 
+	$addresses=Set.new
 	def self.findAll_addresses(iterableObject)
 		# puts iterableObject
 		iterableObject.each do |entry|
@@ -30,45 +30,8 @@ class DomainCache < ActiveRecord::Base
 		end
 	end
 
-	def self.validate_address(string)
-		begin
-			# Jon-won fu
-			# ParseMe p[2] if p = /^(https?)?(.*)$/.match string
 
-			
-			if string.match(/(https?)/)
-				return true
-			elsif IPAddress.valid? string
-				return true
-			elsif PublicSuffix.parse(string)
-				return true
-			else
-				return false
-			end
-		rescue PublicSuffix::DomainInvalid
-			# puts "There was an error! #{e.class}:#{e.message}"
-			return false
-		end
-	end
 
-	def self.ping_address(string,bool=false) #return body of response if true
-		response=[]
-		begin
-			ping_Machine=Curl::Easy.new(string)
-			ping_Machine.connect_timeout=3
-			ping_Machine.on_success {response.push [true,  ping_Machine.response_code.to_s]}# 2xx
-			ping_Machine.on_redirect {response.push [true, ping_Machine.response_code.to_s]}#3xx
-			ping_Machine.on_missing {response.push [true,  ping_Machine.response_code.to_s]}#4xx
-			ping_Machine.on_failure {response.push [false, ping_Machine.response_code.to_s]}#5xx
-			ping_Machine.perform
-			if bool==true
-				response.push ping_Machine.body_str
-			end
-			return response.flatten
-	
-			# return response
-		end
-	end
 
 
 
@@ -109,21 +72,7 @@ class DomainCache < ActiveRecord::Base
 
 
 
-	def self.investigate_addresses
-		PossibleAddress.find_in_batches do |batch|
-			batch.each do |address|
-				the_Ping_Machine=Curl::Easy.new(address.gsub(/\s/,""))
-				the_Ping_Machine.connect_timeout=5
-				# the_Ping_Machine.on_success {process_page_content(the_Ping_Machine.body_str)}# 2xx
-				# the_Ping_Machine.on_redirect {puts "REDIRCTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!"}#3xx
-				# the_Ping_Machine.on_missing {puts "MISSING%%%%%%%%%%%%%%%%%%%%%%%%"}#4xx
-				# the_Ping_Machine.on_failure {puts "FAILURE!!!!!!!!!!!!!!!!!"}#5xx
-				# the_Ping_Machine.on_complete {puts "YERS"} #
-				the_Ping_Machine.perform
-				puts the_Ping_Machine.body_str
-			end
-		end
-	end
+
 
 
 
