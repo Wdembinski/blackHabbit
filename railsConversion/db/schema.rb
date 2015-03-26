@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150324040934) do
+ActiveRecord::Schema.define(version: 20150325190137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,11 @@ ActiveRecord::Schema.define(version: 20150324040934) do
     t.text     "links"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.string   "type",              limit: 200
+    t.string   "regex_match",       limit: 200
+    t.boolean  "categorized"
   end
+
+  add_index "possible_addresses", ["address"], name: "index_possible_addresses_on_address", using: :btree
 
   add_foreign_key "abnormal_jsons", "nmc_chain_links"
   add_foreign_key "json_histories", "nmc_chain_links"

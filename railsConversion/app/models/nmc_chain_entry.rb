@@ -1,15 +1,17 @@
   include Namecoin
   include Crawl
   require 'json'
-class NmcChainLink < ActiveRecord::Base
+class NmcChainEntry < ActiveRecord::Base
   has_many :abnormal_jsons,dependent: :destroy
   has_many :json_histories,dependent: :destroy
+  has_many :possible_addresses,dependent: :destroy
   WHITE_LIST={
-    "ip_4_or_email" => /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/,
+    "ip_4" => /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/,
+
     "ip_6"=>/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
 
     # "url"=>/(?:")(https?:\/\/)?(\S+\.)\S+\.?+(?:")/
-    "url"=>/((https?:\/\/)?(\S+\.)\S+\.?+)/,
+    "url_or_email"=>/((https?:\/\/)?(\S+\.)\S+\.?+)/,
     # "one_name_protocol"=>// #They have a big a enough presence to go ahead and make a specific set of catch-rules for them.
   }
 
@@ -32,7 +34,7 @@ class NmcChainLink < ActiveRecord::Base
             end
             # puts singleResponse
             begin
-              NmcChainLink.create(link: singleResponse)
+              NmcChainEntry.create(link: singleResponse)
             # rescue => e
             #   puts e
             end
@@ -68,12 +70,13 @@ class NmcChainLink < ActiveRecord::Base
 
   def self.find_PossibleAddresses #returns ips/urls/emails from the nmc_chain_links very loosely. Even returns fragments of stuff.
     characterBlackList=/[\}\{\'\"]|[,]|(\.\z|\.$)/
-    NmcChainLink.find_in_batches do |json_batch|
+    NmcChainEntry.find_in_batches do |json_batch|
       json_batch.each do |json|
         next if json["link"]["value"].is_a? NilClass || json["link"]["value"].length==0
         list_of_matches=[]
-        if json["link"]["value"].to_s.gsub(/[\s\n]/,"").length > 4 #two quotes plus minum of two chars
+        if json["link"]["value"].to_s.gsub(/[\s\n]/,"").length > 4 #two quotes plus min of two chars
           WHITE_LIST.each do |key,regex|
+
             list_of_matches=flatten(json["link"]["value"].to_s.gsub('":"'," ").scan(regex),true)
             list_of_matches.each do |entry|
           	  next if entry.class==NilClass || entry==nil #are these the same?
@@ -84,7 +87,16 @@ class NmcChainLink < ActiveRecord::Base
       end
     end
   end
-
 end
+
+
+
+
+
+
+
+
+
+
 #############################  select * from nmc_chain_links jsonb_to_recordset(x) where link->>'value' like '%"ip":%';  USES JSONB!!!
 # website.?[\s\\\/a-zA-Z0-9:{}'"_.-]*)|(url.?[\\\/a-zA-Z0-9:{}'"_.-]*,)

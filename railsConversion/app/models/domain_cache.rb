@@ -31,6 +31,24 @@ class DomainCache < ActiveRecord::Base
 	end
 
 
+	def self.validate_address(string)
+		begin
+			# Jon-won fu - This is a cool regex/ruby trick (whole line loads then run etc.), however, chose to cast a wider net and validate a lot more stuff by curling it.
+			# ParseMe p[2] if p = /^(https?)?(.*)$/.match string
+			if string.match(/[^\A](https?)/)
+				return true
+			elsif IPAddress.valid? string
+				return true
+			elsif PublicSuffix.parse(string)
+				return true
+			else
+				return false
+			end
+		rescue PublicSuffix::DomainInvalid
+			# puts "There was an error! #{e.class}:#{e.message}"
+			return false
+		end
+	end
 
 
 
