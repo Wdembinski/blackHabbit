@@ -9,7 +9,7 @@ class NmcChainEntry < ActiveRecord::Base
     "ip_4" => /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/,
 
     "ip_6"=>/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
-
+    "bit_message"=>/(BM-(?:(?![IlO0])[A-Za-z0-9]){32,34})/i,
     # "url"=>/(?:")(https?:\/\/)?(\S+\.)\S+\.?+(?:")/
     "url_or_email"=>/((https?:\/\/)?(\S+\.)\S+\.?+)/,
     # "one_name_protocol"=>// #They have a big a enough presence to go ahead and make a specific set of catch-rules for them.
@@ -76,7 +76,6 @@ class NmcChainEntry < ActiveRecord::Base
         list_of_matches=[]
         if json["link"]["value"].to_s.gsub(/[\s\n]/,"").length > 4 #two quotes plus min of two chars
           WHITE_LIST.each do |key,regex|
-
             list_of_matches=flatten(json["link"]["value"].to_s.gsub('":"'," ").scan(regex),true)
             list_of_matches.each do |entry|
           	  next if entry.class==NilClass || entry==nil #are these the same?

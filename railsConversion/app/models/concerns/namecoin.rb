@@ -28,7 +28,6 @@ module Namecoin
       request.body = post_body
       http.request(request).body
     end
-   
     class JSONRPCError < RuntimeError; end
   end
 end
