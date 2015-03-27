@@ -17,12 +17,17 @@ class SearchesController < ApplicationController
       @searchResults = 'No Search Requested'
       return
     else
-      @searchResults = NmcChainLink.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(100)
-      # @searchResults = DomainCache.includes(:histories).where('name like?',"%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)  #SUPER DANGEROUS!!!!!
+      @searchResults = NmcChainEntry.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(100)
     end
-    render json: @searchResults
     # render json: @searchResults
-    # render json: @searchResults, :include => {:histories => {:only => [:transactionId,:address,:domain_cache_id]}}
+    render json: @searchResults, :include => { :possible_addresses => {:include => {:categories => {:only=>:name}}}}  #This just handles the sql magicaly - seriously.
+    # @searchResults.each do |x| 
+
+    #   # x.possible_addresses.each {|o| puts o.categories}
+    # end
+  
+
+
   end
 
   def index
@@ -94,8 +99,6 @@ class SearchesController < ApplicationController
       else
         # @searchResults = Cachequery.find_by_sql("select * from domain_caches where name like '%dot%' limit 100;")
         # d = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit 1000;")
-        @searchResults = DomainCache.find_by_sql("select * from domain_caches where name like '%#{params[:blackHabbitPrimarySearch]}%' limit #{limit};")
-       
         @searchResults[0..histnum].each do |h|
           all_histories={}
           h.histories.each do |o|
@@ -114,3 +117,4 @@ class SearchesController < ApplicationController
       params.require(:blackHabbitPrimarySearch).permit(:histnum,:limit)
     end
 end
+ # select * from nmc_chain_links jsonb_to_recordset(x) where link->>'value' like '%"ip":%';  USES JSONB!!!
