@@ -9,9 +9,8 @@ class JsonHistory < ActiveRecord::Base
 			puts "Error: AbnormalName ID Sequence reset failed"
 		end
 	end
-
 	def self.updateHistories	
-		NmcChainLink.find_in_batches do |batch|
+		NmcChainEntry.find_in_batches do |batch|
 		# DomainCache.find_in_batches do |cache|
 			h = NamecoinRPC.new('http://user:test@127.0.0.1:8337')
 
@@ -30,7 +29,7 @@ class JsonHistory < ActiveRecord::Base
 							return
 						end
 					end	
-				# rescue Namecoin::NamecoinRPC::JSONRPCError
+				rescue Namecoin::NamecoinRPC::JSONRPCError
 					AbnormalJson.create(nmc_chain_link_id: id) #Some of the character that come through the blockchain cant even be recognized by the namecoin client (?) pretty weird.
 				end
 			end

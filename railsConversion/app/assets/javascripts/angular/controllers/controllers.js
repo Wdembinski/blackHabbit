@@ -1,10 +1,26 @@
-var black_Habit= angular.module('black_Habit', [
+var black_Habit= angular.module('black_Habit', []);
 
 
-	]);
+
+black_Habit.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
+
+
 
 black_Habit.controller('resultCtrl', ['$scope', '$http',function($scope, $http) {
+  $scope.currentPage = 0;
+  $scope.results=[];
+  $scope.pageSize = 5;
 
+
+
+  $scope.numberOfPages=function(){
+      return Math.ceil($scope.results.length/$scope.pageSize);                
+  }
 
 
 	$scope.starList = function(num) {
@@ -31,8 +47,6 @@ black_Habit.controller('resultCtrl', ['$scope', '$http',function($scope, $http) 
     $scope.orderProp = 'name';  // Need to make the ordering/sorting tools ALSO need to work on gettin some security for sql stuff worked out
     $scope.currentBlockRate =4; // Debating whether or not to just have this make an api call to that exchange site or just use erb orrrr include it in every search?
     $scope.resultStarStatus =4; // Need to tie this to something in the db soon
-
-
     $scope.user={name:"William Dembinski"}
 
 
@@ -42,7 +56,7 @@ black_Habit.controller('resultCtrl', ['$scope', '$http',function($scope, $http) 
     
     $scope.expiresIn = function(num){  // This could be in a better spot I think.
       // console.log(num)
-    	timeRemaining = num/$scope.currentBlockRate/24;
+    	timeRemaining = num/$scope.currentBlockRate/24; //Bad math?
     	// console.log(timeRemaining.toFixed(2))
 		if (timeRemaining < 1) {
 			return "Expired";
@@ -58,7 +72,8 @@ black_Habit.controller('resultCtrl', ['$scope', '$http',function($scope, $http) 
 
 
 
-
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
 // NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
         
 black_Habit.directive('selectable', function () {
@@ -93,3 +108,8 @@ black_Habit.directive("scroll", function ($window) {
         });
     };
 });
+
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!
+// NEED TO MOVE TO THE DIRECTIVE FOLDER!!!!!!

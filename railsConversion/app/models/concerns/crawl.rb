@@ -1,12 +1,45 @@
 require 'active_support/concern'
 
+# A. NmcChainEntry.tag_possible_addresses
+# └── nmc_entry
+#     ├── is_json?
+#     │   ├── key_analysis - Currently just checks if the key indicates a possible name-server indication
+#     │   │   └── possible_name_server?
+#     │   │       └─Tag_as_name_server
+#     │   └── scan_for_possible_addresses -> log as "PossibleAddress" tbl: 'possible_addresses' w/ category guess
+#     └── not_json
+#         └── convert_to_string + clean_string **Sometimes comes in the form of an '[array]'
+#             └── scan_for_possible_addresses -> log as "PossibleAddress" tbl: 'possible_addresses' w/ category guess
+#
+# Summary - If json value, checks to see if the keys of the json/hash suggests the a value is a name server entry
+#           and otherwise scans values for possible addresses -> tag with initial category
+#         
+#         - If not json, converts to string and scans values for possible addreses -> tag with initial category
+# 
+# B. PossibleAddress.investigate_addreses
+#    └── PossibleAddress.where(category: "Name Server") #array of many PossibleAddress
+#        └── Cycle Possible cominations to pair with Name Server
+#            ├─ 0. Corresponding nmc 'value' appended with a .bit suffix
+#            ├──1. Possible prefixes ["","http",https]
+#            ├──2. Possible suffixes ["",".net",".com"]
+#            │
+#            └Ultimately cycles something like the cycle bellow and logs any hrefs/links in the response body
+#
+#             prefixes.each do |pref|
+#               suffixes.each do |suf|
+#                 ping_with_ns("#{pref}#{possibleNameCoinVal}#{suf}")#with the other pref/suffixes
+#               end
+#             end
+# 
+
+
 
 module Crawl
   extend ActiveSupport::Concern
   require 'net/http'
   require 'uri'
   require 'json'
-    Standard_Categories={"Ip Address" => 1, "URL"=>2,"Email"=>3,"Uncategorized"=>4,"Inactive"=>5, "Bit Message"=>6,"Connection Failed"=>7,"Active"=>8,"SSL Connection Failure"=>9}
+    Standard_Categories={"Ip Address" => 1, "URL"=>2,"Email"=>3,"Uncategorized"=>4,"Inactive"=>5, "Bit Message"=>6,"Connection Failed"=>7,"Active"=>8,"SSL Connection Failure"=>9,"Name Server"=>10}
     VALID_EMAIL_REGEX = /(\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z)/i
     VALID_BM_REGEX = /(BM-(?:(?![IlO0])[A-Za-z0-9]){32,34})/i #bit message
     $white_list=[]
@@ -38,47 +71,28 @@ module Crawl
 
 
 
-
-
-    def flatten(enumerable,bool=false) #Flattens enumerables recursively. Uses Set if bool is true - removes dups
-    bool ? result=Set.new : result=[]
-    bomb=Proc.new do |x| 
-      if respond_to? :each #Just returns what ever was passed in an array, worst case scenario.
-        x.flatten.each(&bomb)
-      else
-        bool ? result.add(x) : result.push(x)
-      end
-    end
-     enumerable.each(&bomb)
-    begin
-      result.to_a
-    rescue NoMethodError
-      result
-    end
-  end
-
   def commit_white_list
-    puts $white_list
-    $white_list.each do |whiteListEntry|
-      g=PossibleAddress.where(address: whiteListEntry[:addressObj].address)
-      g.each do |addressObj|
-        begin
-          if whiteListEntry[:categories].class==Array
-              whiteListEntry[:categories].each do |cat|
-              addressObj.category_memberships.create(possible_address_category_id:cat)
-            end
-          else whiteListEntry[:categories].class==Fixnum
-            addressObj.category_memberships.create(possible_address_category_id:whiteListEntry[:categories])
-          end
+    # puts $white_list
+    # $white_list.each do |whiteListEntry|
+    #   g=PossibleAddress.where(address: whiteListEntry[:addressObj].address)
+    #   g.each do |addressObj|
+    #     begin
+    #       if whiteListEntry[:categories].class==Array
+    #           whiteListEntry[:categories].each do |cat|
+    #           addressObj.category_memberships.create(possible_address_category_id:cat)
+    #         end
+    #       else whiteListEntry[:categories].class==Fixnum
+    #         addressObj.category_memberships.create(possible_address_category_id:whiteListEntry[:categories])
+    #       end
 
-          ### Some of the objects in this list may have had links found when we scraped them. God willing.
-          ### If there is a better way of doing this I would love to do it!
-          addressObj.update(links: whiteListEntry[:links]) if whiteListEntry[:links]
-          addressObj.update(categorized: true)
-        end
-      end
-    end
-    $white_list.clear
+    #       ### Some of the objects in this list may have had links found when we scraped them. God willing.
+    #       ### If there is a better way of doing this I would love to do it!
+    #       addressObj.update(links: whiteListEntry[:links]) if whiteListEntry[:links]
+    #       addressObj.update(categorized: true)
+    #     end
+    #   end
+    # end
+    # $white_list.clear
   end
   
 
@@ -90,23 +104,52 @@ module Crawl
     $black_list.clear
   end
 
-
-  def clean_possible_address(string)
+  def clean_possible_curl_address(string)
     string.gsub(/[\s\,\"\'\}\{]/,"")
   end
 
+  def is_possible_ns?(addressObj)
+    addressObj.regex_match=="name_server" ? true : false
+  end
+  
   def is_email?(string)
     flatten(string.scan(VALID_EMAIL_REGEX)).compact.count > 0 ? true:false
+  end
+
+
+  def is_json?(string)
+    begin
+      JSON.parse(string)
+    rescue JSON::ParserError
+      false
+    end
   end
 
   def is_bit_message?(string)
     flatten(string.scan(VALID_BM_REGEX)).compact.count > 0 ? true:false
   end
 
-  def curl_address(string) #####TODO: ADD LOGIC TO FIX UP THE URL!!!! If it doesnt contain http/https add/edit so it does and curl!
+  def flatten(list) #Flattens enumerables recursively.
+    res=[]
+    bomb=Proc.new do |x|
+      if x.respond_to? :each
+        x.to_a.flatten!
+        x.each(&bomb)
+      else
+        res.push(x)
+      end
+    end
+    list.each(&bomb)
+    return res.compact
+  end
+
+  def curl_address(string,name_server=nil) #####TODO: ADD LOGIC TO FIX UP THE URL!!!! If it doesnt contain http/https add/edit so it does and curl!
     
-    the_Ping_Machine=Curl::Easy.new(clean_possible_address(string))
+    the_Ping_Machine=Curl::Easy.new(clean_possible_curl_address(string))
     the_Ping_Machine.connect_timeout=5
+    if name_server
+      the_Ping_Machine.headers["Host"] = name_server
+    end
     # the_Ping_Machine.on_success {process_page_content(the_Ping_Machine.body_str)}# 2xx
     # the_Ping_Machine.on_redirect {puts "REDIRCTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!"}#3xx
     # the_Ping_Machine.on_missing {puts "MISSING%%%%%%%%%%%%%%%%%%%%%%%%"}#4xx
@@ -115,7 +158,6 @@ module Crawl
     the_Ping_Machine.perform
     return the_Ping_Machine
   end
-
 
   def scrape_and_categorize(addressObj)
     links=scrape_for_links(addressObj["address"])
@@ -126,6 +168,7 @@ module Crawl
     end
   end
 
+
   def scrape_for_links(xml_page) #xml is like violence.
     page = Nokogiri::HTML(xml_page)
     links= page.css('a') + page.css('A')
@@ -133,11 +176,13 @@ module Crawl
     return hrefs
   end
 
-
-
   def whiteList_or_blackList(addressObj)
     begin
-      the_Ping_Machine=curl_address(addressObj["address"])
+      if addressObj.regex_match == "ip_6"
+        the_Ping_Machine=curl_address("http://[#{addressObj['address']}]/")
+      else
+        the_Ping_Machine=curl_address(addressObj['address'])
+      end
       if the_Ping_Machine.body_str.length > 4 #brackets=empty + 2. Totally arbitrary
         scrape_and_categorize(addressObj)
       end
@@ -148,19 +193,84 @@ module Crawl
         $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['URL']]})
       elsif addressObj.regex_match=="bit_message"
         $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Bit Message']]})
-        else
+      else
         $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['Uncategorized']]})
       end
     rescue Curl::Err::GotNothingError
       $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['Uncategorized']]})
-    rescue Curl::Err::ConnectionFailedError
+    rescue Curl::Err::ConnectionFailedError, Curl::Err::RecvError
       $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['Connection Failed']]})
-    rescue Curl::Err::SSLConnectError,Curl::Err::SSLPeerCertificateError
+    rescue Curl::Err::SSLConnectError,Curl::Err::SSLPeerCertificateError,Curl::Err::SSLCACertificateError
       $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['SSL Connection Failure']]})
     rescue Curl::Err::MalformedURLError,Curl::Err::HostResolutionError,Curl::Err::UnsupportedProtocolError
       $black_list.push(addressObj)
     end
   end
 
+  def name_server_cycle
+    PossibleAddress.where(regex_match:"name_server",categorized:false).find_in_batches do |batch|
+      batch.each do |addressObj|
+        address_list=PossibleAddress.where(nmc_chain_entry_id: addressObj.id)
+        prefixes=["","http://","https://"]
+        suffixes=["",".",".com.",".net.",".bit"]
+        host=addressObj.address
+        possibleNameCoinVal=NmcChainEntry.find(addressObj.nmc_chain_entry_id).link["name"].gsub(/d\//,"")
+        # puts addressObj.address
+
+        address_list.each do |addressObj|
+          prefixes.each do |pref|
+            suffixes.each do |suf| 
+              puts "Attempting to access: #{pref}#{possibleNameCoinVal}#{suf}"
+              ping_with_ns("#{pref}#{possibleNameCoinVal}#{suf}",host,addressObj)#with the other pref/suffixes
+            end
+          end
+        end
+        
+        address_list.each do |addressObj|
+          prefixes.each do |pref|
+            next if  addressObj.address[0..pref.length] == pref
+            suffixes.each do |suf|
+              next if  addressObj.address[-suf.length..-1] == suf
+              puts "Attempting to access: #{pref}#{possibleNameCoinVal}#{suf}"
+              ping_with_ns("#{pref}#{addressObj.address}#{suf}",host,addressObj)#with the other pref/suffixes
+            end
+          end
+        end
+      end
+    end
+    commit_white_list
+  end
+
+  def ping_with_ns(string,host,addressObj)
+    begin
+      ping_result = curl_address(string,host)
+    rescue Curl::Err::TimeoutError => e
+      puts e.message
+    rescue Curl::Err::GotNothingError => e
+      puts e.message
+    rescue Curl::Err::ConnectionFailedError, Curl::Err::RecvError => e
+      puts e.message
+    rescue Curl::Err::SSLConnectError,Curl::Err::SSLPeerCertificateError,Curl::Err::SSLCACertificateError => e
+      puts e.message
+    rescue Curl::Err::MalformedURLError,Curl::Err::HostResolutionError,Curl::Err::UnsupportedProtocolError => e
+      puts e.message, string,host
+    end
+    begin
+      links=scrape_for_links(ping_result.body_str)
+      if links.count > 0 
+        $white_list.push({addressObj:addressObj,link: links,categories:[Standard_Categories['Name Server']]})
+      else
+        return
+      end
+    rescue NoMethodError => e
+      puts e.message
+    end
+  end
+
+
+
 
 end
+
+
+          # batch.delete_if {|x| x["address"] ==  addressObj["address"]}
