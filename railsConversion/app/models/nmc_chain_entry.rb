@@ -1,27 +1,34 @@
   include Namecoin
   include Crawl
   require 'json'
+
+
 class NmcChainEntry < ActiveRecord::Base
   has_many :abnormal_jsons,dependent: :destroy
   has_many :json_histories,dependent: :destroy
-  has_many :possible_addresses,dependent: :destroy
+  has_many :nmc_addresses,dependent: :destroy
+  has_many :addresses, through: :nmc_addresses
+  has_many :tags, through: :addresses
+  accepts_nested_attributes_for :addresses
 
 
 
   WHITE_LIST={
     "ip_4" => /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/,
 
-    "ip_6"=>/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/,
-    "bit_message"=>/(BM-(?:(?![IlO0])[A-Za-z0-9]){32,34})/i,
+    "ip_6"=>/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/i,
+    
+    "Bit Message"=>/(BM-(?:(?![IlO0])[A-Za-z0-9]){32,34})/i,
+    
 
-
-
+    "email"=>/([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+)/i,
 
     
-    "url_or_email"=>/((https?:\/\/)?(\S+\.)\S+\.?+)/,     # Distinguishes it by a ".includes '@' later."
-    "name_server"=>/\Ans|nameserver|(name server)/i #IMPORTANT - just used to scan json keys to see if theyre labeled as name server addresses. I DO NOT USE [ns].something as a nameserver identifier
+    # "url"=>/((?<=[\s|\A|^])((https?)?:\/\/)?[^@\s\}\{\'\"\\\,\(\)]{1,}\.(\D{1,}(?=[\s|\z|$])))/i
+    "URL" => /((http|https):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/i
+    # "one_name_protocol"=>// #Dunno if ill end up using this
 
-    # "one_name_protocol"=>// #They have a big a enough presence to go ahead and make a specific set of catch-rules for them.
+
   }
 
 
@@ -32,51 +39,79 @@ class NmcChainEntry < ActiveRecord::Base
     begin
       while doneIndicator == 100
 
-          h = NamecoinRPC.new('http://user:test@127.0.0.1:8337')
-          response = h.name_scan lastEntry,100 #some ghetto here.  Probably exists a better/more elegant way of handling this.
-          doneIndicator = response.count
-          lastEntry = response.last["name"].force_encoding("ISO-8859-1").encode("UTF-8")
+        h = NamecoinRPC.new('http://user:test@127.0.0.1:8337')
+        response = h.name_scan lastEntry,100 #some ghetto here.  Probably exists a better/more elegant way of handling this.
+        doneIndicator = response.count
+        lastEntry = response.last["name"].force_encoding("ISO-8859-1").encode("UTF-8")
 
-          response.each do |singleResponse|
-            singleResponse.each do |key, value| 
-              value.to_s.force_encoding("ISO-8859-1").encode("UTF-8")
-            end
-            # puts singleResponse
-            begin
-              NmcChainEntry.create(link: singleResponse)
-            # rescue => e
-            #   puts e
-            end
+        response.each do |singleResponse|
+          singleResponse.each do |key, value| 
+            value.to_s.force_encoding("ISO-8859-1").encode("UTF-8")
           end
-          counter+=1       # select * from cache1 where name like '%dot%'; just basic search.
+            NmcChainEntry.create(link: singleResponse)
+        end
+        counter+=1       # select * from cache1 where name like '%dot%'; just basic search.
       end
     end          #select * from cache1 where name = $$'!'$$; example query
   end
 
-  def self.scan_for_addresses(string,id,override=nil) #optional third param to force the 'regex_match'
+  def self.segment_string(string)
+    characterBlackList=/[\}\{\'\[\"\\\],]/
+    string.gsub('":"'," ").gsub(characterBlackList," ").split(/[\s,]/)
+  end
+
+  def self.scan_for_addresses(string,id,override=nil) #optional third param to force the 'regex_match' i.e 'name_server' if json key match
+    #Todo: fix this overloaded function
     results=[]
-    characterBlackList=/[\}\{\'\"\\\,]/
-    entryBlackList=["http://","[]","https://","10.0.0.1","192.168.0.0",nil]
-    WHITE_LIST.each do |key,regex|
-      g = string.gsub('":"'," ").gsub(characterBlackList," ").scan(regex)
-      matches=g.flatten
-      unless matches==nil
-        matches.each do |match|
-        next if match.class != String || entryBlackList.any? {|x| x == match} 
-          results.push(PossibleAddress.new(nmc_chain_entry_id:id,address:match,regex_match:override ? override : key))
+    entryBlackList=["10.0.0.1","10.0.0.","192.168.0.0",nil,"127.0.0.1"] #pretty sure http:* cant happen anymore
+    # entryBlackList=["http","https","http://","[]","https://","10.0.0.1","10.0.0.","192.168.0.0","com","net",nil,"127.0.0.1"] #pretty sure http:* cant happen anymore
+      WHITE_LIST.each do |key,regex|
+
+        matches = []
+        segment_string(string).each do |seg|
+          matches.push regex.match(seg).to_a[0]
+        end
+
+
+        matches.flatten.each do |match|
+          next if entryBlackList.any? {|x| x == match} || match.gsub(/[\s \n]/,"").empty?
+          unless override
+
+            if Address.exists?(value:match)
+              o = Address.where(value:match).take
+              results.push(NmcAddress.new(address_id:o.id,nmc_chain_entry_id:id))
+            else
+
+              tag = Tag.where(title:key).take
+              o=Address.new(value:match)
+              o.save
+              results.push(AddressTag.new(address_id:o.id,tag_id:tag.id),NmcAddress.new(address_id:o.id,nmc_chain_entry_id:id))
+            end
+          else
+            tag=Tag.where(title:override).take ################################################GHETTO!
+            addr = Address.where(value:match).take
+            if addr && AddressTag.where(tag_id:tag.id,address_id:addr.id).exists?
+              results.push NmcAddress.new(address_id:addr.id,nmc_chain_entry_id:id)
+            elsif addr && !AddressTag.where(tag_id:tag.id,address_id:addr.id).exists?
+              results.push NmcAddress.new(address_id:addr.id,nmc_chain_entry_id:id),AddressTag.new(address_id:addr.id,tag_id:tag.id)
+            else
+              tag = Tag.where(title:override).take
+              o=Address.new(value:match)
+              o.save
+              results.push(AddressTag.new(address_id:o.id,tag_id:tag.id),NmcAddress.new(address_id:o.id,nmc_chain_entry_id:id))
+            end
+          end
         end
       end
-    end
-    results.to_a
+    results
   end
 
   def self.process_json_vals(json_hash,id)
     results=[]
     json_hash.each do |key,val|
       key ||= " "
-      if key.scan(WHITE_LIST["name_server"]).count >= 1
-
-        results.push(scan_for_addresses(val.to_s,id,"name_server"))
+      if key.scan(/(\bns\b)|(\bnameserver\b)|(\bname\b \bserver\b)/i).count > 0
+        results.push(scan_for_addresses(val.to_s,id,"Name Server"))
       else
         results.push(scan_for_addresses(val.to_s,id))
       end
@@ -85,37 +120,30 @@ class NmcChainEntry < ActiveRecord::Base
   end
 
 
-
-
-  def self.tag_possible_addresses #returns ips/urls/emails from the nmc_chain_links very loosely. Even returns fragments of stuff and guesses what they are.
-    NmcChainEntry.find_in_batches do |batch|
-      possible_addrs=[]
+  def self.id_addresses #returns ips/urls/emails from the nmc_chain_links very loosely. Even returns fragments
+    # TestNmcEntry.find_in_batches do |batch| 
+    NmcChainEntry.find_in_batches do |batch| 
+      results=[]
       batch.each do |entry| 
-        next if entry["link"]["value"].class==NilClass || entry["link"]["value"].gsub(/[\s \n]/,"").empty? #removes empty strings/nil values
-        nmc_value=entry["link"]["value"]
-        if jsonHash=is_json?(nmc_value)
-          if jsonHash.class !=Hash
-            begin
-              possible_addrs.push(scan_for_addresses(jsonHash.to_s,entry.id))
-            rescue NoMethodError
-              next
-            end
+        next if entry.link["value"].class==NilClass || entry.link["value"].gsub(/[\s \n]/,"").empty? #removes empty string/nil values
+        if jsonObj=is_json?(entry["link"]["value"])
+
+          if jsonObj.class != Hash
+              results.push(scan_for_addresses(jsonObj.to_s,entry.id)) #should return list of addressobjs
           else
-            possible_addrs.push process_json_vals(jsonHash,entry.id)
+            results.push process_json_vals(jsonObj,entry.id) #should return list of addressobjs
           end
         else
-          begin
-            possible_addrs.push scan_for_addresses(nmc_value.to_s,entry.id)
-          rescue NoMethodError
-            next
+          unless jsonObj.class==NilClass
+            results.push scan_for_addresses(jsonObj.to_s,entry.id) #should return list of addressobjs
           end
         end
       end
-      possible_addrs.flatten.compact.each{ |x| x.save}
+      # results.flatten.compact.each{ |x| puts x }
+      results.flatten.compact.each{ |x| x.save }
     end
   end
 end
-
 
 
 
@@ -126,17 +154,4 @@ end
 # website.?[\s\\\/a-zA-Z0-9:{}'"_.-]*)|(url.?[\\\/a-zA-Z0-9:{}'"_.-]*,)
 
 
-
-
-            # begin 
-            #   o=scan_for_addresses(nmc_value.to_s) unless o.class==NilClass
-            #   results.add(o) unless o.class==NilClass
-            #   results.each do |match_hash|
-            #     match_hash.each do |x|
-            #       x["matches"].each do |match|
-            #         next if match.class==NilClass || match.class==Nil
-            #           # PossibleAddress.create(nmc_chain_entry_id:entry.id,address:match,regex_match:x["key"])
-            #       end
-            #     end
-            #   end
-            # end 
+## Copy-pasta join: select nmc_chain_entries.link,addresses.value from nmc_chain_entries inner join nmc_addresses on nmc_chain_entries.id=nmc_addresses.nmc_chain_entry_id inner join addresses on addresses.id = nmc_addresses.nmc_chain_entry_id;
