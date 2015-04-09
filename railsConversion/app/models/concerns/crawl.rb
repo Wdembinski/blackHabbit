@@ -97,22 +97,6 @@ module Crawl
  
 
 
-  def scrape_and_categorize(addressObj)
-    links=scrape_for_links(addressObj["address"])
-    if addressObj.regex_match=="ip_6" || addressObj.regex_match=="ip_4"
-      $white_list.push({addressObj: addressObj,categories:[Standard_Categories['Active'],Standard_Categories['Ip Address']],links: links })
-    else addressObj.regex_match=="url_or_email"
-      $white_list.push({addressObj: addressObj,categories:[Standard_Categories['Active'],Standard_Categories['URL']],links: links })
-    end
-  end
-
-
-  def scrape_for_links(xml_page) #xml is like violence.
-    page = Nokogiri::HTML(xml_page)
-    links= page.css('a') + page.css('A')
-    hrefs = links.map {|link| link.attribute('href').to_s.uniq.sort.delete_if {|href| href.empty?}}
-    return hrefs
-  end
 
   def whiteList_or_blackList(addressObj)
     begin
@@ -130,7 +114,7 @@ module Crawl
       elsif addressObj.regex_match=="url_or_email"
         $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive']]})
       elsif addressObj.regex_match=="bit_message"
-        # $white_list.push({addressObj:addressObj,categories:[]})
+        $white_list.push({addressObj:addressObj,categories:[]})
       else
         $white_list.push({addressObj:addressObj,categories:[Standard_Categories['Inactive'],Standard_Categories['Uncategorized']]})
       end
@@ -147,89 +131,45 @@ module Crawl
 
 
 
-
-
-
-
-
   def name_server_cycle
-     Address.joins(:address_tags,:tags).where('tags.title=?','Name Server').uniq.find_in_batches do |batch|
-      puts batch.count
-      batch.each {|x| puts "#{x.value},#{batch.index x}" }
-      batch.each do |addressObj|
-        puts "=========================================================="
-        puts addressObj.value
-        puts "=========================================================="
-        list_of_chain_entries=NmcAddress.where(address_id: addressObj.id)
-        list_of_chain_entries.each do |x|
-          list_of_combos=Address.joins(:nmc_addresses).where('nmc_addresses.nmc_chain_entry_id=?',x.nmc_chain_entry_id)
-          list_of_combos.each {|o| puts o.value }
+    prefixes=["","http://","https://"]
+    suffixes=["",".",".com.",".net.",".bit","."]
+    Address.joins(:address_tags,:tags).where('tags.title=?','Name Server').find_in_batches do |batch|
+      attempted_combos=[]
+      batch.each do |ns_addressObj|
+        next if ns_addressObj.value.include? "@"
+        # puts ns_addressObj.value
+        list_of_nmc_addresses=NmcAddress.where(address_id: ns_addressObj.id) #dont need to worry about batching yet I dont think
+        o=NmcChainEntry.joins(:nmc_addresses).where("address_id=?",ns_addressObj.id).take.link["name"].gsub(/d\//,"") #try to use the value as the domain as intended by nmc - use d/something as the domain name but with the suffix .bit
+        list_of_nmc_addresses.each do |x|
+          combo_addrVals=[o] #starts with the namecoin val as the first entry to try with the name server
+          list_of_combos=Address.find_by_sql("select distinct addresses.value from nmc_chain_entries inner join nmc_addresses on nmc_chain_entries.id=nmc_addresses.nmc_chain_entry_id inner join addresses on addresses.id=nmc_addresses.address_id inner join address_tags on addresses.id=address_tags.address_id where tag_id != 6 and tag_id != 9 and tag_id != 10 and nmc_addresses.nmc_chain_entry_id=#{x.nmc_chain_entry_id}")#excludes email addresses, bit messages, and other name server addresses
 
+          # puts "============================================================"
+            # puts ns_addressObj.value
+            # combo_addrVals.each {|x|puts x.value}
+            # list_of_combos.each {|x|puts x.value}
+          # puts "============================================================"
+
+          combo_addrVals.each do |combo|
+            prefixes.each do |pref|
+            next if combo[0..pref.length] == pref # avoid unnecessary queries 
+              suffixes.each do |suf|
+              next if  combo[-suf.length..-1] == suf || attempted_combos.any? {|x| x == "#{ns_addressObj.value}#{pref}#{combo}#{suf}"}# avoid unnecessary queries 
+                puts "Attempting to access:----curl 'Host:#{ns_addressObj.value} #{pref}#{combo}#{suf}'"#########################
+                ping_with_ns("#{pref}#{combo}#{suf}",ns_addressObj.value)
+                attempted_combos.push("#{ns_addressObj.value}#{pref}#{combo}#{suf}")
+              end
+            end
+          end
         end
-
       end 
     end
    # commit_white_list
   end
 
 
-
-
-
-
-
-
-
-  
-#     def name_server_cycle
-#      Address.joins(:address_tags,:tags).where('tags.title=?','Name Server').find_in_batches do |batch|
-#      # Address.where(regex_match:"name_server",categorized:false).find_in_batches do |batch|
-#       batch.each do |addressObj|
-
-# # This is where we need to take an address tagged with Name Server and cycle the addresses associated with this 'name server address'
-
-
-#         address_list=Address.joins(nmc_addresses:,:nmc_chain_entries).where('nmc_chain_entries.id=?',addressObj: addressObj.id)
-#         prefixes=["","http://","https://"]
-#         suffixes=["",".",".com.",".net.",".bit"]
-#         host=addressObj.address
-#         possibleNameCoinVal=NmcChainEntry.find(addressObj.nmc_chain_entry_id).link["name"].gsub(/d\//,"")
-#         # puts addressObj.address
-#         address_list.each do |addressObj|
-#           prefixes.each do |pref|
-#             suffixes.each do |suf| 
-#               puts "Attempting to access: #{pref}#{possibleNameCoinVal}#{suf}"
-#               ping_with_ns("#{pref}#{possibleNameCoinVal}#{suf}",host,addressObj)#with the other pref/suffixes
-#             end
-#           end
-#         end
-        
-#         address_list.each do |addressObj|
-#           prefixes.each do |pref|
-#             next if  addressObj.address[0..pref.length] == pref
-#             suffixes.each do |suf|
-#               next if  addressObj.address[-suf.length..-1] == suf
-#               puts "Attempting to access: #{pref}#{possibleNameCoinVal}#{suf}"
-#               ping_with_ns("#{pref}#{addressObj.address}#{suf}",host,addressObj)#with the other pref/suffixes
-#             end
-#           end
-#         end
-#       end
-#     end
-#     commit_white_list
-#   end
-
-
-
-
-
-
-
-
-
-
-
-  def ping_with_ns(string,host,addressObj)
+  def ping_with_ns(string,host,addressObj=nil)
     begin
       ping_result = curl_address(string,host)
     rescue Curl::Err::TimeoutError => e
@@ -243,11 +183,14 @@ module Crawl
     rescue Curl::Err::MalformedURLError,Curl::Err::HostResolutionError,Curl::Err::UnsupportedProtocolError => e
       puts e.message, string,host
     end
+    
     begin
       links=scrape_for_links(ping_result.body_str)
       if links.count > 0 
-        $white_list.push({addressObj:addressObj,link: links,categories:[Standard_Categories['Name Server']]})
+        puts links
+        # $white_list.push({addressObj:addressObj,link: links,categories:[Standard_Categories['Name Server']]})
       else
+        puts "No links returned from request!!!"
         return
       end
     rescue NoMethodError => e
@@ -255,9 +198,7 @@ module Crawl
     end
   end
 
-
-  def curl_address(string,name_server=nil) #####TODO: ADD LOGIC TO FIX UP THE URL!!!! If it doesnt contain http/https add/edit so it does and curl!
-    
+  def curl_address(string,name_server=nil)
     the_Ping_Machine=Curl::Easy.new(clean_possible_curl_address(string))
     the_Ping_Machine.connect_timeout=5
     if name_server
@@ -272,33 +213,43 @@ module Crawl
     return the_Ping_Machine
   end
 
-  class Curl_Machine
-    def initialize(service_url)
-      @uri = URI.parse(service_url)
-    end
-   
-    def method_missing(name, *args)
-      post_body = { 'method' => name, 'params' => args, 'id' => 'jsonrpc' }.to_json
-      # resp = JSON.parse( http_post_request(post_body) )
-      raise Curl_Machine_Error, resp['error'] if resp['error']
-      resp['result']
-    end
-   
-    def http_post_request(post_body) #why did I make this? totally forgot
-      # http    = Net::HTTP.new(@uri.host, @uri.port)
-      request = Net::HTTP::Get.new(@uri.request_uri)
-      # request.basic_auth @uri.user, @uri.password
-      # request.content_type = 'application/json'
-      request.body = post_body
-      http.request(request).body
-    end
-   
-    class Curl_Machine_Error < RuntimeError; end
+  def clean_possible_curl_address(string)
+    string.gsub(/[\s\,\"\'\}\{]/,"") #technically urls are allowed to have space as long as they are enclosed with spaces according to the most recent RFC
   end
 
+  def scrape_for_links(xml_page) #xml is like violence.
+    page = Nokogiri::HTML(xml_page)
+    links= page.css('a') + page.css('A')
+    hrefs = links.map {|link| link.attribute('href').to_s.sort.delete_if {|href| href.empty?}}
+    return hrefs
+  end
 
 
 end
 
 
           # batch.delete_if {|x| x["address"] ==  addressObj["address"]}
+
+  # class Curl_Machine
+  #   def initialize(service_url)
+  #     @uri = URI.parse(service_url)
+  #   end
+   
+  #   def method_missing(name, *args)
+  #     post_body = { 'method' => name, 'params' => args, 'id' => 'jsonrpc' }.to_json
+  #     # resp = JSON.parse( http_post_request(post_body) )
+  #     raise Curl_Machine_Error, resp['error'] if resp['error']
+  #     resp['result']
+  #   end
+   
+  #   def http_post_request(post_body) #why did I make this? totally forgot
+  #     # http    = Net::HTTP.new(@uri.host, @uri.port)
+  #     request = Net::HTTP::Get.new(@uri.request_uri)
+  #     # request.basic_auth @uri.user, @uri.password
+  #     # request.content_type = 'application/json'
+  #     request.body = post_body
+  #     http.request(request).body
+  #   end
+   
+  #   class Curl_Machine_Error < RuntimeError; end
+  # end

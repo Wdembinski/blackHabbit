@@ -60,8 +60,7 @@ class NmcChainEntry < ActiveRecord::Base
     string.gsub('":"'," ").gsub(characterBlackList," ").split(/[\s,]/)
   end
 
-  def self.scan_for_addresses(string,id,override=nil) #optional third param to force the 'regex_match' i.e 'name_server' if json key match
-    #Todo: fix this overloaded function
+  def self.scan_for_addresses(string,id,override=nil) #optional third param to force the 'regex_match' i.e 'name_server' if json key match or any of the specific namecoin protocal header keys...coming soon!
     results=[]
     entryBlackList=["10.0.0.1","10.0.0.","192.168.0.0",nil,"127.0.0.1"] #pretty sure http:* cant happen anymore
     # entryBlackList=["http","https","http://","[]","https://","10.0.0.1","10.0.0.","192.168.0.0","com","net",nil,"127.0.0.1"] #pretty sure http:* cant happen anymore
@@ -71,24 +70,20 @@ class NmcChainEntry < ActiveRecord::Base
         segment_string(string).each do |seg|
           matches.push regex.match(seg).to_a[0]
         end
-
-
         matches.flatten.each do |match|
           next if entryBlackList.any? {|x| x == match} || match.gsub(/[\s \n]/,"").empty?
           unless override
-
             if Address.exists?(value:match)
               o = Address.where(value:match).take
               results.push(NmcAddress.new(address_id:o.id,nmc_chain_entry_id:id))
             else
-
               tag = Tag.where(title:key).take
               o=Address.new(value:match)
               o.save
               results.push(AddressTag.new(address_id:o.id,tag_id:tag.id),NmcAddress.new(address_id:o.id,nmc_chain_entry_id:id))
             end
           else
-            tag=Tag.where(title:override).take ################################################GHETTO!
+            tag=Tag.where(title:override).take ################################################ This is thorough - but intensely difficult to read.
             addr = Address.where(value:match).take
             if addr && AddressTag.where(tag_id:tag.id,address_id:addr.id).exists?
               results.push NmcAddress.new(address_id:addr.id,nmc_chain_entry_id:id)
@@ -106,11 +101,11 @@ class NmcChainEntry < ActiveRecord::Base
     results
   end
 
-  def self.process_json_vals(json_hash,id)
+  def self.process_json_vals(json_hash,id) #TODO: Add specifications for everything here: http://dot-bit.org/Namespace:Domain_names_v2.0#TLS_support
     results=[]
     json_hash.each do |key,val|
       key ||= " "
-      if key.scan(/(\bns\b)|(\bnameserver\b)|(\bname\b \bserver\b)/i).count > 0
+      if key.scan(/(\bns\b)|(\bnameserver\b)|(\bname\b \bserver\b)/i).count > 0 #Only doing name servers right now because nobody uses the protocols...at all.
         results.push(scan_for_addresses(val.to_s,id,"Name Server"))
       else
         results.push(scan_for_addresses(val.to_s,id))
