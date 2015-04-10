@@ -98,7 +98,7 @@ class NmcChainEntry < ActiveRecord::Base
           end
         end
       end
-    results
+    results # shouldnt need flatten here.
   end
 
   def self.process_json_vals(json_hash,id) #TODO: Add specifications for everything here: http://dot-bit.org/Namespace:Domain_names_v2.0#TLS_support

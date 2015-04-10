@@ -13,11 +13,4 @@ class TestNmcEntry < ActiveRecord::Base
 
 
 
-
-
-
-
-
-
-
 end
