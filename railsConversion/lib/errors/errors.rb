@@ -1,4 +1,4 @@
-module Exceptions
+module Errors
 
 	class NotAuthenticatedError < StandardError
 	end

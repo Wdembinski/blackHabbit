@@ -34,11 +34,11 @@ module Crawl
 # "Name Server:Address Combination"=> Tag.where(title:"Name Server:Address Combination")
 #
   class Address_Crawl_Cycle
-    def initialize
+    def initialize(blist=[])
       @db_batch=DB_Batch.new
-      @entry_BlackList=[]
-      @character_BlackList=?@
+      @entry_BlackList=blist
       @attempted_combos=[]
+      @character_BlackList=?@
     end
 
     def investigate_addresses
@@ -98,9 +98,11 @@ module Crawl
 
     def run_ns_addr_batch(ns_addressObj,combo_batch)
       puts "==============================="
-      puts ns_addressObj.value
+      puts "Name Server: #{ns_addressObj.value}"
       puts "*******************************"
-      combo_batch.each {|x| puts x.value}
+      combo_batch.each do |addr_to_be_paired| 
+        puts "#{combo_batch.index(addr_to_be_paired)+1} #{addr_to_be_paired.value}"
+      end
       puts "*******************************"
 
       prefixes=["","https://"]

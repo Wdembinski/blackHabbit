@@ -1,9 +1,9 @@
-# think about resolvin gthe name server address befire crawling
+# think about resolvin gthe name server address before crawling, i.e as you populate maybe? seems wastefule in the db at first.
 
 
 
 class Address < ActiveRecord::Base
-	# extend Crawl
+	extend Crawl
 	# scope :name_servers, where(subscribed_to_newsletter: true)
 	has_many :hyperlinks, dependent: :destroy
 	has_many :address_tags,dependent: :destroy
@@ -11,23 +11,17 @@ class Address < ActiveRecord::Base
 	has_many :nmc_addresses,dependent: :destroy
 	has_many :nmc_chain_entries, through: :nmc_addresses
 	accepts_nested_attributes_for :nmc_chain_entries
+
 	FILTER={
     "ip_4" => /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/,
-
     "ip_6"=>/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/i,
-    
     "Bit Message"=>/(BM-(?:(?![IlO0])[A-Za-z0-9]){32,34})/i,
-    
-
     "email"=>/([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+)/i,
-
-    
     # "url"=>/((?<=[\s|\A|^])((https?)?:\/\/)?[^@\s\}\{\'\"\\\,\(\)]{1,}\.(\D{1,}(?=[\s|\z|$])))/i
     "URL" => /((http|https):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?/i
     # "one_name_protocol"=>// #Dunno if ill end up using this
-
-
   }
+
   def cousins_in_nmc(nmc_chain_entry,options={}) #take NmcChainEntry or id of NmcChainEntry and returns all cousins in that NmcChainEntry
   	identifier = nmc_chain_entry.is_a?(Fixnum) ? nmc_chain_entry : nmc_chain_entry.id
   	# sql="select distinct addresses.value from addresses inner join nmc_addresses on addresses.id=nmc_addresses.address_id inner join address_tags on address_tags.id=addresses.id inner join tags on tags.id=address_tags.tag_id where nmc_addresses.nmc_chain_entry_id=#{identifier}"
@@ -40,7 +34,7 @@ class Address < ActiveRecord::Base
 
   	if options["exclude"] && options["exclude"].count > 0
   		options["exclude"].each do |exclusion|
-  			sql = sql + "and tag_id != #{exclusion}"
+  			# sql = sql + " and tag_id != #{exclusion}"
   		end
   	Address.find_by_sql(sql)
   	end

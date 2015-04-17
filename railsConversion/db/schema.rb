@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409223511) do
+ActiveRecord::Schema.define(version: 20150413220426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,20 @@ ActiveRecord::Schema.define(version: 20150409223511) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "db_batches", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "hyperlinks", force: :cascade do |t|
+    t.integer  "address_id"
+    t.text     "link",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "hyperlinks", ["address_id"], name: "index_hyperlinks_on_address_id", using: :btree
+
   create_table "json_histories", force: :cascade do |t|
     t.jsonb    "history",           default: {}, null: false
     t.integer  "nmc_chain_link_id",              null: false
@@ -69,25 +83,6 @@ ActiveRecord::Schema.define(version: 20150409223511) do
 
   add_index "nmc_chain_entries", ["link"], name: "index_nmc_chain_links_on_link", using: :gin
 
-  create_table "ns_addresses", force: :cascade do |t|
-    t.integer  "address_id"
-    t.integer  "ns_address_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
-  add_index "ns_addresses", ["address_id"], name: "index_ns_addresses_on_address_id", using: :btree
-  add_index "ns_addresses", ["ns_address_id"], name: "index_ns_addresses_on_ns_address_id", using: :btree
-
-  create_table "scraped_hyperlinks", force: :cascade do |t|
-    t.integer  "address_id"
-    t.text     "link",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "scraped_hyperlinks", ["address_id"], name: "index_hyperlinks_on_address_id", using: :btree
-
   create_table "tags", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -106,7 +101,13 @@ ActiveRecord::Schema.define(version: 20150409223511) do
 
   add_index "test_nmc_entries", ["link"], name: "index_test_nmc_entries_on_link", using: :gin
 
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   add_foreign_key "abnormal_jsons", "nmc_chain_entries"
   add_foreign_key "json_histories", "nmc_chain_entries", column: "nmc_chain_link_id"
-  add_foreign_key "ns_addresses", "addresses"
 end

@@ -1,0 +1,134 @@
+<nav class="navbar navbar-default bh_home_nav">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="bs_logo.png">
+        <%= image_tag "bands_logo.png", class: "bs_logo" %>
+      </a>
+      <h3 class="bs_logo_slogan">A NameCoin search engine ... that doesn't suck</h3>
+    </div>
+  </div>
+</nav>
+<div class="jumbotron" id="why">
+  <h1 class="why_youre_here">
+    Welcome to Bit and Stone!
+  </h1>
+  <h1 class="grab">
+    You're in the right place if:
+  </h1>
+  <div class="row">
+    <div class="col-sm-6 col-md-4 well reason_cont">
+      <h1 class="reason_here"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> You're curious and...</h1>
+      <ul class="reason_cont_section">
+        <li>
+          <h2 class="list_label">A.</h2><p> You don't know what a NameCoin is.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-6 col-md-4 well reason_cont">
+      <h1 class="reason_here"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> You're frustrated by...</h1>
+      <ul class="reason_cont_section">
+        <li>
+          <h2 class="list_label">A.</h2><p> The general lack of good information on blockchains (like NameCoin).</p>
+        </li>
+        <hr class="hr">
+        <li>
+          <h2 class="list_label">B.</h2><p> The lack of good web-based tools that use blockchains (like NameCoin) to their fullest.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-6 col-md-4 well reason_cont">
+      <h1 class="reason_here"><span id="heart" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> You're informed and...</h1>
+      <ul class="reason_cont_section">
+        <li>
+          <h2 class="list_label">A.</h2><p> Think blockchain storage is awesome!</p>
+        </li>
+        <hr class="hr">
+        <li>
+          <h2 class="list_label">B.</h2><p> Want to find other people who think blockchains are awesome!</p>
+        </li>
+        <hr class="hr">
+        <li>
+          <h2 class="list_label">C.</h2><p> Want a tool to search/change the NameCoin blockchain that doesn't suck!</p>
+        </li>
+      </ul>
+    </div>
+  </div>  
+</div>
+<div class="jumbotron" id="what">
+  <h1 class="what_is_here">
+    What is The Bit and Stone Project?
+  </h1>
+  <ul>
+    <li>
+
+      <ul class="list-group">
+        <li class="list-group-item what_section">
+          <div class="section_head_cont">
+            <h2 class="section_header"><%= image_tag "1.svg", class: "what_num" %> Clean web-interface:</h2>
+          </div>
+            <div class="what_cont_cont">
+            <h2 class="what_content">
+              GUI application that queries the NameCoin blockchain.
+            </h2>
+          </div>
+        </li>     
+        <hr class="hr">
+        <li class="list-group-item what_section">
+          <div class="section_head_cont">
+            <h2 class="section_header"><%= image_tag "2.svg", class: "what_num" %> Crawler:</h2>
+          </div>
+            <div class="what_cont_cont">
+            <h2 class="what_content">
+              A crawler that resolves, scrapes, and characterizes addresses on the blockchain.
+            </h2>
+          </div>
+        </li>     
+        <hr class="hr">
+        <li class="list-group-item what_section">
+          <div class="section_head_cont">
+            <h2 class="section_header"><%= image_tag "3.svg", class: "what_num" %> Extend Namecoin: </h2>
+          </div>
+            <div class="what_cont_cont">
+            <h2 class="what_content">
+              Store and distribute blockchain <a class="extension" href="#">'extensions'</a>.
+            </h2>
+          </div>
+      
+        </li>
+        <hr class="hr">
+      </ul>
+    </li>
+  </ul>
+</div>
+<div class="jumbotron" id="how">
+  <h1 class="how_to_join">
+    Join
+  </h1>
+  <ul>
+    <li>
+      <%= form_for(@user) do |f| %>
+
+        <%= f.label :name %>
+        <%= f.text_field :name, class: 'form-control' %>
+
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control' %>
+
+        <%= f.label :password %>
+        <%= f.password_field :password, class: 'form-control' %>
+
+        <%= f.label :password_confirmation, "Confirmation" %>
+        <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+        <%= f.submit "Create my account", class: "btn btn-primary" %>
+      <% end %>
+    </li>
+    <li>
+      <hr class="hr">
+    </li>
+    <li>
+      <div class="chunky"><a href="">Join</a></div>
+    </li>
+  </ul>
+</div>

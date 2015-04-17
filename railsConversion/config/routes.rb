@@ -1,9 +1,20 @@
 Rails.application.routes.draw do
 
+  get '/home', to:'staticpages#home'
+
+  get '/about', to:'staticpages#about'
+
+  get '/donate', to:'staticpages#donate'
+
+  get '/contact', to:'staticpages#contact'
+
+  resources :users
+
   get '/searches/search', to: 'searches#search'
   resources :searches
 
   root to: "searches#new"
+  post 'auth' => 'auth#authenticate'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
