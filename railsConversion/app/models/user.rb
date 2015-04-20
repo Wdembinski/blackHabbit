@@ -1,28 +1,20 @@
+
 class User < ActiveRecord::Base
+	include Authentication
 	has_secure_password
-	# attr_accessible :email,:password, :password_confirmation
-	validates_uniqueness_of :email
-	def new
-	  @user = User.new
-	end
+	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, length: { maximum: 255 },uniqueness: true
+	validates :password, length: {maximum: 250, minimum:5}
+	# validates_confirmation_of :password
 
-	def create
-	  @user = User.new(params[:user])
-	  if @user.save
-	    session[:user_id] = @user.id
-	    redirect_to root_url, notice: "Thank you for signing up!"
-	  else
-	    render "new"
-	  end
-	end
-
-
-
-
-	
 	def generate_auth_token
 	  payload = { user_id: self.id }
 	  AuthToken.encode(payload)
+	end
+
+
+	def find_by_credentials
+		
 	end
 
 end

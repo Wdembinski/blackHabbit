@@ -1,0 +1,14 @@
+<%= form_for(@user,:url => { :action => "create" , :anchor => "form" }) do |f| %>
+<%= render "layouts/flash_message" %>
+<%= render "layouts/user_errors" %>
+  <%= f.label :email %>
+  <%= f.email_field :email, class: 'form-control' %>
+
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control' %>
+
+  <%= f.label :password_confirmation, "Confirmation" %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <hr class="hr">
+  <%= submit_tag "Create my account", class: "chunky" %>
+<% end %>

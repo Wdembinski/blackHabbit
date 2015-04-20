@@ -83,6 +83,7 @@ GEM
     json (1.8.2)
     json-schema (2.5.1)
       addressable (~> 2.3.7)
+    jwt (1.4.1)
     libv8 (3.16.14.7)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
@@ -189,6 +190,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   json-schema
+  jwt
   nokogiri
   pg
   pry

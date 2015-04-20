@@ -1,18 +1,26 @@
 class ApplicationController < ActionController::Base
+  include Authentication
+
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  
+  before_action 
   protect_from_forgery with: :exception
-  before_action :set_current_user, :authenticate_request
+  # before_action :set_current_user, :authenticate_request
 
-  # rescue_from NotAuthenticatedError do
-  #   render json: { error: 'Not Authorized' }, status: :unauthorized
-  # end
-  # rescue_from AuthenticationTimeoutError do
-  #   render json: { error: 'Auth token is expired' }, status: 419 # unofficial timeout status code
-  # end
+  rescue_from NotAuthenticatedError do
+    render json: { error: 'Not Authorized' }, status: :unauthorized
+  end
+  rescue_from AuthenticationTimeoutError do
+    render json: { error: 'Auth token is expired' }, status: 419 # unofficial timeout status code
+  end
 
   private
+
+  helper_method :current_user
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
 
   # Based on the user_id inside the token payload, find the user.
   def set_current_user
@@ -24,14 +32,14 @@ class ApplicationController < ActionController::Base
   # Check to make sure the current user was set and the token is not expired
   def authenticate_request
     if auth_token_expired?
-      # fail AuthenticationTimeoutError
-    elsif !@current_user
-      # fail NotAuthenticatedError
+      fail AuthenticationTimeoutError
+    elsif !@current_userq
+      fail NotAuthenticatedError
     end
   end
 
   def decoded_auth_token
-    # @decoded_auth_token ||= AuthToken.decode(http_auth_header_content)
+    @decoded_auth_token ||= AuthToken.decode(http_auth_header_content)
   end
 
   def auth_token_expired?

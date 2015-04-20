@@ -1,9 +1,5 @@
 source 'https://rubygems.org'
-gem 'public_suffix'
-gem 'ipaddress'
-gem 'json-schema'
 gem 'nokogiri'
-gem 'curb'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use postgresql as the database for Active Record
@@ -48,8 +44,12 @@ group :development, :test do
 #==================================================================================================#
 #=============================================My Stuff=============================================#
 #==================================================================================================#
-  gem 'httparty'
+	gem 'public_suffix'
+	gem 'ipaddress'
+	gem 'json-schema' #Confirm this is being used still
+	gem 'curb' #make http for crawler
+  gem 'httparty' #make http for crawler - confirm this is being used still
   gem 'bootstrap-sass',       '3.2.0.0'
-
+  gem 'jwt' #web tokens
   gem "font-awesome-rails"
 end

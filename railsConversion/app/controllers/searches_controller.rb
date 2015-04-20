@@ -20,7 +20,7 @@ class SearchesController < ApplicationController
       @searchResults = NmcChainEntry.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(100)
     end
     # render json: @searchResults
-    render json: @searchResults, :include => { :possible_addresses => {:include => {:categories => {:only=>:name}}}}  #This just handles the sql magicaly - seriously.
+    render json: @searchResults, :include => { :addresses => {:include => {:tags => {:only=>:title}}}}  #This just handles the sql magicaly - seriously.
     # @searchResults.each do |x| 
 
     #   # x.possible_addresses.each {|o| puts o.categories}

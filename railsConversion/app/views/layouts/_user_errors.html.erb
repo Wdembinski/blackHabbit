@@ -1,0 +1,17 @@
+<% if @user.errors.any? %>
+  <div class="error_messages">
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li>
+          <div class="alert alert-danger" role="alert">
+              <a href="#" class="alert-link"><%= message %></a>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+
+
