@@ -1,11 +1,34 @@
 class AuthController < ApplicationController
-	skip_before_action :authenticate_request, only:[:authenticate]# this will be implemented later
- 
+	skip_before_action :set_current_user,:authenticate_request, only:[:login,:register]# this will be implemented later
+  
 
+  def login
+    unix_time=Time.now.to_f * 1000 #best way to pass date to client imo
+    user=User.find_by(email: params[:email])
+    if user and user.authenticate(params[:password])
+      user.update last_logged_in: Time.now
+      cookies.encrypted[:secure_session]="#{Time.now.to_i}--#{user.id}--#{user.email}" #pussy level salt
+      cookies[:u_email]="\"#{user.email}\""
+      cookies[:logged_in_time]="\"#{unix_time}\""
+      # cookies.encrypted[:secure_session]={birth:Time.now,s:"#{user.id}--#{user.email}"} #pussy level salt
+      params[:u_email] = user.email
+      redirect_to "/searches"
+    else
+      flash[:top_msg] = "Email or password invalid" # this isnt in place to work
+      redirect_to '/users/new'
+    end
+  end
 
-
+  def logout
+    cookies.delete[:secure_session]
+    cookies.delete[:u_email] 
+    cookies.delete[:logged_in_time]
+    flash[:top_msg] = "Session terminated"
+    redirect_to root_url
+  end
 
   def authenticate
+    # puts cookies.encrypted[:secure_session] #get angular talking to server
     user = User.find_by(params[:username], params[:password]) # you'll need to implement this
     if user
       render json: { auth_token: user.generate_auth_token }
@@ -13,6 +36,7 @@ class AuthController < ApplicationController
       render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

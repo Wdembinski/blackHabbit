@@ -5,7 +5,7 @@ module Authentication
 	class AuthenticationTimeoutError < StandardError #I dont want to put these anywhere else yet
 	end
 
-
+# I think I might just end up using the cookies for now...
 	class AuthToken
 	  def self.encode(payload, exp=24.hours.from_now)
 		  payload[:exp] = exp.to_i

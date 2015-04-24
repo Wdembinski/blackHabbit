@@ -1,6 +1,8 @@
-<%= form_for(@user,:url => { :action => "create" , :anchor => "form" }) do |f| %>
-<%= render "layouts/flash_message" %>
-<%= render "layouts/user_errors" %>
+<%= render "layouts/user_errors"%>
+<%= render "layouts/flash_message"%>
+
+<a href="signup"id="signup"name="signup"></a>
+<%= form_for(@user,:url => { :action => "create" , :anchor => "signup" }) do |f| %>
   <%= f.label :email %>
   <%= f.email_field :email, class: 'form-control' %>
 

@@ -1,6 +1,20 @@
-<%= form_tag auth_path, id:"login",class: "navbar-form navbar-right login",role:"form" do %>
 
- <%= submit_tag "Login", class: "chunky" %>
- <%= password_field_tag :password, params[:password],class: 'form-control login_input',placeholder:"Password", tabindex:'2' %>
- <%= text_field_tag :email, params[:email],class: 'form-control login_input',placeholder:"Email",tabindex:'1' %>
+
+<% if params[:u_email] %>
+ 
+	<%= link_to "Logged in as: #{params[:u_email]}", logout_path%>
+	
+
+<% else %>
+
+
+	<%= form_tag auth_path, id:"login",class: "navbar-form navbar-right login",role:"form" do %>
+	<%= link_to "or Sign up!", root_url(:anchor => "signup")%>
+		 <%= submit_tag "Login", class: "chunky" %>
+		 <%= password_field_tag :password, params[:password],class: 'form-control login_input',placeholder:"Password", tabindex:'2' %>
+		 <%= text_field_tag :email, params[:email],class: 'form-control login_input',placeholder:"Email",tabindex:'1' %>
+	<% end %>
+
+
+
 <% end %>

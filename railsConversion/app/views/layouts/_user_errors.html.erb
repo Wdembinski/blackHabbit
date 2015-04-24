@@ -4,7 +4,7 @@
       <% @user.errors.full_messages.each do |message| %>
         <li>
           <div class="alert alert-danger" role="alert">
-              <a href="#" class="alert-link"><%= message %></a>
+              <p><%= message %></p>
           </div>
         </li>
       <% end %>

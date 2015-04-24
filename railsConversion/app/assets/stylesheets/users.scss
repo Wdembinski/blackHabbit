@@ -1,3 +1,16 @@
+
+
+
+.alert-info{
+	margin-bottom:0px;
+	text-align:right;
+}
+.alert-danger{
+	background-color: #E24D3A;
+	border-color: #ebccd1;
+	color: #1D1D1D;
+}
+
 .bh_home_nav{
 	margin-bottom:0px;
   background-attachment: scroll;
@@ -6,6 +19,9 @@
   background-origin: padding-box;
   background-size: auto;
   box-shadow: rgb(0, 0, 0) 1px 3px 18px 0px;
+  a:hover{
+    background-color:transparent;
+  }
   .navbar-header{
   	margin-left:100px;
   }
@@ -31,10 +47,16 @@
 	}
 	form.login{
 		margin-top:30px !important;
-		width:600px;
+		width:630px;
 		float:right;
 		margin-top:8px;
-
+		a{
+			float: right;
+			margin-top: 5px;
+			font-size: 16px;
+			color: rgb(228, 79, 61);
+			font-weight: bold;
+		}
 		input{
 
 			width:35%;
@@ -200,40 +222,67 @@
 	}
 }
 #how{
-	padding-bottom: 8%;
-	padding-top: 8%;
-	.how_to_join{
-		text-align:center;
-	}
-	.join_form{
-		margin-left:auto;
-		margin-right:auto;
-		width:33.33%;
-		form input.form-control{
-			&:focus{
-				box-shadow:none;
-				border-width:3px;
-				border-color:black;
-				color:black;
-			}
-		}
-	}
 	margin: 0 0 0 0;
 	height:100%;
 	width:100%;
 	font-family: Raleway, Arial, sans-serif;
 	font-weight: bold;
-	.chunky{
-		width:200px;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
+	padding-bottom: 8%;
+	padding-top: 8%;
+
+	div.field_with_errors{
+		background-color:transparent;
 	}
-	.field_with_errors {
-	  padding: 2px;
-	  background-color: rgb(245, 46, 22);
-	  width: 100%;
-	  display: table;
+
+	.how_to_join{
+		text-align:center;
+		font-weight:bold;
+	}
+	.join_form{
+		margin-left:auto;
+		margin-right:auto;
+		width:33.33%;
+
+		.alert-info{
+			margin-bottom:0px;
+			text-align:center;
+			p{
+				font-weight:bold;
+			}
+		}
+		.alert-danger{
+			margin-bottom:0px;
+			text-align:center;
+			p{
+				font-weight:bold;
+			}
+		}
+		form {
+			input.form-control{
+				&:focus{
+					box-shadow:none;
+					border-width:3px;
+					border-color:black;
+					color:black;
+				}
+			}
+
+			div.field_with_errors {
+				width:100%;
+				input{
+					box-shadow: none;
+			 		border-width: 3px;
+				  border-color: #E24D3A;
+			  }
+			} 
+		}
+
+		.chunky{
+			width:200px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 }
 input.chunky {
@@ -314,6 +363,13 @@ input.chunky:active {
 
 input.chunky {
 	background:#e44f3d;
+
+}
+input.chunky.pagebtn{
+		width:40%;
+	}
+.pagination{
+	width:40%;
 }
 
 

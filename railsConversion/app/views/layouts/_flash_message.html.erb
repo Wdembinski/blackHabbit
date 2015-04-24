@@ -1,7 +1,3 @@
-	<% flash.each do |name,msg| %>
-		<div class="alert alert-success" role="alert">
-			<%= content_tag :div, msg, id: "flash_#{name}"%>
-		</div>
-	<% end %>
-
-
+<% if flash[:new_usr_msg] %>
+	<%= content_tag :div, flash[:new_usr_msg], class: "alert alert-info" %>
+<% end %>

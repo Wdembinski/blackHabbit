@@ -26,15 +26,12 @@ class UsersController < ApplicationController
   # # POST /users
   # # POST /users.json
   def create
-
     @user = User.new(user_params)
-    puts user_params["email"]
-    @user.email
-
     respond_to do |format|
       if @user.save
-        format.html { render :new, notice: 'Thanks for signing up! A verification was sent to the provided email',anchor:"form" }
-        format.json { render :show, status: :created, location: @user }
+        flash[:new_usr_msg] = "Success!"
+        format.html { render :new, anchor:"form" }
+        format.json { render :new, status: :created }
       else
         format.html { render :new, anchor:"form" }
         format.json { render json: @user.errors, status: :unprocessable_entity }

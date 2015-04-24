@@ -178,7 +178,7 @@
 
 <div class="jumboResults">
   Search: <input class="blackHabitSort" ng-model="query">
-  <div ng-repeat="result in results | startFrom:currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  regID="{{result.link.id}}" class="subResult">
+  <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  regID="{{result.link.id}}" class="subResult">
     <div class="resultDescription">
       <ul class="nextdescriptionContent">
         <li>
@@ -215,22 +215,18 @@
 </div>
 
 
+<div class="pagination">
+  <div class="pagination_buttons">
+    <input value="Previous" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="chunky pagebtn">
+        
+    </input>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <input value="Next" type="button" ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="chunky pagebtn">
+  </div>
+
+      
+</div>
 
 
 
-<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-    Previous
-</button>
-{{currentPage+1}}/{{numberOfPages()}}
-<button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-    Next
-</button>
-<% if @user %>
-<script type="text/javascript">
-  angular.module('black_Habit').service('injectedDataViaService', 
-    function () {
-      //might use this for more initial data
-      $scope.user={ email:<%= @user.email %>, }
-    });
-</script>
-<% end %>
+</input>

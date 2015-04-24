@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 
-  post 'auth' => 'auth#authenticate'
+  post 'auth' => 'auth#login'
   # resources :searches
   get 'searches', to: 'searches#new', as: 'searches'
-
-
   get '/searches/search', to: 'searches#search'
+
+  get 'logout', to: 'auth#logout', as: 'logout'
+
   root to: "users#new"
   
 
@@ -13,7 +14,6 @@ Rails.application.routes.draw do
   
   get 'login', to: 'sessions#new', as: 'login'
 
-  get 'logout', to: 'sessions#destroy', as: 'logout'
 
   resources :users
   resources :sessions

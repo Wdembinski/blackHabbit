@@ -1,4 +1,5 @@
 class SearchesController < ApplicationController
+  skip_before_action :set_current_user,:authenticate_request, only:[:new,:search]
   # before_action :set_search, only: [:show, :edit, :update, :destroy]
   # before_action :set_search_results, only: [:search]
 
@@ -36,7 +37,9 @@ class SearchesController < ApplicationController
 
 
 
-  def new
+  def new(a=nil,b=nil)
+    user_email=a
+    auth_token=b
     # @search = Search.new
   end
 
