@@ -13,19 +13,14 @@ class SearchesController < ApplicationController
     @searchResults=[]
     # limit= params[:limit] || 100 
     histnum= params[:histnum] || 100
-    resultsWithHistories= {}
     if params[:blackHabbitPrimarySearch] == nil then
       @searchResults = 'No Search Requested'
       return
     else
-      @searchResults = NmcChainEntry.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(100)
+      @searchResults = NmcChainEntry.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)
     end
     # render json: @searchResults
-    render json: @searchResults, :include => { :addresses => {:include => {:tags => {:only=>:title}}}}  #This just handles the sql magicaly - seriously.
-    # @searchResults.each do |x| 
-
-    #   # x.possible_addresses.each {|o| puts o.categories}
-    # end
+    render json: @searchResults, :include => [{:addresses=>{:include=>:tags}}]  #This just handles the sql magicaly 
   
 
 

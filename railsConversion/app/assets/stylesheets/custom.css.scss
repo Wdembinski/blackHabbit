@@ -14,24 +14,6 @@ $blackhabit-stuff:white;
     list-style-type: none;
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   .navbar-nav>li>.dropdown-menu{
     top: 30px;
     right: 30px;
@@ -61,6 +43,20 @@ $blackhabit-stuff:white;
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   .blackhabitTools{
     position:fixed;
     top:130px;
@@ -71,9 +67,6 @@ $blackhabit-stuff:white;
     width: 33%;
     background-color:$blackhabitBackground;
     margin-right: 1%;
-
-    .selContent{
-    }
 
     .json{
       font-size: 13px;
@@ -91,14 +84,11 @@ $blackhabit-stuff:white;
       width:25%;
       margin-bottom: 4px;
     }
-
-
-
     hr{
 
       border-top: 1px solid #000;
-      margin-top: 4px;
-      margin-bottom: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
     }
 
     #historyTitle{
@@ -131,60 +121,118 @@ $blackhabit-stuff:white;
 
   }
 
-
-
-  .subResult{
-    border: 2px solid white;
-    padding:4px 4px 4px 4px;
-    max-width: 55%;
-    margin-bottom:4px;
-    transition-delay: 0s;
-    transition-duration: 0.08s;
-    transition-property: all;
-    transition-timing-function: ease;
-    h1{
-
-      font-size: 18px;
-      color:rgb(138, 138, 138);
-      font-family: arial, sans-serif;
+  .jumboResults{
+    padding:2px 2px 2px 2px;
+    margin-left: 120px;
+    .result-header{
+      display:block;
+      width:100%;
+      .created-date{
+        display:inline;
+        p {
+          display:inline;
+          float:right;
+        }
+      }
+      .result-title{
+        font-size:1.3em;
+      }
+      .result-name{
+        display:inline;
+        p {
+          display:inline;
+        }
+      }
 
     }
-    p.resultDayttl{
-      display: inline;
-      color: #8a8a8a;
-      font-size: 13px;
-      font-style: italic;
-      margin-left:2px;
-    }
-    p.resultName{
-      display: inline;
-      margin-bottom: 0px;
-      font-size:23px;
+
+    .subResult:hover .result-options {
+      color: pink;
     }
 
+    .subResult{
+      padding:4px 4px 4px 4px;
+      max-width: 55%;
+      margin-bottom:5px;;
+      transition-delay: 0s;
+      transition-duration: 0.04s;
+      transition-property: all;
+      font-weight:bold;
+      .preview-container{
+        width:100%;
+        height:auto;
+      }
+      hr{
+        border-top: 1px solid #C5C5C5;
+        margin-bottom:10px;
+        margin-top:10px;
 
-    .visitsToday{
-      font-size: 15px;
-      color: rgb(138, 138, 138);
-      display: inline;
-    }
-    p.status{
-      font-size: 15px;
-      color: rgb(138, 138, 138);
-      display: inline;
-      margin: 0 0 0 0;
-    }
+      }
 
-    a:hover{
-      color: black;
-    }
+      .result-preview{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 80%;
+        color:rgb(119, 119, 119);
 
-    .descriptionContent li{
-      margin-top: 2px;
+      }
+      p.createdDate{
+        display: inline;
+      }
+      .result-options:hover{
+        color:green;
+      }
+      .result-options{
+        display:inline;
+        position:relative;
+        float:right;
+        text-align:right;
+      }
+
+
+      h1{
+
+        font-size: 18px;
+        color:rgb(138, 138, 138);
+        font-family: arial, sans-serif;
+
+      }
+      p.resultDayttl{
+        display: inline;
+        color: #8a8a8a;
+        font-size: 13px;
+        font-style: italic;
+        margin-left:2px;
+      }
+      p.result-title{
+        display: inline;
+        margin-bottom: 0px;
+        font-size:1.3em;
+      }
+
+
+      .visitsToday{
+        font-size: 15px;
+        color: rgb(138, 138, 138);
+        display: inline;
+      }
+      p.status{
+        font-size: 15px;
+        color: rgb(138, 138, 138);
+        display: inline;
+        margin: 0 0 0 0;
+      }
+
+
+      .descriptionContent li{
+        margin-top: 2px;
+      }
+
     }
 
   }
-
 
 
 
@@ -207,9 +255,9 @@ $blackhabit-stuff:white;
 
   }
 
-  .jumboResults{
-    margin-left: 120px;
-  }
+
+
+
 
 
 

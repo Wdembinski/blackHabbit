@@ -40,7 +40,7 @@ black_Habit.factory('Auth', function($http, $rootScope, $cookieStore){
         $rootScope.logged_in=false;
     } else{
       console.log(u_email)
-      console.log(logged_in_time) ///////////////////////////build the logged-in auth stuff
+      console.log(logged_in_time) /////////////////////////// Change stuff based on logged in etc
       // console.log(new Date(logged_in_time))
       return {
         u_email: u_email,

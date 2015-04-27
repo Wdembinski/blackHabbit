@@ -6,7 +6,7 @@ class NmcChainEntry < ActiveRecord::Base
   has_many :json_histories,dependent: :destroy
   has_many :nmc_addresses,dependent: :destroy
   has_many :addresses, through: :nmc_addresses
-  has_many :tags, through: :addresses
+  # has_many :tags, through: :addresses
   accepts_nested_attributes_for :addresses
   def self.populate
     counter=0 #increases by 1 every 100 cycles. helped with some debugging and I dont want to nix it yet

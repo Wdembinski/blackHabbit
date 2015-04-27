@@ -1,0 +1,110 @@
+
+ <div class="blackhabitTools">
+  <ul class="nav navbar-nav navbar-right ">
+   <li class="dropdown">
+      <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Action</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
+    </li>
+  </ul>
+  <p id="historyTitle">History</p>
+  <%= image_tag "thumbNail.jpg", class: "mostRelThumbnail" %>
+  <%= image_tag "thumbNail1.jpg", class: "mostRelThumbnail" %> 
+  <%= image_tag "thumbNail2.jpg", class: "mostRelThumbnail" %>
+    <div class="superResultDescription">
+      <ul class="descriptionContent">
+        <li>
+           <a href=""><p class="resultName">{{resultInFocus.link.name}}</p></a>
+        </li>
+        <li>
+           <p class="resultExpiration">Expires In:</p>
+           <a href="">{{resultInFocus.link.expires_in}}</a>
+           <p class="resultDayttl">{{expiresIn(resultInFocus.link.expires_in)}}</p>
+           <p class="createdDate"> Created 1/22/14</p>
+        </li>
+        <li>
+          <p class="json">Value:</p>
+           <p class="json">
+           {{resultInFocus.value}}
+          </p>
+          <p class="json">Expires In:</p>
+           <p class="json">
+           {{ resultInFocus.linkexpires_in}}
+          </p>
+        </li>
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+        <hr>
+        <li>
+          <p class="selDescription">Description:</p>
+          <p class="selContent">{{resultInFocus.desc}}</p>
+        <hr>
+      <ul>
+        <li ng-repeat="addr in resultInFocus.addresses">
+          <p>
+            {{addr.value}}
+            <a ng-repeat="tag in addr.tags">
+            -{{tag.title}}
+            </a>
+          </p>
+        </li> 
+      </ul>
+          <p class="snapShot">
+
+
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+            <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+
+            <ul class="dropdown-menu snapShot" role="menu">
+              <li ng-repeat="history in historiesInFocus"><a href="#">{{history}}</a></li>
+              
+              <li class="divider"></li>
+            </ul>
+            </li>
+          </ul>
+<!--             <div class="accordion" id="accordion2">
+            <div ng-repeat="addr in resultInFocus.possible_addresses" class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                  {{addr}}
+                </a>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  Anim pariatur cliche...
+                </div>
+              </div>
+            </div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                  Collapsible Group Item #2
+                </a>
+              </div>
+              <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  Anim pariatur cliche...
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+
+
+          
+
+          </p>
+        </li>
+      </ul>
+    </div>
+</div>
+

@@ -63,170 +63,66 @@
     </li>
   </ul>
 </div>
- <div class="blackhabitTools">
-  <ul class="nav navbar-nav navbar-right ">
-   <li class="dropdown">
-      <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Action</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
-    </li>
-  </ul>
-  <p id="historyTitle">History</p>
-  <%= image_tag "thumbNail.jpg", class: "mostRelThumbnail" %>
-  <%= image_tag "thumbNail1.jpg", class: "mostRelThumbnail" %> 
-  <%= image_tag "thumbNail2.jpg", class: "mostRelThumbnail" %>
-    <div class="superResultDescription">
-      <ul class="descriptionContent">
-        <li>
-           <a href=""><p class="resultName">{{resultInFocus.link.name}}</p></a>
-        </li>
-        <li>
-           <p class="resultExpiration">Expires In:</p>
-           <a href="">{{resultInFocus.link.expires_in}}</a>
-           <p class="resultDayttl">{{expiresIn(resultInFocus.link.expires_in)}}</p>
-           <p class="createdDate"> Created 1/22/14</p>
-        </li>
-        <li>
-          <p class="json">Value:</p>
-           <p class="json">
-           {{resultInFocus.value}}
-          </p>
-          <p class="json">Expires In:</p>
-           <p class="json">
-           {{ resultInFocus.linkexpires_in}}
-          </p>
-        </li>
-        <li>
-          <a href=""><p class="visitsToday">Visits Today:</p></a>225
-        </li>
-        <li>
-          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
-        </li>
-        <hr>
-        <li>
-          <p class="selDescription">Description:</p>
-          <p class="selContent">{{resultInFocus.desc}}</p>
-        <hr>
+<%= render 'layouts/toolbox' %>
 
 
-      <ul>
-        <li ng-repeat="addr in resultInFocus.possible_addresses">
-          <p>
-            {{addr.address}}
-            <a ng-repeat="cat in addr.categories">
-            -{{cat.name}}
-            </a>
-          </p>
-        </li> 
-      </ul>
-          <p class="snapShot">
-
-
-
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-            <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
-
-            <ul class="dropdown-menu snapShot" role="menu">
-              <li ng-repeat="history in historiesInFocus"><a href="#">{{history}}</a></li>
-              
-              <li class="divider"></li>
-            </ul>
-            </li>
-          </ul>
-<!--             <div class="accordion" id="accordion2">
-            <div ng-repeat="addr in resultInFocus.possible_addresses" class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                  {{addr}}
-                </a>
-              </div>
-              <div id="collapseOne" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                  Anim pariatur cliche...
-                </div>
-              </div>
-            </div>
-            <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                  Collapsible Group Item #2
-                </a>
-              </div>
-              <div id="collapseTwo" class="accordion-body collapse">
-                <div class="accordion-inner">
-                  Anim pariatur cliche...
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-
-
-          
-
-          </p>
-        </li>
-      </ul>
-    </div>
-</div>
-
-
-
-<div class="jumboResults">
-  Search: <input class="blackHabitSort" ng-model="query">
-  <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  regID="{{result.link.id}}" class="subResult">
-    <div class="resultDescription">
-      <ul class="nextdescriptionContent">
-        <li>
-           <a href=""><p class="resultName">{{ result.link.name }}</p></a>
-           <p class="createdDate"><!-- {{result.link.created}} -->Created 1/22/14</p>
-           
-           <i class="fa fa-caret-down"></i>
-        </li>
-        <li class="metaRow">                                                                                      
-           <p class="resultExpiration">Expires In: </p>
-           <a href="">{{ result.link.expires_in }} Blocks</a>
-           <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
-        </li>
-        <li>
-          <p class="json">Record:</p>
-           <p class="json">
-            {{result.link.name}}<br>
-            {{result.link.value}}<br>
-            {{result.link.expires_in}}<br>
-          </p>
-        </li>
-      </ul>
-
-      <ul class="nextResultMetaData">
-        <li>
-          <a href=""><p class="visitsToday">Visits Today:</p></a>###
-        </li>
-        <li>
-          <a href=""><p class="status">Status: ##SOMETHING##</p></a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-
-<div class="pagination">
-  <div class="pagination_buttons">
-    <input value="Previous" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="chunky pagebtn">
-        
-    </input>
-    {{currentPage+1}}/{{numberOfPages()}}
-    <input value="Next" type="button" ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="chunky pagebtn">
-  </div>
-
+  <div class="jumboResults">
+    Search: <input class="blackHabitSort" ng-model="query">
+    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="subResult">
+      <!-- <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle collapse</button> -->
+      <div class="result-header">
+        <div class="result-name">
+            <p class="result-title">{{result.link.name}}</p>
+            <p class="resultExpiration">Expires In: </p>
+            <a href="">{{ result.link.expires_in }} Blocks</a>
+            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
+        </div>
+        <div class="created-date">
+          <p>Created 1/22/14</p>
+        </div>
+      </div>
+      <!-- <p class="createdDate">{{result.link.created}}Created 1/22/14</p> -->
       
-</div>
+      <hr>
+      <div class="preview-container" ng-click="isCollapsed = !isCollapsed">
+        <i ng-class="isCollapsed ? 'fa fa-caret-left fa-2x result-options' : 'fa fa-caret-down fa-2x result-options'" ></i>
+        <div class="result-preview" ng-show="isCollapsed" >
+          {{result.link.value}}
+        </div>
+      </div>
 
 
 
-</input>
+      <div collapse="isCollapsed">
+        <ul class="nextdescriptionContent">
+          <li>
+            <a href=""><p class="visitsToday">Visits Today:</p></a>###
+          </li>
+          <li>
+            <a href=""><p class="status">Status: ##SOMETHING##</p></a>
+          </li>
+        </ul>
+        <p class="json">
+          {{result.link.name}}<br>
+          {{result.link.value}}<br>
+          {{result.link.expires_in}}<br>
+        </p>
+          <!--               <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+                <div ng-repeat="item in items">{{item}}</div> -->
+      <!--<p>
+            <button class="btn btn-default btn-sm" ng-click="status.open = !status.open">Toggle last panel</button>
+            <button class="btn btn-default btn-sm" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+          </p>
+
+          <label class="checkbox">
+            <input type="checkbox" ng-model="oneAtATime">
+            Open only one at a time
+          </label> -->
+      </div>
+    </div>
+  </div>
+
+
+<%= render 'layouts/pagination'%>
+
+
