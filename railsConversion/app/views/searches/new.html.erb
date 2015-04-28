@@ -68,17 +68,17 @@
 
   <div class="jumboResults">
     Search: <input class="blackHabitSort" ng-model="query">
-    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="subResult">
+    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="subResult" ng-cloak>
       <!-- <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle collapse</button> -->
       <div class="result-header">
         <div class="result-name">
             <p class="result-title">{{result.link.name}}</p>
             <p class="resultExpiration">Expires In: </p>
             <a href="">{{ result.link.expires_in }} Blocks</a>
-            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question"></i></a>
+            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!'" popover-title="What is a block?"></i></a>
         </div>
         <div class="created-date">
-          <p>Created 1/22/14</p>
+          <p>Created: {{result.created_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
         </div>
       </div>
       <!-- <p class="createdDate">{{result.link.created}}Created 1/22/14</p> -->
@@ -86,14 +86,14 @@
       <hr>
       <div class="preview-container" ng-click="isCollapsed = !isCollapsed">
         <i ng-class="isCollapsed ? 'fa fa-caret-left fa-2x result-options' : 'fa fa-caret-down fa-2x result-options'" ></i>
-        <div class="result-preview" ng-show="isCollapsed" >
+        <p class="result-preview" ng-show="isCollapsed" >
           {{result.link.value}}
-        </div>
+        </p>
       </div>
 
 
 
-      <div collapse="isCollapsed">
+      <div ng-show="!isCollapsed">
         <ul class="nextdescriptionContent">
           <li>
             <a href=""><p class="visitsToday">Visits Today:</p></a>###
@@ -105,7 +105,6 @@
         <p class="json">
           {{result.link.name}}<br>
           {{result.link.value}}<br>
-          {{result.link.expires_in}}<br>
         </p>
           <!--               <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
                 <div ng-repeat="item in items">{{item}}</div> -->

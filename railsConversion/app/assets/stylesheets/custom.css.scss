@@ -5,6 +5,10 @@
 $blackhabit-font:white;
 $blackhabitBackground:#eeeeee;
 $blackhabit-stuff:white;
+  
+  a:hover{
+    background-color:transparent;
+  }
 
 
   ul, a{
@@ -124,9 +128,15 @@ $blackhabit-stuff:white;
   .jumboResults{
     padding:2px 2px 2px 2px;
     margin-left: 120px;
+
     .result-header{
       display:block;
       width:100%;
+      h3.popover-title{
+        color:white;
+        background-color:#1D1D1D;
+        font-weight:bold;
+      }
       .created-date{
         display:inline;
         p {
@@ -170,6 +180,9 @@ $blackhabit-stuff:white;
       }
 
       .result-preview{
+        -webkit-transition-delay: .04s; /* Safari */
+        transition-duration: 0.4s;
+        transition-delay: 0.4s;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;

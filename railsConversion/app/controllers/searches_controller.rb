@@ -20,7 +20,7 @@ class SearchesController < ApplicationController
       @searchResults = NmcChainEntry.where("link->>'value' like ?","%#{params[:blackHabbitPrimarySearch]}%").limit(histnum)
     end
     # render json: @searchResults
-    render json: @searchResults, :include => [{:addresses=>{:include=>:tags}}]  #This just handles the sql magicaly 
+    render json: @searchResults, :include => [{:addresses=>{:include=>[:tags,:hyperlinks]}}]  #This just handles the sql magicaly 
   
 
 
