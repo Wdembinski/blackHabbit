@@ -8,8 +8,7 @@ class AuthController < ApplicationController
     if user and user.authenticate(params[:password])
       user.update last_logged_in: Time.now
       cookies.encrypted[:secure_session]="#{Time.now.to_i}--#{user.id}--#{user.email}" #pussy level salt
-      cookies[:u_email]="\"#{user.email}\""
-      cookies[:logged_in_time]="\"#{unix_time}\""
+      cookies[:user]="{\"email\":\"#{user.email}\",\"logged_in_time\":\"#{unix_time}\"}"
       # cookies.encrypted[:secure_session]={birth:Time.now,s:"#{user.id}--#{user.email}"} #pussy level salt
       params[:u_email] = user.email
       redirect_to "/searches"

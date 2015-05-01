@@ -1,14 +1,15 @@
 black_Habit.factory('CookieStorage', ['$cookieStore', function($cookieStore) {
 // black_Habit.factory('CookieStorage', ['$q', '$http', '$cookieStore', function($q, $http, $cookieStore) {
+
    return {
        getItem: function(item){
-           var data = $cookieStore.get(item);
-           if (!data){
-               data = {};
-               return "";
-           }else{
-               return data;
-           }
+          var data = $cookieStore.get(item);
+          if (!data){
+             data = {};
+             return false;
+          }else{
+             return data;
+          }
        },
        setItem: function(key, value){
            $cookieStore.put(key, value);
@@ -20,6 +21,6 @@ black_Habit.factory('CookieStorage', ['$cookieStore', function($cookieStore) {
        },
        logout: function() {
            $cookieStore.remove('app_user');
-       }
+       },
    };
 }])

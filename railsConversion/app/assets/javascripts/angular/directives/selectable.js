@@ -4,10 +4,10 @@ black_Habit.directive('selectable', function () {
         link: function (scope, element, attrs) {
         	// console.log()
             element.bind('click', function(e) {
-              $(".active").each(function() {
-                $(this).removeClass('active');
+              $(".selected").each(function() {
+                $(this).removeClass('selected');
               });
-              element.addClass('active');
+              element.addClass('selected');
               scope.$apply(attrs.selectable);
             });
         }

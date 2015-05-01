@@ -1,72 +1,51 @@
+black_Habit.factory('Authentication', function(User,$state,$http, $rootScope, CookieStorage, Access_levels){ 
+  console.log(User)
+  return{
+    authorize: function(access) {
+      if (User.access === Access_levels.logged_in_user) {
+        return true;
 
-// black_Habit.factory('Authentication', function($http, LocalService, AccessLevels) {
-//   return {
-//     authorize: function(access) {
-//       if (access === AccessLevels.user) {
-//         return this.isAuthenticated();
-//       } else {
-//         return true;
-//       }
-//     },
-//     isAuthenticated: function() {
-//       return LocalService.get('auth_token');
-//     },
-//     login: function(credentials) {
-//       var login = $http.post('/auth/authenticate', credentials);
-//       login.success(function(result) {
-//         LocalService.set('auth_token', JSON.stringify(result));
-//       });
-//       return login;
-//     },
-//     logout: function() {
-//       // The backend doesn't care about logouts, delete the token and you're good to go.
-//       LocalService.unset('auth_token');
-//     },
-//     register: function(formData) {
-//       LocalService.unset('auth_token');
-//       var register = $http.post('/auth/register', formData);
-//       register.success(function(result) {
-//         LocalService.set('auth_token', JSON.stringify(result));
-//       });
-//       return register;
-//     }
-//   };
-// });
-
-black_Habit.factory('Auth', function($http, $rootScope, $cookieStore){ 
-    var u_email = $cookieStore.get('u_email');
-    var logged_in_time = $cookieStore.get('logged_in_time');
-    if (typeof u_mail !== 'undefined') {
-        $rootScope.logged_in=false;
-    } else{
-      console.log(u_email)
-      console.log(logged_in_time) /////////////////////////// Change stuff based on logged in etc
-      // console.log(new Date(logged_in_time))
-      return {
-        u_email: u_email,
-        logged_in: logged_in_time
+        // return this.isAuthenticated();
+      } else {
+        return false;
       }
-    }
+    },
+    logged_in: function($cookieStore){
+      if (typeof($cookieStore.get.user.type) != "undefined" && !user.expired(20)){
+        return true
+      }else{
+        return false
+      }
+    },
+    isAuthenticated: function() {
+      return CookieStorage.get('secure_session');
+    },
+    login: function(credentials) {
+      var login = $http.post('/login', credentials);
+      login.success(function(result) {
+        CookieStorage.set_item('secure_session', JSON.stringify(result));
+      });
+      login.error(function(result){
+        console.log("FAILURE",result);
+      })
+    //   $scope.changeState = function () {    TODO:CHANGE STATE to /:username when logged in
+    // $state.go('where.ever.you.want.to.go');
+    //   };
+      console.log(login)
+      return login;
+    },
+    logout: function() {
+      // The backend doesn't care about logouts, delete the token and you're good to go.
+      CookieStorage.unset('secure_session');
+    },
+    register: function(formData) {
+      CookieStorage.unset('secure_session');
+      var register = $http.post('/auth/register', formData);
+      register.success(function(result) {
+        CookieStorage.set_item('secure_session', JSON.stringify(result));
+      });
+      return register;
+    },
 
-
+  }
 });
-
-// .factory('Auth', function($http, $rootScope, $cookieStore){
-
-//     var accessLevels = routingConfig.accessLevels
-//         , userRoles = routingConfig.userRoles
-//         , currentUser = $cookieStore.get('user') || 
-//                         { username: '', role: userRoles.public };
-
-//     // ...
-
-//     return {
-
-//         // ...
-
-//         accessLevels: accessLevels,
-//         userRoles: userRoles,
-//         user: currentUser
-//     };
-
-// });

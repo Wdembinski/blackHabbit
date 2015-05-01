@@ -1,4 +1,4 @@
-black_Habit.controller('resultCtrl', ['$cookieStore','$scope', '$http','Auth',function($cookieStore,$scope, $http, Auth) {
+black_Habit.controller('resultCtrl', ['$scope', '$http','Authentication',function($scope, $http, Authentication) {
   $scope.currentPage = 1;
   $scope.results=[];
   $scope.pageSize = 10;
@@ -9,13 +9,6 @@ black_Habit.controller('resultCtrl', ['$cookieStore','$scope', '$http','Auth',fu
 
   $scope.isCollapsed = true;
 
-////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
   $scope.numberOfPages=function(){
       return Math.ceil($scope.results.length/$scope.pageSize);                
   }
@@ -24,6 +17,7 @@ black_Habit.controller('resultCtrl', ['$cookieStore','$scope', '$http','Auth',fu
 	$scope.starList = function(num) {
 	     return new Array(num);   
 	}
+
  	$scope.genSearch = function(query) {
 		$http.get('http://localhost:3000/searches/search.json', {params: { blackHabbitPrimarySearch:query,limit:100,histNum:10 }}).success(function(a) {  //THIS IS SUPER DANGEROUS!
 	   		console.log(a);
@@ -33,13 +27,13 @@ black_Habit.controller('resultCtrl', ['$cookieStore','$scope', '$http','Auth',fu
     };
 
     $scope.setActiveItem = function(val) { //Pretty sure there might be more elegant way of doing this - BUT its simple!
-        console.log($cookieStore.get('email'))
+        console.log(Authentication.authorize())
         $scope.activeItem = val;
         // console.log($scope.results)
         $scope.resultInFocus = $scope.results.filter(function (result) { return result.id == val })[0];
         $scope.historiesInFocus = $scope.resultInFocus.histories;
         $scope.possible_addresses = $scope.resultInFocus.possible_addresses;
-        $scope.resultInFocus.desc = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)"
+        $scope.resultInFocus.desc = "This is filler description text!text!text!text!text!text!text!text!text!text!text!text!text!"
         // console.log($scope.results.filter(function (result) { return result.id == val }))
 
     };
@@ -59,6 +53,11 @@ black_Habit.controller('resultCtrl', ['$cookieStore','$scope', '$http','Auth',fu
   			return "Roughly " + timeRemaining.toFixed(2) + " days";
   		}
     }
+
+
+
+
+
 
 }]);
 

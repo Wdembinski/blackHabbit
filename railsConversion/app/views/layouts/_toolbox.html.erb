@@ -1,19 +1,37 @@
+ <div ng-controller="toolBoxCtl" class="blackhabitTools">
+ <ul class="nav nav-tabs">
+   <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab.title}}" >{{tab.title}}</a></li>
+   <li>
+     <ul class="nav navbar-nav navbar-right ">
+      <li class="dropdown">
+         <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+         <ul class="dropdown-menu" role="menu">
+           <li><a href="#">Action</a></li>
+           <li class="divider"></li>
+           <li><a href="#">Separated link</a></li>
+         </ul>
+       </li>
+     </ul>
+   </li>
+ </ul>
+ <div ui-view="viewA">
+ <!-- <div ng-include="currentTab" > -->
+   
+ </div>
+ <div ui-view="viewB">
+ <!-- <div ng-include="currentTab" > -->
+   
+ </div>
+</div>
 
- <div class="blackhabitTools">
-  <ul class="nav navbar-nav navbar-right ">
-   <li class="dropdown">
-      <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Action</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
-    </li>
-  </ul>
-  <p id="historyTitle">History</p>
-  <%= image_tag "thumbNail.jpg", class: "mostRelThumbnail" %>
-  <%= image_tag "thumbNail1.jpg", class: "mostRelThumbnail" %> 
-  <%= image_tag "thumbNail2.jpg", class: "mostRelThumbnail" %>
+<script type="text/ng-template" id="home.viewB">
+<p>TEST HOME VIEW B </p>
+</script>
+<script type="text/ng-template" id="home.viewA">
+    <p id="historyTitle">History</p>
+    <%= image_tag "thumbNail.jpg", class: "mostRelThumbnail" %>
+    <%= image_tag "thumbNail1.jpg", class: "mostRelThumbnail" %> 
+    <%= image_tag "thumbNail2.jpg", class: "mostRelThumbnail" %>
     <div class="superResultDescription">
       <ul class="descriptionContent">
         <li>
@@ -46,20 +64,8 @@
           <p class="selDescription">Description:</p>
           <p class="selContent">{{resultInFocus.desc}}</p>
         <hr>
-      <ul>
-        <li ng-repeat="addr in resultInFocus.addresses">
-          <p>
-            {{addr.value}}
-            <a ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
-            -{{tag.title}}
-            </a>
-          </p>
-        </li> 
-      </ul>
+
           <p class="snapShot">
-
-
-
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
             <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
@@ -97,14 +103,45 @@
               </div>
             </div>
           </div> -->
-
-
-
-          
-
           </p>
         </li>
       </ul>
     </div>
-</div>
+  </script>
+  
+  <script type="text/ng-template" id="tags.viewB">
+    <p>TEST TAG VIEW B </p>
+  
 
+
+
+
+
+
+
+
+
+  </script>
+
+  <script type="text/ng-template" id="tags.viewA">
+    <ul>
+      <li ng-repeat="addr in resultInFocus.addresses">
+        <p>
+          {{addr.value}}
+          <a ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
+          -{{tag.title}}
+          </a>
+        </p>
+      </li> 
+    </ul>
+  </script>
+  
+  <script type="text/ng-template" id="something.viewB">
+  <p>TEST SOMETHING VIEW B </p>
+  </script>
+  <script type="text/ng-template" id="something.viewA">
+    <div id="viewThree">
+      <h1>View Three</h1>
+      <p>In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit amet arcu. Class aptent taciti sociosqu.</p>
+    </div>
+  </script>

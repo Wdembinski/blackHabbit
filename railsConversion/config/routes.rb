@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post 'login', to: 'auth/login', as: 'login'
   post 'auth' => 'auth#login'
   # resources :searches
   get 'searches', to: 'searches#new', as: 'searches'
@@ -12,7 +13,6 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'users#new', as: 'signup'
   
-  get 'login', to: 'sessions#new', as: 'login'
 
 
   resources :users

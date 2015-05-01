@@ -50,6 +50,7 @@
   </div>
   <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
 </form>
+
 <div class="popdown" ng-class="{foo:boolChangeClass}">
   <ul class="nav navbar-nav navbar-right">
     <li><a href="#" id="Username">{{user.name}}</a></li> <!-- USER.NAME -->
@@ -75,7 +76,7 @@
             <p class="result-title">{{result.link.name}}</p>
             <p class="resultExpiration">Expires In: </p>
             <a href="">{{ result.link.expires_in }} Blocks</a>
-            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!'" popover-title="What is a block?"></i></a>
+            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!" popover-title="What is a block?"></i></a>
         </div>
         <div class="created-date">
           <p>Created: {{result.created_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
