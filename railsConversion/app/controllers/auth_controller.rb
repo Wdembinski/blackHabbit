@@ -7,14 +7,11 @@ class AuthController < ApplicationController
     user=User.find_by(email: params[:email])
     if user and user.authenticate(params[:password])
       user.update last_logged_in: Time.now
-      cookies.encrypted[:secure_session]="#{Time.now.to_i}--#{user.id}--#{user.email}" #pussy level salt
+      cookies.encrypted[:secure_session]="#{Time.now.to_i}--#{user.id}--#{user.email}"
       cookies[:user]="{\"email\":\"#{user.email}\",\"logged_in_time\":\"#{unix_time}\"}"
-      # cookies.encrypted[:secure_session]={birth:Time.now,s:"#{user.id}--#{user.email}"} #pussy level salt
-      params[:u_email] = user.email
-      redirect_to "/searches"
+      render json: "{\"status\":\"confirmed\"}"
     else
-      flash[:top_msg] = "Email or password invalid" # this isnt in place to work
-      redirect_to '/users/new'
+      render json: "{\"status':\"denied\"}"
     end
   end
 

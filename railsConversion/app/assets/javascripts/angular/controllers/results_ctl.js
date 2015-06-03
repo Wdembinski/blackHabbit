@@ -1,4 +1,4 @@
-black_Habit.controller('resultCtrl', ['$scope', '$http','Authentication',function($scope, $http, Authentication) {
+black_Habit.controller('resultCtrl', ['$state','$scope', '$http','Authentication',function($state,$scope, $http, Authentication) {
   $scope.currentPage = 1;
   $scope.results=[];
   $scope.pageSize = 10;
@@ -20,14 +20,29 @@ black_Habit.controller('resultCtrl', ['$scope', '$http','Authentication',functio
 
  	$scope.genSearch = function(query) {
 		$http.get('http://localhost:3000/searches/search.json', {params: { blackHabbitPrimarySearch:query,limit:100,histNum:10 }}).success(function(a) {  //THIS IS SUPER DANGEROUS!
-	   		console.log(a);
 	   		$scope.results = a;
 	   		return $scope.results;
     	});
     };
 
     $scope.setActiveItem = function(val) { //Pretty sure there might be more elegant way of doing this - BUT its simple!
-        console.log(Authentication.authorize())
+
+        if(Authentication.authorize()){
+          
+          console.log("$$$$$$$$$$$$$--Current State--$$$$$$$$$$$")
+          console.log("$$                                     $$")
+          console.log("$$           User is logged in         $$")
+          console.log($state.current)
+          console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        }else{
+          console.log("$$$$$$$$$$$$$--Current State--$$$$$$$$$$$")
+          console.log("$$                                     $$")
+          console.log("$$           User is logged out        $$")
+          console.log($state.current)
+          console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        }
+      
+
         $scope.activeItem = val;
         // console.log($scope.results)
         $scope.resultInFocus = $scope.results.filter(function (result) { return result.id == val })[0];

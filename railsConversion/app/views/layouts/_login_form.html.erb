@@ -1,15 +1,24 @@
+<script type="text/ng-template" id="logged_out_header">
 
-	<form ng-submit="submitLogin()" id="login" class="navbar-form navbar-right login" role="form" action="/auth" accept-charset="UTF-8" method="post">
-		 <a href="http://localhost:3000/#signup">or Sign up!</a>
+	<form ng-submit="submitLogin()" id="login" class="navbar-form navbar-right login" role="form" accept-charset="UTF-8" method="post">
+		 <a href="#signup">or Sign up!</a>
 		 <input type="submit" name="commit" value="Login" class="chunky" />
-		 <input type="password" ng-model="password" id="password" class="form-control login_input" placeholder="Password" tabindex="2" />
-		 <input type="text" ng-model="email" id="email" class="form-control login_input" placeholder="Email" tabindex="1" />
-</form>`
+		 <input type="password" ng-model="login_form.password" id="password" class="form-control login_input" placeholder="Password" tabindex="2" required/>
+		 <input type="text" ng-model="login_form.email" id="user_email" class="form-control login_input" placeholder="Email" tabindex="1" required/>
+	</form>
 
-
-
-
-
-<script type="text/ng-template" id="">
-<p>POOOOOOPS</p>
 </script>
+
+
+
+<script type="text/ng-template" id="logged_in_header" >
+	<form id="logout" class="navbar-form navbar-right logout" role="form" accept-charset="UTF-8" >
+	<input ng-click="logout()" id="logout" ng-click= type="button" value="Logout" class="chunky">
+	</form>
+
+</script>
+
+
+<div ui-view="header_view">
+
+</div>

@@ -1,4 +1,4 @@
-black_Habit.directive('selectable', function () {
+  black_Habit.directive('selectable', function () {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {

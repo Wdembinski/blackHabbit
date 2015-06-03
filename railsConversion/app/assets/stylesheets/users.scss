@@ -45,6 +45,26 @@
 		height: auto;
 		float:left;
 	}
+	form.logout{
+		margin-top:30px !important;
+		width:300px;
+		float:right;
+		margin-top:10px;
+		input{
+			text-align:center;
+			width:35%;
+			float:	right;
+			margin-right:3px;
+			margin-left:3px;
+			&:focus{
+				box-shadow: none;
+				border-width: 3px;
+				border-color: #777777;
+				color: black;
+				font-weight:bold;
+			}
+		}
+	}
 	form.login{
 		margin-top:30px !important;
 		width:640px;

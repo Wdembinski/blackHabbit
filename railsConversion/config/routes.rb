@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  post 'login', to: 'auth/login', as: 'login'
+  post 'login', to: 'auth#login', as: 'login'
   post 'auth' => 'auth#login'
   # resources :searches
   get 'searches', to: 'searches#new', as: 'searches'

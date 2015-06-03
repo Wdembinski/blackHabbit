@@ -1,52 +1,137 @@
 var black_Habit= angular.module('black_Habit', ['ngCookies','ui.bootstrap','ui.router']);
 
-black_Habit.config(function($stateProvider,$urlRouterProvider){
-	// $urlRouterProvider.otherwise('/');
-	$stateProvider
-			.state('User',{
-				url:':username',
-				views: {
-					"test1": {
-					    templateUrl: "home.viewA"
-					},
-					"test2": {
-					    templateUrl: "home.viewB"
-					}
+black_Habit.constant('USER_ROLES', {
+  all: '*',
+  admin: 'admin',
+  editor: 'editor',
+  guest: 'guest'
+})
 
-				}
-			})
-	    .state('Home', {
+
+
+black_Habit.constant('AUTH_EVENTS', {
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success',
+  sessionTimeout: 'auth-session-timeout',
+  notAuthenticated: 'auth-not-authenticated',
+  notAuthorized: 'auth-not-authorized'
+})
+
+
+black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
+	$urlRouterProvider.otherwise("");
+	$stateProvider
+	    .state('anon_user', {  //YOURE TRYING TO GET THE LOGIN FORM TO CHANGE WHEN USER IS LOGGED IN
+	    		// abstract:true,
 	        url: "",
 	        views: {
-	            "viewA": {
-	                templateUrl: "home.viewA"
-	            },
-	            "viewB": {
-	                templateUrl: "home.viewB"
+	            "header_view": {
+	                templateUrl: "logged_out_header"
 	            }
 	        }
 	    })
-	    .state('Tags', {
-	        url: "Tags",
-	        views: {
-	            "viewA": {
-	                templateUrl: "tags.viewA"
-	            },
-	            "viewB": {
-	                templateUrl: "tags.viewB"
-	            }
-	        }
-	    })
-	    .state('Something', {
-	        url: "Something",
-	        views: {
-	            "viewA": {
-	                templateUrl: "something.viewA"
-	            },
-	            "viewB": {
-	                templateUrl: "something.viewB"
-	            }
-	        }
-	    })
+		    .state('logged_in', {  //need t come up with the nested views logged_in.tags etc
+		    		// abstract:true,
+		        url: "/user",
+
+		        views: {
+		            "header_view": {
+		                templateUrl: "logged_in_header"
+		            },
+		            "viewB": {
+		                templateUrl: "something.viewB"
+		            }
+		        },
+		        data: {
+		          authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
+		        }
+		    })
+			// .state('User',{
+			// 	url:':username',
+			// 	access:{
+			// 		requiresLogin: true
+			// 	},
+			// 	views: {
+			// 		"test1": {
+			// 		    templateUrl: "home.viewA"
+			// 		},
+			// 		"test2": {
+			// 		    templateUrl: "home.viewB"
+			// 		}
+
+			// 	}
+			// })
+	  //   .state('Home', {
+	  //       url: "",
+	  //       views: {
+	  //           "viewA": {
+	  //               templateUrl: "home.viewA"
+	  //           },
+	  //           "viewB": {
+	  //               templateUrl: "home.viewB"
+	  //           }
+	  //       }
+	  //   })
+	  //   .state('Tags', {
+	  //       url: "Tags",
+	  //       views: {
+	  //           "viewA": {
+	  //               templateUrl: "tags.viewA"
+	  //           },
+	  //           "viewB": {
+	  //               templateUrl: "tags.viewB"
+	  //           }
+	  //       }
+	  //   })
+
 	})
 
+
+// black_Habit.run(function ($rootScope) {
+
+//   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+//     var requireLogin = toState.data.requireLogin;
+
+//     if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
+//       event.preventDefault();
+//       // get me a login modal!
+//     }
+//   });
+
+// });
+
+
+
+
+// black_Habit.run(function ($rootScope, AUTH_EVENTS, Authentication) {
+//   $rootScope.$on('$stateChangeStart', function (event, next) {
+    // var authorizedRoles = next.data.authorizedRoles;
+//     if (!AuthService.isAuthorized(authorizedRoles)) {
+//       event.preventDefault();
+//       if (AuthService.isAuthenticated()) {
+//         // user is not allowed
+//         $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+//       } else {
+//         // user is not logged in
+//         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+//       }
+//     }
+//   });
+// })
+
+
+
+
+
+
+
+black_Habit.controller('black_Habit', function ($scope,USER_ROLES,Authentication) {
+  $scope.currentUser = null;
+  $scope.userRoles = USER_ROLES;
+  $scope.isAuthorized = Authentication.authorize;
+ 
+  $scope.setCurrentUser = function (user) {
+    $scope.currentUser = user;
+  };
+})

@@ -1,8 +1,8 @@
-black_Habit.factory('Authentication', function(User,$state,$http, $rootScope, CookieStorage, Access_levels){ 
-  console.log(User)
+black_Habit.factory('Authentication', function($location,User,$state,$http, $rootScope, CookieStorage, Access_levels){ 
   return{
-    authorize: function(access) {
-      if (User.access === Access_levels.logged_in_user) {
+    authorize: function() {
+      if (!User.expired()) {   //just a place holder for now.  Need to use this authorize thing w. roles maybe
+      // if (User.access === Access_levels.logged_in_user) {
         return true;
 
         // return this.isAuthenticated();
@@ -21,22 +21,32 @@ black_Habit.factory('Authentication', function(User,$state,$http, $rootScope, Co
       return CookieStorage.get('secure_session');
     },
     login: function(credentials) {
+      console.log(credentials)
+
       var login = $http.post('/login', credentials);
       login.success(function(result) {
-        CookieStorage.set_item('secure_session', JSON.stringify(result));
+        var user=CookieStorage.getItem("user")
+        $state.go('logged_in');
+
+
+        console.log($state.current)
+        console.log("Success!",result)
+
+
       });
       login.error(function(result){
+        console.log($state.current);
         console.log("FAILURE",result);
       })
     //   $scope.changeState = function () {    TODO:CHANGE STATE to /:username when logged in
     // $state.go('where.ever.you.want.to.go');
     //   };
-      console.log(login)
       return login;
     },
     logout: function() {
+      CookieStorage.logout()
       // The backend doesn't care about logouts, delete the token and you're good to go.
-      CookieStorage.unset('secure_session');
+      $state.go("anon_user")
     },
     register: function(formData) {
       CookieStorage.unset('secure_session');
