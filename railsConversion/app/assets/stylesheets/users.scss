@@ -45,7 +45,7 @@
 		height: auto;
 		float:left;
 	}
-	form.logout{
+	form#logout{
 		margin-top:30px !important;
 		width:300px;
 		float:right;
@@ -398,7 +398,8 @@ input.chunky.pagebtn{
 		height:120px;
 		margin:10px;
 	}
-	height:100%;
+  bottom: 0;
+	height:140px;
 	width:100%;
 	margin-bottom:0px;
   background-attachment: scroll;

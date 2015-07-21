@@ -17,9 +17,16 @@ black_Habit.factory('Authentication', function($location,User,$state,$http, $roo
         return false
       }
     },
+
+    //seems redundant
     isAuthenticated: function() {
-      return CookieStorage.get('secure_session');
+      return CookieStorage.getItem('secure_session');
     },
+
+
+
+
+    
     login: function(credentials) {
       console.log(credentials)
 
@@ -27,27 +34,33 @@ black_Habit.factory('Authentication', function($location,User,$state,$http, $roo
       login.success(function(result) {
         var user=CookieStorage.getItem("user")
         $state.go('logged_in');
-
-
         console.log($state.current)
-        console.log("Success!",result)
+        console.log("Succesful Login: ",result)
 
 
       });
+
       login.error(function(result){
         console.log($state.current);
-        console.log("FAILURE",result);
-      })
+        console.log($state.current);
+        console.log("Failed to Login: ",result);
+        console.log("Failed to Login: ",result);
+      });
     //   $scope.changeState = function () {    TODO:CHANGE STATE to /:username when logged in
     // $state.go('where.ever.you.want.to.go');
     //   };
       return login;
     },
+
+
+
     logout: function() {
-      CookieStorage.logout()
-      // The backend doesn't care about logouts, delete the token and you're good to go.
-      $state.go("anon_user")
+      CookieStorage.clear()
+      // The backend shouldnt care about logouts, delete the token and I be good
+      $state.go("/")
     },
+
+
     register: function(formData) {
       CookieStorage.unset('secure_session');
       var register = $http.post('/auth/register', formData);

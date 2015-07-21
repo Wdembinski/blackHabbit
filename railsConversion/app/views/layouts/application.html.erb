@@ -9,17 +9,17 @@
     <%= csrf_meta_tags %>
   </head>
   <body ng-controller="resultCtrl" scroll>
-  <% if flash[:top_msg] %>
-    <%= content_tag :div, flash[:top_msg], class: "alert alert-info" %>
+    <% if flash[:top_msg] %>
+     <%= content_tag :div, flash[:top_msg], class: "alert alert-info" %>
     <% end %>
-  <%= yield %>
+    <%= yield %>
 
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-resource.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-cookies.min.js"></script>
 
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
 
   </body>
 </html>

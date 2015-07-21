@@ -14,6 +14,7 @@ class AuthController < ApplicationController
       render json: "{\"status':\"denied\"}"
     end
   end
+# there shouldnt be any call to logout
 
   def logout
     cookies.delete[:secure_session]

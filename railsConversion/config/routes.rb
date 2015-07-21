@@ -3,20 +3,25 @@ Rails.application.routes.draw do
   post 'login', to: 'auth#login', as: 'login'
   post 'auth' => 'auth#login'
   # resources :searches
-  get 'searches', to: 'searches#new', as: 'searches'
   get '/searches/search', to: 'searches#search'
+  # get 'searches', to: 'searches#new', as: 'searches'
 
   get 'logout', to: 'auth#logout', as: 'logout'
 
-  root to: "users#new"
+  get 'users/new', to:'staticpages#login'
+
+
+
+  root to: 'staticpages#login'
+  # root to: "users#new"
   
 
-  get 'signup', to: 'users#new', as: 'signup'
+  # get 'signup', to: 'users#new', as: 'signup'
   
 
 
-  resources :users
-  resources :sessions
+  # resources :users
+  # resources :sessions
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

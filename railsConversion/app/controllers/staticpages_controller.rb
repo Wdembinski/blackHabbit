@@ -1,5 +1,6 @@
 class StaticpagesController < ApplicationController
-  def home
+  def login
+  	render 'assets/templates/login.html'
   end
 
   def about

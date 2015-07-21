@@ -5,7 +5,7 @@ black_Habit.controller('toolBoxCtl', ['$scope', '$http',function($scope) {
 								 {title: 'Something'}
 								];
 
-	$scope.currentTab = '';
+	$scope.currentTab = 'Home';
 
 	$scope.onClickTab = function (tab) {
 	    $scope.currentTab = tab.title;

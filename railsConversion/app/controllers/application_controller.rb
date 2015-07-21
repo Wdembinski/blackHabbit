@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authentication
-  skip_before_action :verify_authenticity_token
-  before_action :set_current_user, :authenticate_request
+  before_action :set_current_user
+  # before_action :set_current_user, :authenticate_request
   # protect_from_forgery with: :exception
   # after_filter :set_csrf_cookie_for_ng #maybe update cookie time
 
@@ -49,11 +49,12 @@ class ApplicationController < ActionController::Base
   def auth_token_expired?
     puts cookies.encrypted["secure_session"]
     if !cookies.encrypted["secure_session"] || (Time.now - Time.at(cookies.encrypted["secure_session"].split("--")[0].to_i)) > 1.minutes
-      flash[:login_err] = "Session expired"
-      redirect_to '/users/new'
+      render json:"{\"status':\"denied\"}"
+
+
     else
-      flash[:login_err] = "Welcome!"
-      render "searches/new" 
+      render json: "{\"status\":\"confirmed\"}"
+
     end
   end
 

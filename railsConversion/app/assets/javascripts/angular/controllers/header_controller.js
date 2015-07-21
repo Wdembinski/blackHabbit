@@ -7,16 +7,15 @@ black_Habit.controller('headerCtrl', ['$scope', 'Authentication',function($scope
 		// console.log($scope.login_form.email)
 		// console.log($scope.login_form.password)
 		var credentials={
-			 password:$scope.login_form.password
-		  ,email:$scope.login_form.email
+			 password:$scope.login_form.password,
+			 email:$scope.login_form.email
 		}
 
 		Authentication.login(credentials)
 	}
 	$scope.logout=function(){
-		Authentication.logout()
-
-	}
+		Authentication.logout();
+	};
 
 
 

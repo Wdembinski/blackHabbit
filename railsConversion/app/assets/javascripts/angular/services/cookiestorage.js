@@ -19,7 +19,7 @@ black_Habit.factory('CookieStorage', ['$cookieStore', function($cookieStore) {
            $cookieStore.remove(key);
            return true;
        },
-       logout: function() {
+       clear: function() {
            $cookieStore.remove('user');
            $cookieStore.remove('secure_session');
        },

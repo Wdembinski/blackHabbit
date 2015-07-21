@@ -1,4 +1,4 @@
-var black_Habit= angular.module('black_Habit', ['ngCookies','ui.bootstrap','ui.router']);
+var black_Habit= angular.module('black_Habit', ['templates','ngCookies','ui.bootstrap','ui.router']);
 
 black_Habit.constant('USER_ROLES', {
   all: '*',
@@ -20,14 +20,14 @@ black_Habit.constant('AUTH_EVENTS', {
 
 
 black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
-	$urlRouterProvider.otherwise("");
+	$urlRouterProvider.otherwise('/');
 	$stateProvider
-	    .state('anon_user', {  //YOURE TRYING TO GET THE LOGIN FORM TO CHANGE WHEN USER IS LOGGED IN
+	    .state('/', {  //YOURE TRYING TO GET THE LOGIN FORM TO CHANGE WHEN USER IS LOGGED IN
 	    		// abstract:true,
 	        url: "",
 	        views: {
 	            "header_view": {
-	                templateUrl: "logged_out_header"
+	                templateUrl:"login_form.html",
 	            }
 	        }
 	    })
@@ -36,11 +36,14 @@ black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
 		        url: "/user",
 
 		        views: {
+		        		"main_container":{
+		        			templateUrl:"searches.html"
+		        		},
 		            "header_view": {
-		                templateUrl: "logged_in_header"
+		                templateUrl: "logout_form.html",
 		            },
 		            "viewB": {
-		                templateUrl: "something.viewB"
+		                template: "something.viewB"
 		            }
 		        },
 		        data: {

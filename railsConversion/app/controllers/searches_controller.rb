@@ -35,6 +35,11 @@ class SearchesController < ApplicationController
   def new(a=nil,b=nil)
     user_email=a
     auth_token=b
+
+    respond_to do |format|
+
+      format.html {render :layout => true,:file => "searches/new"}
+    end
     # @search = Search.new
   end
 

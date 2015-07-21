@@ -1,0 +1,290 @@
+
+<!-- <nav class="navbar navbar-default bhnav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <a id="logo" href="#">Bit and Stone</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input ng-model="batx" type="text" id="blackhabitSearch" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          USER EMAIL
+        </li>
+        <li class="dropdown">
+          <a href="#" id="blackhabitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-cog fa-2x"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav> -->
+
+
+
+
+
+<form class="navbar-form navbar-left" role="search">
+  <div class="form-group">
+    <input ng-model="batx" type="text" id="blackhabitSearch" class="form-control" placeholder="Search">
+  </div>
+  <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
+</form>
+
+<div class="popdown" ng-class="{foo:boolChangeClass}">
+  <ul class="nav navbar-nav navbar-right">
+    <li><a href="#" id="Username">{{user.name}}</a></li> <!-- USER.NAME -->
+    <li class="dropdown">
+      <a href="#" id="blackhabitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog fa-2x"></i></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Action</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+ <!-- render 'layouts/toolbox'  -->
+
+
+ <div ng-controller="toolBoxCtl" class="blackhabitTools">
+ <ul class="nav nav-tabs">
+   <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab.title}}" >{{tab.title}}</a></li>
+   <li>
+     <ul class="nav navbar-nav navbar-right ">
+      <li class="dropdown">
+         <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+         <ul class="dropdown-menu" role="menu">
+           <li><a href="#">Action</a></li>
+           <li class="divider"></li>
+           <li><a href="#">Separated link</a></li>
+         </ul>
+       </li>
+     </ul>
+   </li>
+ </ul>
+ <div ui-view="viewA">
+ <!-- <div ng-include="currentTab" > -->
+   
+ </div>
+ <div ui-view="viewB">
+ <!-- <div ng-include="currentTab" > -->
+   
+ </div>
+</div>
+
+<script type="text/ng-template" id="home.viewB">
+<p>TEST HOME VIEW B </p>
+</script>
+<script type="text/ng-template" id="home.viewA">
+    <p id="historyTitle">History</p>
+    <img src="thumbNail.jpg" class= "mostRelThumbnail">
+    <img src="thumbNail1.jpg" class= "mostRelThumbnail"> 
+    <img src="thumbNail2.jpg" class= "mostRelThumbnail">
+    <div class="superResultDescription">
+      <ul class="descriptionContent">
+        <li>
+           <a href=""><p class="resultName">{{resultInFocus.link.name}}</p></a>
+        </li>
+        <li>
+           <p class="resultExpiration">Expires In:</p>
+           <a href="">{{resultInFocus.link.expires_in}} Blocks</a>
+           <p class="resultDayttl">{{expiresIn(resultInFocus.link.expires_in)}}</p>
+           <p class="createdDate">Last Updated: {{resultInFocus.updated_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
+        </li>
+        <li>
+          <p class="json">Value:</p>
+           <p class="json">
+           {{resultInFocus.value}}
+          </p>
+          <p class="json">Expires In:</p>
+           <p class="json">
+           {{ resultInFocus.linkexpires_in}}
+          </p>
+        </li>
+        <li>
+          <a href=""><p class="visitsToday">Visits Today:</p></a>225
+        </li>
+        <li>
+          <a href=""><p class="status">Status:<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></p></a>
+        </li>
+        <hr>
+        <li>
+          <p class="selDescription">Description:</p>
+          <p class="selContent">{{resultInFocus.desc}}</p>
+        <hr>
+
+          <p class="snapShot">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+            <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+
+            <ul class="dropdown-menu snapShot" role="menu">
+              <li ng-repeat="links in resultInFocus.links"><a href="#">{{history}}</a></li>
+              
+              <li class="divider"></li>
+            </ul>
+            </li>
+          </ul>
+<!--             <div class="accordion" id="accordion2">
+            <div ng-repeat="addr in resultInFocus.possible_addresses" class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                  {{addr}}
+                </a>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  Anim pariatur cliche...
+                </div>
+              </div>
+            </div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                  Collapsible Group Item #2
+                </a>
+              </div>
+              <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  Anim pariatur cliche...
+                </div>
+              </div>
+            </div>
+          </div> -->
+          </p>
+        </li>
+      </ul>
+    </div>
+  </script>
+  
+  <script type="text/ng-template" id="tags.viewB">
+    <p>TEST TAG VIEW B </p>
+  
+
+
+
+
+
+
+
+
+
+  </script>
+
+  <script type="text/ng-template" id="tags.viewA">
+    <ul>
+      <li ng-repeat="addr in resultInFocus.addresses">
+        <p>
+          {{addr.value}}
+          <a ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
+          -{{tag.title}}
+          </a>
+        </p>
+      </li> 
+    </ul>
+  </script>
+  
+  <script type="text/ng-template" id="something.viewB">
+  <p>TEST SOMETHING VIEW B </p>
+  </script>
+  <script type="text/ng-template" id="something.viewA">
+    <div id="viewThree">
+      <h1>View Three</h1>
+      <p>In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit amet arcu. Class aptent taciti sociosqu.</p>
+    </div>
+  </script>
+
+
+
+
+ <!-- render 'layouts/toolbox'  -->
+
+
+  <div class="jumboResults">
+    Search: <input class="blackHabitSort" ng-model="query">
+    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="subResult" ng-cloak>
+      <!-- <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle collapse</button> -->
+      <div class="result-header">
+        <div class="result-name">
+            <p class="result-title">{{result.link.name}}</p>
+            <p class="resultExpiration">Expires In: </p>
+            <a href="">{{ result.link.expires_in }} Blocks</a>
+            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!" popover-title="What is a block?"></i></a>
+        </div>
+        <div class="created-date">
+          <p>Created: {{result.created_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
+        </div>
+      </div>
+      <!-- <p class="createdDate">{{result.link.created}}Created 1/22/14</p> -->
+      
+      <hr>
+      <div class="preview-container" ng-click="isCollapsed = !isCollapsed">
+        <i ng-class="isCollapsed ? 'fa fa-caret-left fa-2x result-options' : 'fa fa-caret-down fa-2x result-options'" ></i>
+        <p class="result-preview" ng-show="isCollapsed" >
+          {{result.link.value}}
+        </p>
+      </div>
+
+
+
+      <div ng-show="!isCollapsed">
+        <ul class="nextdescriptionContent">
+          <li>
+            <a href=""><p class="visitsToday">Visits Today:</p></a>###
+          </li>
+          <li>
+            <a href=""><p class="status">Status: ##SOMETHING##</p></a>
+          </li>
+        </ul>
+        <p class="json">
+          {{result.link.name}}<br>
+          {{result.link.value}}<br>
+        </p>
+          <!--               <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+                <div ng-repeat="item in items">{{item}}</div> -->
+      <!--<p>
+            <button class="btn btn-default btn-sm" ng-click="status.open = !status.open">Toggle last panel</button>
+            <button class="btn btn-default btn-sm" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+          </p>
+
+          <label class="checkbox">
+            <input type="checkbox" ng-model="oneAtATime">
+            Open only one at a time
+          </label> -->
+      </div>
+    </div>
+  </div>
+
+
+<div class="pagination">
+  <div class="pagination_buttons">
+    <input value="Previous" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="chunky pagebtn">
+    {{currentPage+1}}/{{numberOfPages()}}
+    <input value="Next" type="button" ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="chunky pagebtn">
+  </div>
+</div>
+
+
+
+
+<div class="footer">
+  <a class="bs_logo.png">
+    <%= image_tag "bands_logo.png", class: "bs_logo" %>
+  </a>
+  <a href="https://github.com/Wdembinski/blackHabit"><img style="float:right;margin:0px;"src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+</div>
+
