@@ -42,8 +42,6 @@ black_Habit.factory('Authentication', function($location,User,$state,$http, $roo
 
       login.error(function(result){
         console.log($state.current);
-        console.log($state.current);
-        console.log("Failed to Login: ",result);
         console.log("Failed to Login: ",result);
       });
     //   $scope.changeState = function () {    TODO:CHANGE STATE to /:username when logged in

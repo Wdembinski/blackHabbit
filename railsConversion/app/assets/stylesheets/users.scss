@@ -389,7 +389,14 @@ input.chunky.pagebtn{
 		width:40%;
 	}
 .pagination{
-	width:40%;
+	width:100%;
+	.pagination_buttons{
+
+	max-width:50%;
+	margin:auto;
+
+
+	}
 }
 
 
