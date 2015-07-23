@@ -1,0 +1,155 @@
+<!-- layouts/landing_header -->
+<nav ng-controller="headerCtrl" class="navbar navbar-default bh_home_nav">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand bs_logo">
+        <%= image_tag "bands_logo.png", class: "bs_logo" %>
+      </a>
+    </div>
+      <p class="navbar-text bs_logo_slogan">A NameCoin search engine ... that doesn't suck</p>  
+      <div ui-view="header_view">
+          <!-- Stuff gets rendered here. -->
+      </div>
+    </div>      
+  </div>
+  <a href="https://github.com/wdembinski/blackHabit"><img style="max-height:120px;position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
+</nav>
+<!-- layouts/landing_header -->
+
+
+<div ui-view="main_container" class="main_container">
+  <div class="jumbotron" id="why">
+    <h1 class="why_youre_here">
+      Welcome to Bit and Stone.
+    </h1>
+    <h1 class="grab">
+      You're in the right place if:
+    </h1>
+    <div class="row">
+      <div class="reason_list">
+        <div class="col-sm-6 col-md-4 well reason_cont">
+          <h2 class="reason_here"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> You're curious and...</h2>
+          <ul class="reason_cont_section">
+            <li>
+              <h3 class="list_label">A.</h3><p> Have no idea what a blockchain, NameCoin, or computers are.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-md-4 well reason_cont">
+          <h2 class="reason_here"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> You're frustrated by...</h2>
+          <ul class="reason_cont_section">
+            <li>
+              <h3 class="list_label">A.</h3><p> The difficulty of using blockchains (like NameCoin).</p>
+            </li>
+            <hr class="hr">
+            <li>
+              <h3 class="list_label">B.</h3><p> The difficulty of finding a community that cares about blockchains (like NameCoin).</p>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-md-4 well reason_cont">
+          <h2 class="reason_here"><span id="heart" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> You're informed and...</h2>
+          <ul class="reason_cont_section">
+            <li>
+              <h3 class="list_label">A.</h3><p> Think blockchain storage is awesome!</p>
+            </li>
+            <hr class="hr">
+            <li>
+              <h3 class="list_label">B.</h3><p> Want to find other people who think the same thing!</p>
+            </li>
+            <hr class="hr">
+            <li>
+              <h3 class="list_label">C.</h3><p> Want a web-app that uses the NameCoin blockchain and doesn't suck!</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>  
+  </div>
+  <div class="jumbotron" id="what">
+    <h1 class="what_is_here">
+      What is The Bit and Stone Project?
+    </h1>
+    <ul>
+      <li>
+        <ul class="list-group">
+          <li class="list-group-item what_section">
+            <div class="section_head_cont">
+              <h2 class="section_header"><%= image_tag "1.svg", class: "what_num" %> Clean web-interface:</h2>
+            </div>
+              <div class="what_cont_cont">
+              <h2 class="what_content">
+                GUI application that does NameCoin stuff.
+              </h2>
+            </div>
+          </li>     
+          <hr class="hr">
+          <li class="list-group-item what_section">
+            <div class="section_head_cont">
+              <h2 class="section_header"><%= image_tag "2.svg", class: "what_num" %> Crawler:</h2>
+            </div>
+              <div class="what_cont_cont">
+              <h2 class="what_content">
+                A crawler that resolves, scrapes, and characterizes addresses on the blockchain.
+              </h2>
+            </div>
+          </li>     
+          <hr class="hr">
+          <li class="list-group-item what_section">
+            <div class="section_head_cont">
+              <h2 class="section_header"><%= image_tag "3.svg", class: "what_num" %> Extend Namecoin: </h2>
+            </div>
+              <div class="what_cont_cont">
+              <h2 class="what_content">
+                Store and distribute blockchain <a class="extension" href="#">'extensions'</a>.
+              </h2>
+            </div>
+          </li>
+          <hr class="hr">
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="jumbotron" id="how">
+    <h1 class="how_to_join">
+      Join
+    </h1>
+    <ul>
+      <li>
+        <div class="join_form">
+          <a href="signup"id="signup"name="signup"></a>
+          <form class="new_user" id="new_user" action="/users#signup" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+            <label for="user_email">Email</label>
+            <input class="form-control" type="email" name="user[email]" id="user_email" />
+
+            <label for="user_password">Password</label>
+            <input class="form-control" type="password" name="user[password]" id="user_password" />
+
+            <label for="user_password_confirmation">Confirmation</label>
+            <input class="form-control" type="password" name="user[password_confirmation]" id="user_password_confirmation" />
+            <hr class="hr">
+            <input type="submit" name="commit" value="Create my account" class="chunky" />
+          </form>
+
+
+
+
+
+        </div>
+      </li>
+      <li>
+      <!-- ? what was here -->
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="footer">
+  <a class="bs_logo.png">
+    <%= image_tag "bands_logo.png", class: "bs_logo" %>
+  </a>
+  <a href="https://github.com/Wdembinski/blackHabit"><img style="float:right;margin:0px;"src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+</div>
+<%= render :file => "/app/assets/templates/a_toolbox.html" %>

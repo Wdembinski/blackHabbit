@@ -22,34 +22,56 @@ black_Habit.constant('AUTH_EVENTS', {
 black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
 	$urlRouterProvider.otherwise('/');
 	$stateProvider
-	    .state('/', {  //YOURE TRYING TO GET THE LOGIN FORM TO CHANGE WHEN USER IS LOGGED IN
-	    		// abstract:true,
-	        url: "",
-	        views: {
-	            "header_view": {
-	                templateUrl:"login_form.html",
-	            }
-	        }
-	    })
-		    .state('logged_in', {  //need t come up with the nested views logged_in.tags etc
-		    		// abstract:true,
-		        url: "/user",
+    .state('/', {  
+    		// abstract:true,
+        url: "",
+        views: {
+            "header_view": {
+                templateUrl:"login_form.html",
+            }
+        }
+    })
+    .state('logged_in', {  //need t come up with the nested views logged_in.tags etc
+    		// abstract:true,
+        url: "/user",
 
-		        views: {
-		        		"main_container":{
-		        			templateUrl:"searches.html"
-		        		},
-		            "header_view": {
-		                templateUrl: "logout_form.html",
-		            },
-		            "viewB": {
-		                template: "something.viewB"
-		            }
-		        },
-		        data: {
-		          authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
-		        }
-		    })
+        views: {
+        		"main_container":{
+        			templateUrl:"searches.html"
+        		},
+            "header_view": {
+              templateUrl: "logout_form.html",
+            },
+            "viewA":{
+            	template:"TESTSTESTESSETSET",
+            },
+            "viewA": {
+              template: "something.viewB.html"
+            }
+        },
+        data: {
+          authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
+        }
+    }).state('logged_in.Home',{
+    	views:{
+    		"viewA":{
+    			templateUrl:"home.viewB.html",
+    		}
+    	}
+    }).state('logged_in.Tags',{
+    	views:{
+    		"viewA":{
+    			template:"TAGSS",
+    		}
+    	}
+    }).state('logged_in.Something',{
+    	views:{
+    		"viewA":{
+    			template:"Something",
+    		}
+    	}
+    })
+
 			// .state('User',{
 			// 	url:':username',
 			// 	access:{

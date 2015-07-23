@@ -1,6 +1,6 @@
 class StaticpagesController < ApplicationController
   def login
-  	render file: 'app/assets/templates/login.html'
+  	# render file: 'app/assets/templates/login.html'
   end
 
   def about
