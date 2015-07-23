@@ -5,11 +5,11 @@
 
 
 
-<script type="text/ng-template" id="home.viewA.html">
+<script type="text/ng-template" id="toolbox_view1.html">
     <p id="historyTitle">History</p>
-    <img src="thumbNail.jpg" class= "mostRelThumbnail">
-    <img src="thumbNail1.jpg" class= "mostRelThumbnail"> 
-    <img src="thumbNail2.jpg" class= "mostRelThumbnail">
+    <img src="assets/images/thumbNail.jpg" class= "mostRelThumbnail">
+    <img src="assets/images/thumbNail1.jpg" class= "mostRelThumbnail"> 
+    <img src="assets/images/thumbNail2.jpg" class= "mostRelThumbnail">
     <div class="superResultDescription">
       <ul class="descriptionContent">
         <li>
@@ -55,7 +55,7 @@
             </ul>
             </li>
           </ul>
-<!--             <div class="accordion" id="accordion2">
+       <div class="accordion" id="accordion2">
             <div ng-repeat="addr in resultInFocus.possible_addresses" class="accordion-group">
               <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
@@ -87,27 +87,21 @@
     </div>
   </script>
   
-  <script type="text/ng-template" id="tags.viewB">
+  <script type="text/ng-template" id="tags_viewB.html">
     <p>TEST TAG VIEW B </p>
-  
-
-
-
-
-
-
-
 
 
   </script>
 
-  <script type="text/ng-template" id="tags.viewA.html">
+  <script type="text/ng-template" id="tags_viewA.html">
     <ul>
-      <li ng-repeat="addr in resultInFocus.addresses">
+      <li ng-repeat="addr in resultInFocus.addresses | unique:'value'">
         <p>
           {{addr.value}}
-          <a ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
-          -{{tag.title}}
+          <span class="badge" ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
+          {{tag.title}}
+          </span>
+          
           </a>
         </p>
       </li> 

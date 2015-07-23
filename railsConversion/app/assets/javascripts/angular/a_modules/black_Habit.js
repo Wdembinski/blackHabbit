@@ -31,6 +31,7 @@ black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
             }
         }
     })
+    
     .state('logged_in', {  //need t come up with the nested views logged_in.tags etc
     		// abstract:true,
         url: "/user",
@@ -42,35 +43,54 @@ black_Habit.config(function($stateProvider,$urlRouterProvider,USER_ROLES){
             "header_view": {
               templateUrl: "logout_form.html",
             },
-            "viewA":{
+            "toolbox_view1":{
             	template:"TESTSTESTESSETSET",
             },
-            "viewA": {
+            "toolbox_view2": {
               template: "something.viewB.html"
             }
         },
         data: {
           authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
         }
-    }).state('logged_in.Home',{
+    })
+
+
+//========================================================================================================
+//========================================================================================================
+//========================================================================================================
+
+    .state('logged_in.Home',{
     	views:{
-    		"viewA":{
-    			templateUrl:"home.viewB.html",
-    		}
+    		"toolbox_view1":{
+    			templateUrl:"toolbox_view1.html",
+    		},
+				"toolbox_view2": {
+					templateUrl: "something.viewB.html"
+				}
+
     	}
     }).state('logged_in.Tags',{
     	views:{
-    		"viewA":{
-    			template:"TAGSS",
+    		"toolbox_view1":{
+    			templateUrl:"tags_viewA.html",
+    		},
+    		"toolbox_view2":{
+    			templateUrl:"tags_viewB.html"
     		}
     	}
     }).state('logged_in.Something',{
     	views:{
-    		"viewA":{
-    			template:"Something",
-    		}
+    		"viewB":{
+    			template:"home.viewA.html",
+    		} 
     	}
     })
+
+//========================================================================================================
+//========================================================================================================
+//========================================================================================================
+
 
 			// .state('User',{
 			// 	url:':username',

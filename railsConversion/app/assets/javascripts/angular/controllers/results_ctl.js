@@ -20,7 +20,8 @@ black_Habit.controller('resultCtrl', ['$state','$scope', '$http','Authentication
 
  	$scope.genSearch = function(query) {
 		$http.get('http://localhost:3000/searches/search.json', {params: { blackHabbitPrimarySearch:query,limit:100,histNum:10 }}).success(function(a) {  //THIS IS SUPER DANGEROUS!
-	   		$scope.results = a;
+        $scope.results = a;
+	   		console.log($scope.results)
 	   		return $scope.results;
     	});
     };
