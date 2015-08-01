@@ -33,7 +33,7 @@ black_Habit.factory('Authentication', function($location,User,$state,$http, $roo
       var login = $http.post('/login', credentials);
       login.success(function(result) {
         var user=CookieStorage.getItem("user")
-        $state.go('logged_in');
+        $state.go('logged_in.Home');
         console.log($state.current)
         console.log("Succesful Login: ",result)
 

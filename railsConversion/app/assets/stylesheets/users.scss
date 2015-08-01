@@ -12,7 +12,7 @@
 }
 
 .bh_home_nav{
-	margin-bottom:0px;
+	margin-bottom:2%;
   background-attachment: scroll;
   background-clip: border-box;
   background-color: #1d1d1d;
@@ -402,11 +402,11 @@ input.chunky.pagebtn{
 
 .footer{
 	img{
-		height:120px;
+		max-height:7em;
 		margin:10px;
 	}
   bottom: 0;
-	height:140px;
+	max-height:140px;
 	width:100%;
 	margin-bottom:0px;
   background-attachment: scroll;

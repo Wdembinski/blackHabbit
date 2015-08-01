@@ -1,126 +1,107 @@
 
-<!-- <nav class="navbar navbar-default bhnav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-      </button>
-      <a id="logo" href="#">Bit and Stone</a>
-    </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input ng-model="batx" type="text" id="blackhabitSearch" class="form-control" placeholder="Search">
+<script type="text/javascript">
+  var nav_div_height = $(".bh_home_nav").outerHeight(true);
+  var toolbox = $(".toolbox");
+  $(window).scroll(function(){
+    if($(this).scrollTop() >= nav_div_height){
+      toolbox.css('top',"2%")
+    }else{
+      toolbox.css('top',nav_div_height) //make percentage
+    }
+  });
+</script>
+
+
+  
+
+
+  <div class="col-md-6">
+    <div class="col-md-6">
+      <label>Search:</label>
+      <form>
+        <div class="input-group">
+            <input ng-model="batx" type="text" id="" class="form-control" placeholder="">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" ng-click="genSearch(batx)">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
         </div>
-        <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
       </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          USER EMAIL
-        </li>
-        <li class="dropdown">
-          <a href="#" id="blackhabitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-cog fa-2x"></i></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
+    </div>
+    <div class="col-md-6">
+      <label>Filter Results: </label>
+      <div class="input-group">
+        <input type="text"class="form-control" ng-model="query">
+      </div>
     </div>
   </div>
-</nav> -->
 
 
 
-
-
-<form class="navbar-form navbar-left" role="search">
-  <div class="form-group">
-    <input ng-model="batx" type="text" id="blackhabitSearch" class="form-control" placeholder="Search">
-  </div>
-  <button type="submit" class="btn btn-default submitSearch" ng-click="genSearch(batx)"><i class="fa fa-search"></i></button>
-</form>
-
-<div class="popdown" ng-class="{foo:boolChangeClass}">
-  <ul class="nav navbar-nav navbar-right">
-    <li><a href="#" id="Username">{{user.name}}</a></li> <!-- USER.NAME -->
-    <li class="dropdown">
-      <a href="#" id="blackhabitSettings"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cog fa-2x"></i></a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Action</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
- <!-- render 'layouts/toolbox'  -->
-
-
- <div ng-controller="toolBoxCtl" class="blackhabitTools">
- <ul class="nav nav-tabs">
-   <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab_state()}}.{{tab.title}}" >{{tab.title}}</a></li>
-   <!-- <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab.title}}" >{{tab.title}}</a></li> -->
-   <li>
-     <ul class="nav navbar-nav navbar-right ">
-      <li class="dropdown">
-         <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
-         <ul class="dropdown-menu" role="menu">
-           <li><a href="#">Action</a></li>
-           <li class="divider"></li>
-           <li><a href="#">Separated link</a></li>
-         </ul>
+  <div ng-controller="toolBoxCtl" class="toolbox col-md-4">
+    <ul class="nav nav-tabs">
+      <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab_state()}}.{{tab.title}}" >{{tab.title}}</a></li>
+      <!-- <li ng-click="onClickTab(tab)" ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.title)}" role="presentation"><a ui-sref="{{tab.title}}" >{{tab.title}}</a></li> -->
+      <li>
+        <ul class="nav navbar-nav navbar-right ">
+          <li class="dropdown">
+             <a href="#" id="blackhabitSettings"class="dropdown-toggle suggestionSettings" data-toggle="dropdown" role="button" aria-expanded="false"><i id="settingsCog"class="fa fa-caret-square-o-down"></i></a>
+             <ul class="dropdown-menu" role="menu">
+               <li><a href="#">Action</a></li>
+               <li class="divider"></li>
+               <li><a href="#">Separated link</a></li>
+             </ul>
+           </li>
+        </ul>
        </li>
-     </ul>
-   </li>
- </ul>
- <div ui-view="toolbox_view1">
- <!-- <div ng-include="currentTab" > -->
-   
- </div>
- <div ui-view="toolbox_view2">
- <!-- <div ng-include="currentTab" > -->
-   
- </div>
-</div>
+    </ul>
+    <div ui-view="toolbox_view1">
+    <!-- <div ng-include="currentTab" > -->
+     
+    </div>
+    <div ui-view="toolbox_view2">
+    <!-- <div ng-include="currentTab" > -->
+     
+    </div>
+  </div>
 
 
 
- <!-- render 'layouts/toolbox'  -->
-
-
-  <div class="jumboResults">
-    Search: <input class="blackHabitSort" ng-model="query">
-    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="subResult" ng-cloak>
+   <div class="col-md-7">
+    <div ng-repeat="result in results | startFrom: currentPage*pageSize | limitTo:pageSize| filter:query" selectable="setActiveItem(result.id)"  id="{{result.link.id}}" class="col-md-12 col-centered result" ng-cloak>
       <!-- <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Toggle collapse</button> -->
-      <div class="result-header">
-        <div class="result-name">
-            <p class="result-title">{{result.link.name}}</p>
-            <p class="resultExpiration">Expires In: </p>
-            <a href="">{{ result.link.expires_in }} Blocks</a>
-            <p class="resultDayttl">{{expiresIn(result.link.expires_in)}}</p><a href="">  <i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!" popover-title="What is a block?"></i></a>
+      <div class="row panel-heading result_heading">
+        <div class="col-md-8">
+          <h1 class="panel-title">{{result.link.name}}</h1>          
+          <label class="">Expires In: </label>
+          <span class="badge">{{ result.link.expires_in }} Blocks</span>
+          <a href="">{{expiresIn(result.link.expires_in)}}</a>
+          <a href="">
+            (<i class="fa fa-question" popover-placement="top" popover="A 'block' is a unit of computations needed to 'win' 50 NMC, read more at wiki.namecoin.info!" popover-title="What is a block?"></i>)
+          </a>
         </div>
-        <div class="created-date">
-          <p>Created: {{result.created_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
+        <div class="col-md-4">
+          <p class="pull-right">Created: {{result.created_at | date:"MM/dd/yyyy '|' h:mma"}}</p>
         </div>
       </div>
-      <!-- <p class="createdDate">{{result.link.created}}Created 1/22/14</p> -->
-      
-      <hr>
       <div class="preview-container" ng-click="isCollapsed = !isCollapsed">
-        <i ng-class="isCollapsed ? 'fa fa-caret-left fa-2x result-options' : 'fa fa-caret-down fa-2x result-options'" ></i>
-        <p class="result-preview" ng-show="isCollapsed" >
-          {{result.link.value}}
-        </p>
+      <hr class="col-md-11 result_break">
+        <i ng-class="isCollapsed ? 'fa fa-caret-left fa-2x result-options' : 'fa fa-caret-down fa-2x'" ></i>
+
       </div>
 
 
 
       <div ng-show="!isCollapsed">
         <ul class="nextdescriptionContent">
+          <li>
+            <a href="">
+          {{result.link.value}}
+            </a>
+          </li>
           <li>
             <a href=""><p class="visitsToday">Visits Today:</p></a>###
           </li>
@@ -129,7 +110,6 @@
           </li>
         </ul>
         <p class="json">
-          {{result.link.name}}<br>
           {{result.link.value}}<br>
         </p>
           <!--               <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
@@ -145,13 +125,11 @@
           </label> -->
       </div>
     </div>
+    </div>
+  <div class="pagination">
+    <div class="pagination_buttons">
+      <input value="Previous" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="chunky pagebtn">
+      {{currentPage+1}}/{{numberOfPages()}}
+      <input value="Next" type="button" ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="chunky pagebtn">
+    </div>
   </div>
-
-
-<div class="pagination">
-  <div class="pagination_buttons">
-    <input value="Previous" type="button" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="chunky pagebtn">
-    {{currentPage+1}}/{{numberOfPages()}}
-    <input value="Next" type="button" ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="chunky pagebtn">
-  </div>
-</div>

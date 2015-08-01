@@ -3,9 +3,7 @@ black_Habit.controller('resultCtrl', ['$state','$scope', '$http','Authentication
   $scope.results=[];
   $scope.pageSize = 10;
 
-////////////////////////////////////////////////////////////////////////
 
-                    ///collapse stuff
 
   $scope.isCollapsed = true;
 
@@ -22,9 +20,19 @@ black_Habit.controller('resultCtrl', ['$state','$scope', '$http','Authentication
 		$http.get('http://localhost:3000/searches/search.json', {params: { blackHabbitPrimarySearch:query,limit:100,histNum:10 }}).success(function(a) {  //THIS IS SUPER DANGEROUS!
         $scope.results = a;
 	   		console.log($scope.results)
-	   		return $scope.results;
+        if(jQuery.isEmptyObject(a)){
+          $scope.addAlert({ type: 'danger', msg: 'No results returned'})
+        }else{
+          return a;
+
+        }
     	});
     };
+
+    $scope.resultInFocus={
+
+
+    }
 
     $scope.setActiveItem = function(val) { //Pretty sure there might be more elegant way of doing this - BUT its simple!
 
@@ -47,7 +55,7 @@ black_Habit.controller('resultCtrl', ['$state','$scope', '$http','Authentication
         $scope.activeItem = val;
         // console.log($scope.results)
         $scope.resultInFocus = $scope.results.filter(function (result) { return result.id == val })[0];
-        $scope.historiesInFocus = $scope.resultInFocus.histories;
+        // $scope.historiesInFocus = $scope.resultInFocus.histories;
         $scope.possible_addresses = $scope.resultInFocus.possible_addresses;
         $scope.resultInFocus.desc = "This is filler description text!text!text!text!text!text!text!text!text!text!text!text!text!"
         // console.log($scope.results.filter(function (result) { return result.id == val }))

@@ -6,10 +6,24 @@
 
 
 <script type="text/ng-template" id="toolbox_view1.html">
-    <p id="historyTitle">History</p>
-    <img src="assets/images/thumbNail.jpg" class= "mostRelThumbnail">
-    <img src="assets/images/thumbNail1.jpg" class= "mostRelThumbnail"> 
-    <img src="assets/images/thumbNail2.jpg" class= "mostRelThumbnail">
+    <label id="historyTitle">History</label>
+      <div class="col-md-3">
+        <a href="#" class="thumbnail">
+          <img src="https://brisbaneandbeyond.files.wordpress.com/2010/11/low-res-sunset-view_a.jpg" alt="thumbnail1">
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" class="thumbnail">
+          <img src="https://brisbaneandbeyond.files.wordpress.com/2010/11/low-res-sunset-view_a.jpg" alt="thumbnail1">
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" class="thumbnail">
+          <img src="https://brisbaneandbeyond.files.wordpress.com/2010/11/low-res-sunset-view_a.jpg" alt="thumbnail1">
+        </a>
+      </div>
+
+
     <div class="superResultDescription">
       <ul class="descriptionContent">
         <li>
@@ -98,7 +112,7 @@
       <li ng-repeat="addr in resultInFocus.addresses | unique:'value'">
         <p>
           {{addr.value}}
-          <span class="badge" ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
+          <span class="label label-info" ng-repeat="tag in addr.tags"  popover="{{tag.description}}" popover-title="{{tag.title}}" popover-trigger="mouseenter">
           {{tag.title}}
           </span>
           
